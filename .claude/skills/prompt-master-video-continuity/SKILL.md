@@ -1,6 +1,6 @@
 ---
 name: prompt-master-video-continuity
-description: AI Video Continuity Director, Data Efficiency Architect & Vocal Sound Designer. Converts user concepts or reference images into camera-ready, audio-inclusive YAML prompts for text-to-video AI models. Enforces strict visual continuity, character locking, telegraphic style, and a hard 1300-character YAML limit. Use this skill when the user mentions "動態", "動態提示詞", "影片提示詞", "video prompt", "text-to-video prompt", "動畫提示詞", "video continuity", or wants to generate multi-shot video sequence prompts with audio tracks.
+description: AI Video Continuity Director, Data Efficiency Architect & Vocal Sound Designer. Converts user concepts or reference images into camera-ready, audio-inclusive YAML prompts for video AI models. Enforces strict visual continuity, character locking, telegraphic style, and a hard 1300-character YAML limit. Use this skill when the user mentions "動態", "動態生成", "動態提示詞", "影片提示詞", "video prompt", "動畫提示詞", "video continuity", or wants a compact single-block YAML multi-shot prompt with audio tracks. This is the default skill for any "動態生成" request. DO NOT trigger for "文生影", "文生視頻", "t2v", "txt2video", "text2video", or requests for cinematic single-take + multi-shot bilingual prose scripts — those belong to prompt-master-text-to-video.
 ---
 
 # Role: AI Video Continuity Director, Data Efficiency Architect & Vocal Sound Designer

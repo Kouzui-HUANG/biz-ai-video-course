@@ -1,6 +1,6 @@
 # biz-ai-video-course — Claude Code Skills 技能集合
 
-這個專案集結了 **30 個專業 Skill**，專為 **商業內容創作**、**AI 影音生成**、**圖像提示詞工程** 與 **劇本創作** 設計。所有技能皆位於 `.claude/skills/` 目錄下，由 Claude Code 在偵測到相對應觸發詞時自動載入並執行。
+這個專案集結了 **32 個專業 Skill**，涵蓋 **商業內容創作**、**AI 影音生成（動態生成 / 文生影 / 圖生影）**、**圖像提示詞工程** 與 **劇本創作**。所有技能皆位於 `.claude/skills/` 目錄下，由 Claude Code 在偵測到對應觸發詞時自動載入並執行，無需手動設定。
 
 ---
 
@@ -64,11 +64,21 @@
 
 ### 5️⃣ 影音與聲音提示詞工程
 
-針對 text-to-video、短影音、分鏡、音樂、歌詞、人聲設計的工具集。
+針對動態生成、文生影 (t2v)、圖生影 (i2v)、短影音、分鏡、音樂、歌詞、人聲設計的工具集。
+
+> **🎬 影音生成三選一**（這三個最容易混淆，請依使用者的關鍵字路由）：
+>
+> | 你想要 | 觸發關鍵字 | 對應 Skill | 產出形式 |
+> |---|---|---|---|
+> | 泛用動態生成（**預設**） | 動態 / 動態生成 / 動態提示詞 | `prompt-master-video-continuity` | 單一 YAML 區塊、含音軌、≤ 1300 字元 |
+> | 文字 → 影片 | 文生影 / t2v / text-to-video | `prompt-master-text-to-video` | 單鏡頭 ＋ 多鏡頭兩套雙語電影腳本 |
+> | 圖片 → 影片 | 圖生影 / i2v / img2video | `prompt-master-image-to-video` | 方案 A 微觀 ＋ 方案 B 爆發，雙語 ＋ 結構摘要 |
 
 | Skill 名稱 | 用途 |
 |---|---|
-| [prompt-master-video-continuity](.claude/skills/prompt-master-video-continuity/SKILL.md) | AI 影片連續性導演 + 人聲設計師。產出**含音軌的 camera-ready YAML prompt**，強制視覺連續、角色鎖定、電報式風格，硬上限 1300 字元。 |
+| [prompt-master-video-continuity](.claude/skills/prompt-master-video-continuity/SKILL.md) | AI 影片連續性導演 + 人聲設計師（**動態生成預設**）。產出**單一 YAML 區塊、含音軌**的 camera-ready prompt，強制視覺連續、角色鎖定、電報式風格，硬上限 1300 字元。泛指「動態生成」一律走此 skill。 |
+| [prompt-master-text-to-video](.claude/skills/prompt-master-text-to-video/SKILL.md) | AI 文生影提示詞架構師（**文生影 / t2v**，對應 Sora2、Veo3、Kling、Seedance、海螺）。將粗略構想自主補完為兩套電影級腳本——【方案一：單一鏡頭】＋【方案二：多鏡頭序列 3–4 cut】，各含完整英文原文 + 繁中翻譯與可選對白；全程不提問、僅寫文字。**僅**在明確「文生影 / t2v」時觸發。 |
+| [prompt-master-image-to-video](.claude/skills/prompt-master-image-to-video/SKILL.md) | 海螺 AI 視覺動態架構師（**圖生影 / i2v**）。將單張圖片轉譯為高可執行性的動態提示詞，產出「方案 A 微觀細膩 ＋ 方案 B 宏觀爆發」兩組對比提案，各含英文段落、中文翻譯與結構摘要（主體/背景動態、運鏡）。僅寫文字、不生成影像。**僅**在明確「圖生影 / i2v」時觸發；純文字構想請用 text-to-video、泛指「動態生成」請用 video-continuity。 |
 | [prompt-master-short-video](.claude/skills/prompt-master-short-video/SKILL.md) | 氛圍系短影音首席導演（Vlog 風）。從單張靜態圖產出 3 個 15–25 秒 TikTok/Reels/Shorts 腳本，著重女主角的氣質與沉浸式氛圍。 |
 | [storyboard-director](.claude/skills/storyboard-director/SKILL.md) | 動畫電影分鏡導演 + AI 攝影專家。將角色設定、場景設計與文字劇情翻譯成一系列電影級的英文 text-to-image prompt 分鏡。 |
 | [ai-music-prompt-generator](.claude/skills/ai-music-prompt-generator/SKILL.md) | Suno / Udio 專用音樂提示詞專家。將抽象情緒/曲風融合需求（如「古風 × 賽博龐克」）轉譯成 600–800 字元、含「反平庸協議」的生產級 tags。 |
@@ -79,6 +89,8 @@
 
 ### 6️⃣ 造型 / 設計
 
+依角色個性、背景與場景，產出邏輯一致、敘事驅動的服裝造型。
+
 | Skill 名稱 | 用途 |
 |---|---|
 | [costume-design-director](.claude/skills/costume-design-director/SKILL.md) | 角色服裝視覺總監。理念為「衣著即敘事 (Wardrobe is Narrative)」，依角色個性、背景、情緒、場合、氣候產出邏輯一致的雙語（EN/ZH）服裝設計，配件 ≤ 3 件。 |
@@ -86,6 +98,8 @@
 ---
 
 ### 7️⃣ 內容寫作與社群排版
+
+把艱澀內容轉寫為易讀專欄，並產出對應的社群視覺排版方案。
 
 | Skill 名稱 | 用途 |
 |---|---|
@@ -96,6 +110,8 @@
 
 ### 8️⃣ 開發工具
 
+Git / GitHub 自動化等開發輔助工具。
+
 | Skill 名稱 | 用途 |
 |---|---|
 | [git-github-pusher](.claude/skills/git-github-pusher/SKILL.md) | 自動化 Git 初始化 + 處理遠端衝突 + 推送至 GitHub 的全套流程，當使用者說「push」、「上傳 github」時觸發。 |
@@ -104,7 +120,7 @@
 
 ## 🚀 使用方式
 
-1. **自動觸發**：所有 skill 皆已設定 `description` 中的觸發詞，當使用者對話內容命中關鍵字時，Claude Code 會自動載入對應 skill。
+1. **自動觸發**：所有 skill 皆已設定 `description` 中的觸發詞，當使用者對話內容命中關鍵字時，Claude Code 會自動載入對應 skill。例如輸入「幫我做這張圖的**圖生影**提示詞」會載入 `prompt-master-image-to-video`，而「**文生影**腳本」則載入 `prompt-master-text-to-video`。
 2. **手動指定**：可在訊息中直接寫出 skill 名稱，例如「用 `prompt-master-portrait` 幫我設計一張人像 prompt」。
 3. **協作鏈**：部分 skill 會自動串接其他 skill（例如 `prompt-master-otaku-sd` 處理服裝時會自動呼叫 `costume-design-director`、`skill-creator` 完成後一律觸發 `skill-optimizer` 與 `skill-translator`）。
 
@@ -116,12 +132,12 @@
 biz-ai-video-course/
 ├── .claude/
 │   ├── settings.local.json
-│   └── skills/                          ← 30 個 skill 主目錄
+│   └── skills/                          ← 32 個 skill 主目錄
 │       ├── academic-columnist/
 │       │   ├── SKILL.md                 ← skill 主檔
 │       │   └── references/              ← 漸進式揭露的詳細參考
 │       ├── prompt-master-portrait/
-│       └── ... (共 30 個)
+│       └── ... (共 32 個)
 └── README.md                            ← 本檔案
 ```
 
