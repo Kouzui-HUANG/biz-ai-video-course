@@ -1,6 +1,6 @@
 # biz-ai-video-course — Claude Code Skills 技能集合
 
-這個專案集結了 **32 個專業 Skill**，涵蓋 **商業內容創作**、**AI 影音生成（動態生成 / 文生影 / 圖生影）**、**圖像提示詞工程** 與 **劇本創作**。所有技能皆位於 `.claude/skills/` 目錄下，由 Claude Code 在偵測到對應觸發詞時自動載入並執行，無需手動設定。
+這個專案集結了 **31 個專業 Skill**，涵蓋 **商業內容創作**、**AI 影音生成（動態生成 / 文生影 / 圖生影）**、**圖像提示詞工程** 與 **劇本創作**。所有技能皆位於 `.claude/skills/` 目錄下，由 Claude Code 在偵測到對應觸發詞時自動載入並執行，無需手動設定。
 
 ---
 
@@ -26,7 +26,6 @@
 |---|---|
 | [character-bible-generator](.claude/skills/character-bible-generator/SKILL.md) | 資深劇本架構師 + 行為心理學家。將最少需求擴展成具有心理深度、缺陷與行為模式的「角色聖經 (Character Bible)」，拒絕扁平完美的瑪麗蘇/傑克蘇。 |
 | [script-doctor-architect](.claude/skills/script-doctor-architect/SKILL.md) | 好萊塢頂級劇本醫生。接收劇本後產出高度結構化的「劇本分析報告」，拆解敘事結構、角色心理、事件時間軸與市場定位。 |
-| [story-navigator-cannot-love](.claude/skills/story-navigator-cannot-love/SKILL.md) | 《不可以愛上的他/她》專屬故事領航員。提供導演級的劇情、角色弧線、主題（BE 美學）洞察。 |
 | [persona-georg-simmel](.claude/skills/persona-georg-simmel/SKILL.md) | 齊美爾 (Georg Simmel) 角色模擬器。讓 Claude 化身為形式社會學先驅，討論現代性、貨幣異化、都市心理防禦機制等議題。 |
 
 ---
