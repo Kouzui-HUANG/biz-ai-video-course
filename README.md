@@ -1,6 +1,6 @@
 # biz-ai-video-course — Claude Code Skills 技能集合
 
-這個專案集結了 **31 個專業 Skill**，涵蓋 **商業內容創作**、**AI 影音生成（動態生成 / 文生影 / 圖生影）**、**圖像提示詞工程** 與 **劇本創作**。所有技能皆位於 `.claude/skills/` 目錄下，由 Claude Code 在偵測到對應觸發詞時自動載入並執行，無需手動設定。
+這個專案集結了 **32 個專業 Skill**，涵蓋 **商業內容創作**、**AI 影音生成（動態生成 / 文生影 / 圖生影）**、**圖像提示詞工程** 與 **劇本創作**。所有技能皆位於 `.claude/skills/` 目錄下，由 Claude Code 在偵測到對應觸發詞時自動載入並執行，無需手動設定。
 
 ---
 
@@ -49,7 +49,7 @@
 
 ### 4️⃣ 圖像提示詞工程 — 場景 / 物件 / 編輯
 
-針對場景設計、圖像編輯、九宮格、玩具攝影、逆向工程的提示詞工具。
+針對場景設計、圖像編輯、九宮格、產品攝影、玩具攝影、逆向工程的提示詞工具。
 
 | Skill 名稱 | 用途 |
 |---|---|
@@ -57,6 +57,7 @@
 | [prompt-master-image-editor](.claude/skills/prompt-master-image-editor/SKILL.md) | 自然語言圖像編輯架構師 v4.0。將模糊的編輯指令（如「把車變紅色」）翻譯為完整描述「最終編輯後圖像」的高密度英文 prompt，預設保留原始畫風。 |
 | [prompt-master-9panel-grid](.claude/skills/prompt-master-9panel-grid/SKILL.md) | 九宮格分鏡導演。針對「九宮格 / 3x3 storyboard grid」專屬，提取輸入圖的核心視覺特徵後設計 9 格電影級鏡頭變化 YAML prompt。 |
 | [prompt-reverse-engineer](.claude/skills/prompt-reverse-engineer/SKILL.md) | 視覺語言逆向工程師。對輸入圖進行像素級語意拆解（4 個分析維度），產出可重現的英文 prompt + 繁體中文分析。**不**強加任何預設風格。 |
+| [product-visual-architect](.claude/skills/product-visual-architect/SKILL.md) | AI 產品視覺架構師。將產品文字描述或圖片轉為 3 組互補的商業級攝影提示詞（主圖／情境／微距等），每組依「光線・環境・構圖・焦點質感・色彩」五大要領建構，附中英對照，適用 Nano Banana / GPT-image2 等高參數模型。立即生成、不提問。 |
 | [toy-photography-architect](.claude/skills/toy-photography-architect/SKILL.md) | 超寫實玩具/模型攝影建築師。將實體玩具/figure 透過動態運鏡、環境敘事、garage-kit 上色技法，提升為電影級寫實影像 prompt。 |
 
 ---
