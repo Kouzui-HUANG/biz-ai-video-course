@@ -6,3 +6,18 @@
 # Claude local settings
 .claude/settings.local.json
 .claude/worktrees/
+
+# GMI 工具型 skills（gemini-3-pro-image / seedance-2-0）— 金鑰 / 上傳區 / 下載區（機密與本機產物，切勿提交）
+.gmi_api_key
+uploads/
+outputs/
+.claude/skills/gemini-3-pro-image/.gmi_api_key
+.claude/skills/gemini-3-pro-image/uploads/
+.claude/skills/gemini-3-pro-image/outputs/
+.claude/skills/seedance-2-0/.gmi_api_key
+.claude/skills/seedance-2-0/uploads/
+.claude/skills/seedance-2-0/outputs/
+
+# Python
+__pycache__/
+*.pyc

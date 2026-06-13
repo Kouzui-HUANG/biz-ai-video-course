@@ -1,6 +1,6 @@
 # biz-ai-video-course — Claude Code Skills 技能集合
 
-這個專案集結了 **32 個專業 Skill**，涵蓋 **商業內容創作**、**AI 影音生成（動態生成 / 文生影 / 圖生影）**、**圖像提示詞工程** 與 **劇本創作**。所有技能皆位於 `.claude/skills/` 目錄下，由 Claude Code 在偵測到對應觸發詞時自動載入並執行，無需手動設定。
+這個專案集結了 **33 個專業 Skill**，涵蓋 **商業內容創作**、**AI 影音生成（動態生成 / 文生影 / 圖生影）**、**圖像提示詞工程**、**劇本與角色創作**，以及**直接呼叫 GMI Cloud API 出圖／出片的執行工具**。所有技能皆位於 `.claude/skills/` 目錄下，由 Claude Code 在偵測到對應觸發詞時自動載入並執行，無需手動設定。
 
 ---
 
@@ -20,13 +20,12 @@
 
 ### 2️⃣ 角色與劇本創作
 
-從零打造角色、分析劇本、模擬思想家對話。
+從碎片線索逆向建構角色、深度分析劇本。
 
 | Skill 名稱 | 用途 |
 |---|---|
-| [character-bible-generator](.claude/skills/character-bible-generator/SKILL.md) | 資深劇本架構師 + 行為心理學家。將最少需求擴展成具有心理深度、缺陷與行為模式的「角色聖經 (Character Bible)」，拒絕扁平完美的瑪麗蘇/傑克蘇。 |
+| [character-architect](.claude/skills/character-architect/SKILL.md) | 好萊塢編劇 + 角色架構師（奧斯卡級，兼具社會學/心理學洞察）。從一句台詞、一件配飾或單張照片的構圖光影等碎片線索逆向建構角色，產出**三份**差異最大化、內部自洽的繁中角色檔案（外型/社會屬性、家庭背景與創傷、MBTI/星座/血型一致性、語言習慣與微表情 + 電影級摘要）。觸發詞：「角色設定」「人設」「人物塑造」等。 |
 | [script-doctor-architect](.claude/skills/script-doctor-architect/SKILL.md) | 好萊塢頂級劇本醫生。接收劇本後產出高度結構化的「劇本分析報告」，拆解敘事結構、角色心理、事件時間軸與市場定位。 |
-| [persona-georg-simmel](.claude/skills/persona-georg-simmel/SKILL.md) | 齊美爾 (Georg Simmel) 角色模擬器。讓 Claude 化身為形式社會學先驅，討論現代性、貨幣異化、都市心理防禦機制等議題。 |
 
 ---
 
@@ -41,6 +40,7 @@
 | [prompt-master-general](.claude/skills/prompt-master-general/SKILL.md) | **通用型**視覺提示詞首席工程師。以 ABCD 多選結構強制提問 3 題後，產出 3 個變體（攝影 / 藝術風格 / 主體 / 場景）。當使用者提到「通用」優先觸發。 |
 | [prompt-master-anime](.claude/skills/prompt-master-anime/SKILL.md) | 動漫風格視覺架構師。將任何輸入圖剝除原始風格、用 2D 動漫鏡頭重新渲染（厚塗、賽璐璐等），輸出 NanoBanana/SeeDream 級的英文 prompt。 |
 | [prompt-master-otaku-sd](.claude/skills/prompt-master-otaku-sd/SKILL.md) | 究極阿宅 AI + Stable Diffusion 神繪師。專攻萌系/二次元角色（傲嬌、絕對領域、貓耳、機娘等），自動產出 3 個不同情境的 SD 英文 prompt。 |
+| [prompt-master-otaku-anima](.claude/skills/prompt-master-otaku-anima/SKILL.md) | 究極阿宅 AI + Anima 模型專用提示詞職人。從碎片化/曖昧指示設計萌系角色，以 Anima（文字編碼器 Qwen3）特有的「Danbooru 標籤＋自然語言混合」記法產出多場景高品質英文 prompt；處理服裝時自動串接 costume-design-director。 |
 | [prompt-master-hybrid-realism](.claude/skills/prompt-master-hybrid-realism/SKILL.md) | 動漫與寫實混合渲染導演。把 2D 動漫角色與 PBR 物理寫實材質（服裝、配件、背景）融合，產出高擬真的雙語 prompt。 |
 | [prompt-master-makeup](.claude/skills/prompt-master-makeup/SKILL.md) | 大師級彩妝視覺提示詞工程師。將專業彩妝理論套用於放大主體獨特特徵（雀斑、單眼皮、不對稱骨相），**拒絕**標準化「完美」模板。 |
 | [prompt-master-manga-screentone](.claude/skills/prompt-master-manga-screentone/SKILL.md) | AI 視覺煉金術士。將輸入圖轉為「高對比無線條水彩 + 網點 (Screentone)」漫畫風 prompt，**嚴格保留**原始背景與繁體中文招牌/文字。 |
@@ -97,18 +97,28 @@
 
 ---
 
-### 7️⃣ 內容寫作與社群排版
+### 7️⃣ 社群視覺排版
 
-把艱澀內容轉寫為易讀專欄，並產出對應的社群視覺排版方案。
+將專欄文章內容轉化為對應的社群視覺排版方案。
 
 | Skill 名稱 | 用途 |
 |---|---|
-| [academic-columnist](.claude/skills/academic-columnist/SKILL.md) | 學術專欄作家。將艱澀的哲學/學術對話改寫成 1200 字的 5 段式專欄文章（精彩開頭 + 3 個核心論點 + 有力結論），**零術語、零資訊流失**。 |
 | [social-media-visual-designer](.claude/skills/social-media-visual-designer/SKILL.md) | 資深社群視覺設計師。接收專欄內容後立刻產出 16:9 極簡雜誌風視覺排版方案，依文章屬性動態決定色彩邏輯。 |
 
 ---
 
-### 8️⃣ 開發工具
+### 8️⃣ AI 生成執行工具（直接呼叫 API）
+
+與提示詞撰寫類 skill 不同，這兩個是**真正呼叫 GMI Cloud API 出圖／出片**的可執行工具（內建 Python 腳本：提交 → 輪詢 → 下載），且**僅在使用者明確說出模型名稱時**才觸發，泛用的「圖片生成」「影片生成」字眼一律交由提示詞類 skill 處理。
+
+| Skill 名稱 | 用途 |
+|---|---|
+| [gemini-3-pro-image](.claude/skills/gemini-3-pro-image/SKILL.md) | 實際呼叫 GMI Cloud `gemini-3-pro-image-preview` API 生成／編輯真實圖片的執行工具，**非**提示詞撰寫器。僅在明確說出模型名稱（gemini 3 pro image、nano banana pro、奈米香蕉 pro）時觸發；單講「nano banana／奈米香蕉」（無 pro）屬不同模型，不觸發。 |
+| [seedance-2-0](.claude/skills/seedance-2-0/SKILL.md) | 實際呼叫 GMI Cloud `seedance-2-0-260128` API 生成真實影片的執行工具，**非**提示詞撰寫器。僅在明確說出模型名稱（seedance 2、seedance 2.0）時觸發；單講「seedance」（無 2）或「seedance 2 fast」屬不同模型，不觸發。 |
+
+---
+
+### 9️⃣ 開發工具
 
 Git / GitHub 自動化等開發輔助工具。
 
@@ -122,7 +132,7 @@ Git / GitHub 自動化等開發輔助工具。
 
 1. **自動觸發**：所有 skill 皆已設定 `description` 中的觸發詞，當使用者對話內容命中關鍵字時，Claude Code 會自動載入對應 skill。例如輸入「幫我做這張圖的**圖生影**提示詞」會載入 `prompt-master-image-to-video`，而「**文生影**腳本」則載入 `prompt-master-text-to-video`。
 2. **手動指定**：可在訊息中直接寫出 skill 名稱，例如「用 `prompt-master-portrait` 幫我設計一張人像 prompt」。
-3. **協作鏈**：部分 skill 會自動串接其他 skill（例如 `prompt-master-otaku-sd` 處理服裝時會自動呼叫 `costume-design-director`、`skill-creator` 完成後一律觸發 `skill-optimizer` 與 `skill-translator`）。
+3. **協作鏈**：部分 skill 會自動串接其他 skill（例如 `prompt-master-otaku-sd` / `prompt-master-otaku-anima` 處理服裝時會自動呼叫 `costume-design-director`、`skill-creator` 完成後一律觸發 `skill-optimizer` 與 `skill-translator`）。
 
 ---
 
@@ -132,12 +142,12 @@ Git / GitHub 自動化等開發輔助工具。
 biz-ai-video-course/
 ├── .claude/
 │   ├── settings.local.json
-│   └── skills/                          ← 32 個 skill 主目錄
-│       ├── academic-columnist/
+│   └── skills/                          ← 33 個 skill 主目錄
+│       ├── ai-music-prompt-generator/
 │       │   ├── SKILL.md                 ← skill 主檔
 │       │   └── references/              ← 漸進式揭露的詳細參考
 │       ├── prompt-master-portrait/
-│       └── ... (共 32 個)
+│       └── ... (共 33 個)
 └── README.md                            ← 本檔案
 ```
 
