@@ -168,6 +168,8 @@ The lighting clause must be chosen to make the chosen technique READABLE. Wrong 
 | **High-contrast focal point** | `darker ambient with a single soft key on the focal feature, the rest gently in shadow` |
 
 ### Camera Framing Suggestions
+> **Default when a source portrait is provided: do NOT reframe.** Preserve the original shot distance, pose, gaze, and background — the edit changes makeup (and hair, if briefed) only. Use the suggestions below ONLY for pure text-to-image generation with no reference image, or when the user explicitly asks to reframe.
+
 - `tight beauty close-up framing, shoulders just visible, 85mm lens compression`
 - `editorial half-body framing with the face centered in the upper third, fashion-magazine composition`
 - `extreme macro on the focal feature (lip OR eye)` — only for ONE option in a set, not all three

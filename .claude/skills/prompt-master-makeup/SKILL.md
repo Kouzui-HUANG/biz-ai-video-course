@@ -11,6 +11,7 @@ Engineer high-fidelity bilingual (EN/ZH) image-generation prompts that apply pro
 
 - **Identity amplification over standardization** — Use makeup to enhance distinctive features (freckles, monolids, asymmetry, unique bone structure), never erase them into a "perfect" template.
 - **Architectural intent** — Every technique called out MUST serve a stated structural goal (e.g., "elevate cheekbones to balance a wide jaw"), not just "contour".
+- **Composition preservation by default** — When the user is working from a source portrait (image-to-image / makeup-edit context), the prompt MUST preserve the original shot distance & framing, the subject's pose & gaze, and the background exactly — makeup (and hair, if briefed) are the ONLY things that change. Do NOT crop closer, reframe, re-pose, or swap the background unless the user explicitly asks. Only when generating from a pure text description with no reference image is framing free to be invented.
 - **English-only image prompt** — The final image-generation prompt MUST be 100% natural, flowing English with rich visual detail. Tag-dumps and clunky lists are forbidden.
 - **Bilingual delivery** — Pair each English prompt with a Traditional Chinese translation as a comprehension aid (the Chinese is NOT fed into the image model — it explains the English to the user).
 - **No conversational filler** — Never open with greetings; never close with "Which technique would you like to explore further?". Output ends immediately after the final option.
@@ -45,7 +46,7 @@ When the user provides `{{portrait features / image description}}` and `{{scene 
 Compile into a flowing English paragraph following this exact internal sequence:
 1. **Subject & Core Vibe** — who the subject is, overall aesthetic mood.
 2. **Detailed Makeup Application** — skin/complexion → contour/highlight → brows & eyes → lips. Use exact professional terminology from the knowledge base; every term must trace back to a stated structural goal.
-3. **Lighting & Photography** — lighting setup and camera framing chosen specifically to showcase the makeup work (e.g., a bold matte lip benefits from soft frontal light; a cut crease needs a slightly elevated key to throw the lid shadow).
+3. **Composition & Lighting** — When a source portrait exists (the default case), LOCK the original composition: same shot distance & framing, same pose & gaze, same background; keep the original lighting and adapt it only minimally so the hero technique stays readable (e.g., a fractionally elevated key so a cut-crease lid still reads) without disturbing the frame or background. Only when there is NO source image — or the user explicitly requests a reframe — choose framing and lighting freely to showcase the work (e.g., a bold matte lip benefits from soft frontal light; a cut crease needs a slightly elevated key to throw the lid shadow).
 
 ## 4. Output Protocol
 
@@ -61,7 +62,7 @@ Produce **3 distinct options** that vary in focal point AND palette logic (e.g.,
 
 **English Prompt:**
 ```text
-[Single cohesive English paragraph: Subject & vibe → Skin/complexion → Contour/highlight → Brows/eyes → Lips → Lighting & camera framing. Use exact professional terminology from the knowledge base. No tag lists, no comma-dumps.]
+[Single cohesive English paragraph: Subject & vibe → Skin/complexion → Contour/highlight → Brows/eyes → Lips → Composition lock (default: same shot distance, pose, gaze & background) & lighting. Use exact professional terminology from the knowledge base. No tag lists, no comma-dumps.]
 ```
 
 **繁體中文翻譯：**
@@ -83,3 +84,4 @@ These are concrete patterns that violate the Prime Directives — call them out 
 - **No erasing unique features** — never describe "removing" freckles, "smoothing" asymmetry, or "normalizing" monolids unless the user has explicitly requested it.
 - **No competing focal points** — exactly ONE hero element per look, unless the user explicitly briefs "maximalist".
 - **No lighting that hides the work** — the lighting clause MUST match the chosen hero technique (see the Lighting Pairings table in `references/makeup-knowledge-base.md`). A matte bold lip in dramatic side-light defeats the look.
+- **No unrequested reframing** — when a source portrait is provided, never change the shot distance, crop, pose, gaze, or background (no cropping into a beauty close-up, no editorial half-body reframe, no background swap) unless the user explicitly asks. The default is a makeup/hair-only edit on the untouched original composition.

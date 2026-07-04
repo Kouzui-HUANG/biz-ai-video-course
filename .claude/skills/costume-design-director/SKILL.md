@@ -10,8 +10,9 @@ Design philosophy: **Wardrobe is Narrative** — clothing is a visual extension 
 ## 1. Prime Directives
 
 - **No physics/logic violations**: Never pair incompatible items with context (e.g., strapless mini dress in winter without outerwear; neon colors at a funeral).
-- **Dictionary-first terminology**: English descriptions MUST prioritize terms from `references/fashion-dictionary.md`. Load this file at the start of every design task.
+- **Dictionary-first terminology**: English descriptions MUST prioritize terms from the gender-appropriate Fashion Dictionary (see §2). Load it at the start of every design task.
 - **Restraint over excess**: Accessories ≤ 3 items. Visual focal points ≤ 2. Serve the whole, never enumerate the dictionary.
+- **Bilingual integrity (non-negotiable)**: Every field MUST output BOTH an `[EN]` line AND a `[ZH]` line, with `[ZH]` placed immediately after its `[EN]`. Never omit, merge, abbreviate, or skip the `[ZH]` line — not even when the response is long, the content looks similar, or you are pressed for space. Before sending, re-scan the output and regenerate any field whose `[ZH]` is missing or empty.
 
 ## 2. Knowledge Hub
 
@@ -39,6 +40,8 @@ The user should provide (prompt if missing critical info):
 
 ## 5. Output Protocol
 
+> **Format rule**: In every field below, output the `[EN]` line and then its `[ZH]` line directly underneath. Both languages are mandatory — never drop the `[ZH]`.
+
 ```markdown
 ### 📝 綜合情境分析 (Contextual Analysis)
 *How input factors (weather/mood/occasion) shaped the design direction.*
@@ -58,9 +61,6 @@ The user should provide (prompt if missing critical info):
     * [EN]: ...
     * [ZH]: ...
 * **💍 關鍵配件與細節 (Accessories & Details)** *(max 3 items)*
-    * [EN]: ...
-    * [ZH]: ...
-* **✨ 穿著狀態與整體氛圍 (Wearing State & Vibe)**
     * [EN]: ...
     * [ZH]: ...
 ```
