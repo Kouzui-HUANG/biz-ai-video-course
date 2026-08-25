@@ -16,7 +16,30 @@ Script: `.claude/skills/gpt-image-2/scripts/gpt_image_2.py`
 | `-f` / `--output-format <fmt>` | no | `png` | One of `png`, `jpeg`. |
 | `-n` / `--n <int>` | no | `2` | Images per request, 1–10. |
 | `--data-url` | no | off | Send local edit images as `data:` URLs instead of raw base64 (fallback if edit is rejected). |
+| `--keep-refs` | no | off | Do **not** move successfully used sources from `uploads/` into `uploads/done/`. Use when trying several prompts on the same image. |
 | `--api-key <key>` | no | — | GMI key override. Priority: this flag → `$GMI_API_KEY` → `.gmi_api_key` file. |
+
+## Shared media folders
+
+Defined once in `.claude/lib/media_paths.py` and shared with the
+`gemini-3-pro-image` and `seedance-2-0` skills (all gitignored):
+
+| Path | Role |
+|------|------|
+| `<project root>/uploads/` | Drop-zone for edit-source images |
+| `<project root>/uploads/done/` | Sources land here after a successful run |
+| `<project root>/outputs/` | Every result, prefixed by model |
+
+- **Input resolution order** for a relative ref: CWD → project root →
+  `uploads/` → `uploads/done/`. So a bare filename finds the drop-zone, and a
+  re-run finds the same file after it was archived.
+- A **directory ref** expands to the supported images directly inside it (top
+  level only) — `uploads` edits everything pending, without re-editing `done/`.
+- **Archiving** happens only after a source actually produced an image, and only
+  for files sitting directly in `uploads/` — a file referenced from anywhere else
+  on disk is never moved. Failed edits leave their source in place for a retry.
+- Override the locations with `AI_MEDIA_ROOT`, `AI_UPLOADS_DIR`, or
+  `AI_OUTPUTS_DIR` if you ever need to point elsewhere.
 
 ## Exit codes
 
@@ -26,12 +49,15 @@ Script: `.claude/skills/gpt-image-2/scripts/gpt_image_2.py`
   with no image, empty prompt, missing input file).
 - `2` — job(s) ran but one or more images failed; see `[!]` lines on stderr.
 
-## Output naming (`outputs/`)
+## Output naming (shared `outputs/`)
 
-- generate: `gptgen_{YYYYmmdd_HHMMSS}[_k]{.png|.jpg}`
-- edit: `{source_stem}_gptedit[_k]{.png|.jpg}` (overwritten on re-run)
+- generate: `gpt_{YYYYmmdd_HHMMSS}[_k]{.png|.jpg}`
+- edit: `gpt_{YYYYmmdd_HHMMSS}_{source_stem}[_k]{.png|.jpg}`
 - `_k` (1-based) is appended only when `n > 1`. Extension follows
   `--output-format` (`png → .png`, `jpeg → .jpg`).
+- The `gpt_` prefix distinguishes these from `gemini_` / `seedance_` results in
+  the same folder. Existing files are never overwritten — a colliding name gets
+  a `_1`, `_2`… suffix.
 
 ## GMI Cloud API contract
 

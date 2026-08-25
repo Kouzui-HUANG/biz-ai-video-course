@@ -9,12 +9,15 @@ GMI Cloud — Seedance 2.0（seedance-2-0-260128）影片生成
        會先上傳到臨時檔案床 tmpfiles.org 取得公開網址
     2. POST 送出生成請求 → 取得 request_id
     3. 輪詢 GET，直到 success / failed / cancelled
-    4. 成功後把 outcome.video_url（與縮圖 thumbnail_image_url）下載到 outputs/
+    4. 成功後把 outcome.video_url（與縮圖 thumbnail_image_url）下載到共用 outputs/
+    5. 生成成功後，用過的本機素材自動移入 uploads/done/（--keep-refs 可停用）
 
-所有檔案（金鑰、上傳區、下載區）都在本 skill 資料夾內，且皆已 gitignore：
+上傳區與產出區是「專案根目錄下的共用資料夾」，三個生成 skill 共用（皆已 gitignore）：
+    <專案根>/uploads/       參考素材上傳區（裸檔名會在此尋找）
+    <專案根>/uploads/done/  已用過的參考素材
+    <專案根>/outputs/       生成結果下載區（本 skill 產出前綴 seedance_）
+金鑰仍留在本 skill 資料夾：
     .gmi_api_key   API 金鑰（找不到時退回 ../gemini-3-pro-image/.gmi_api_key，同一把 GMI 金鑰）
-    uploads/       本機參考素材暫存區（裸檔名會在此尋找）
-    outputs/       生成結果下載區
 
 純 Python 標準函式庫，無需 pip install。Python 3.8+。
 完整 API 規格見 references/gmi-api.md。
@@ -39,6 +42,7 @@ GMI Cloud — Seedance 2.0（seedance-2-0-260128）影片生成
 """
 
 import argparse
+import importlib.util
 import json
 import mimetypes
 import os
@@ -51,6 +55,21 @@ import uuid
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
+
+def _load_shared(name):
+    """載入 <專案根>/.claude/lib/<name>.py（不動 sys.path，避免撞名）。"""
+    for d in Path(__file__).resolve().parents:
+        f = d / ".claude" / "lib" / f"{name}.py"
+        if f.exists():
+            spec = importlib.util.spec_from_file_location(name, f)
+            mod = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(mod)
+            return mod
+    raise SystemExit(f"[錯誤] 找不到共用模組 .claude/lib/{name}.py")
+
+
+media = _load_shared("media_paths")   # 共用上傳區 / 產出區
+
 # --------------------------------------------------------------------------- #
 # API 常數（官方文件，勿改）
 # --------------------------------------------------------------------------- #
@@ -61,13 +80,14 @@ UPLOAD_API = "https://tmpfiles.org/api/v1/upload"   # 臨時檔案床，約 1 �
 USER_AGENT = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
               "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36")
 
-# 本 skill 資料夾內的固定路徑
+# 金鑰留在本 skill 資料夾；上傳區 / 產出區走專案根目錄的共用資料夾
 SKILL_DIR = Path(__file__).resolve().parent
 KEY_FILE = SKILL_DIR / ".gmi_api_key"
 # 同平台同一把金鑰：本資料夾沒有金鑰檔時，退回姊妹 skill 的金鑰檔
 SIBLING_KEY_FILE = SKILL_DIR.parent / "gemini-3-pro-image" / ".gmi_api_key"
-UPLOADS_DIR = SKILL_DIR / "uploads"
-OUTPUTS_DIR = SKILL_DIR / "outputs"
+UPLOADS_DIR = media.UPLOADS_DIR
+OUTPUTS_DIR = media.OUTPUTS_DIR
+OUT_PREFIX = "seedance"              # 共用產出區靠前綴分辨來源模型
 
 # 合法選項（官方文件）
 VALID_RESOLUTIONS = ["480p", "720p", "1080p"]
@@ -119,15 +139,11 @@ def _request(method, url, api_key, body=None, timeout=60):
 # 上傳區：本機素材 → 臨時公開網址（GMI 只接受公開 URL）
 # --------------------------------------------------------------------------- #
 def upload_asset(path, kind, timeout=300):
-    """把本機素材上傳到 tmpfiles.org，回傳可公開存取的直連網址。"""
+    """把本機素材上傳到 tmpfiles.org，回傳 (公開直連網址, 來源檔路徑)。"""
     exts, max_bytes = KIND_RULES[kind]
-    p = Path(path)
-    if not p.exists():                       # 裸檔名 → 改在 uploads/ 內尋找
-        alt = UPLOADS_DIR / p.name
-        if alt.exists():
-            p = alt
-        else:
-            raise SystemExit(f"[錯誤] 找不到素材檔：{path}")
+    p = media.resolve_upload(path)           # 裸檔名 → uploads/ → uploads/done/
+    if p is None:
+        raise SystemExit(f"[錯誤] 找不到素材檔：{path}（已找過 CWD、專案根、{UPLOADS_DIR}、{media.DONE_DIR}）")
     if p.suffix.lower() not in exts:
         raise SystemExit(f"[錯誤] {p.name} 不是支援的{kind}格式（限 {', '.join(sorted(exts))}）")
     size = p.stat().st_size
@@ -162,7 +178,7 @@ def upload_asset(path, kind, timeout=300):
     url = url.replace("tmpfiles.org/", "tmpfiles.org/dl/")   # 轉成直連下載網址
     _verify_asset_url(url, kind)
     print(f"   ✔ 公開網址：{url}")
-    return url
+    return url, p
 
 
 def _verify_asset_url(url, kind, timeout=60):
@@ -221,9 +237,9 @@ def _download(url, dest):
 
 
 def download_outputs(resp, out_dir):
-    """下載 outcome.video_url 為 {rid}.mp4，縮圖為 {rid}_thumb.jpg；回傳已存影片路徑清單。"""
+    """下載影片為 seedance_{時間戳}_{請求短碼}.mp4、縮圖為 ..._thumb.jpg；回傳已存影片路徑清單。"""
     outcome = resp.get("outcome") or {}
-    rid = resp.get("request_id", "output")
+    base = f"{OUT_PREFIX}_{media.stamp()}_{media.short_id(resp.get('request_id', 'output'))}"
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     saved = []
@@ -240,7 +256,7 @@ def download_outputs(resp, out_dir):
 
     for i, url in enumerate(video_urls):
         suffix = "" if i == 0 else f"_{i}"
-        dest = out_dir / f"{rid}{suffix}.mp4"
+        dest = media.unique_path(out_dir, f"{base}{suffix}.mp4")
         try:
             _download(url, dest)
         except (urllib.error.URLError, OSError) as e:
@@ -251,7 +267,7 @@ def download_outputs(resp, out_dir):
 
     thumb = outcome.get("thumbnail_image_url")
     if thumb:
-        dest = out_dir / f"{rid}_thumb.jpg"
+        dest = media.unique_path(out_dir, f"{base}_thumb.jpg")
         try:
             _download(thumb, dest)
             print(f"🖼️  縮圖：{dest}")
@@ -286,7 +302,7 @@ def build_parser():
     p.add_argument("--ref", dest="refs", action="append", default=[], metavar="URL",
                    help="參考圖『公開網址』→ reference_images（R2V），可重複指定")
     p.add_argument("--ref-file", dest="ref_files", action="append", default=[], metavar="PATH",
-                   help="參考圖『本機路徑』→ 自動上傳後進 reference_images，可重複（裸檔名在 uploads/ 內尋找）")
+                   help="參考圖『本機路徑』→ 自動上傳後進 reference_images，可重複（裸檔名在共用 uploads/ 與 uploads/done/ 內尋找）")
     p.add_argument("--ref-video", dest="ref_videos", action="append", default=[], metavar="URL",
                    help="參考影片『公開網址』→ reference_videos，可重複")
     p.add_argument("--ref-video-file", dest="ref_video_files", action="append", default=[], metavar="PATH",
@@ -313,7 +329,9 @@ def build_parser():
     p.add_argument("--web-search", action="store_true", help="允許模型在生成時聯網搜尋（預設關閉）")
     p.add_argument("--count", type=int, default=DEFAULT_COUNT,
                    help=f"生成支數，每支為一次獨立 API 請求並行送出（上限 {MAX_COUNT}）")
-    p.add_argument("--out-dir", default=str(OUTPUTS_DIR), help="下載資料夾")
+    p.add_argument("--out-dir", default=str(OUTPUTS_DIR), help="下載資料夾（預設為共用產出區）")
+    p.add_argument("--keep-refs", action="store_true",
+                   help="生成成功後不要把用過的素材移入 uploads/done/（同一批素材要連續試多組 prompt 時用）")
     p.add_argument("--api-key", default=None,
                    help="API 金鑰（預設序：此旗標 → $GMI_API_KEY → .gmi_api_key 檔 → gemini skill 金鑰檔）")
     p.add_argument("--poll-interval", type=float, default=10.0, help="輪詢間隔秒數")
@@ -339,12 +357,22 @@ def main():
     if args.last_frame and args.last_frame_file:
         raise SystemExit("[錯誤] --last-frame 與 --last-frame-file 只能擇一。")
 
+    media.ensure_dirs()
+
+    used_local = []                          # 生成成功後要歸檔到 uploads/done/ 的來源檔
+
+    def take(path, kind):
+        """上傳素材並記下來源檔，生成成功後好一併歸檔。"""
+        url, src = upload_asset(path, kind)
+        used_local.append(src)
+        return url
+
     # 本機素材先上傳取得網址，再與直接給的公開網址合併
-    ref_images = list(args.refs) + [upload_asset(f, "image") for f in args.ref_files]
-    ref_videos = list(args.ref_videos) + [upload_asset(f, "video") for f in args.ref_video_files]
-    ref_audios = list(args.ref_audios) + [upload_asset(f, "audio") for f in args.ref_audio_files]
-    first_frame = args.first_frame or (upload_asset(args.first_frame_file, "image") if args.first_frame_file else None)
-    last_frame = args.last_frame or (upload_asset(args.last_frame_file, "image") if args.last_frame_file else None)
+    ref_images = list(args.refs) + [take(f, "image") for f in args.ref_files]
+    ref_videos = list(args.ref_videos) + [take(f, "video") for f in args.ref_video_files]
+    ref_audios = list(args.ref_audios) + [take(f, "audio") for f in args.ref_audio_files]
+    first_frame = args.first_frame or (take(args.first_frame_file, "image") if args.first_frame_file else None)
+    last_frame = args.last_frame or (take(args.last_frame_file, "image") if args.last_frame_file else None)
     if len(ref_images) > MAX_REF_IMAGES:
         raise SystemExit(f"[錯誤] 參考圖最多 {MAX_REF_IMAGES} 張（目前 {len(ref_images)}）。")
 
@@ -402,6 +430,11 @@ def main():
     for request_id in request_ids:
         final = poll_request(api_key, request_id, args.poll_interval, args.timeout)
         saved += download_outputs(final, args.out_dir)
+
+    # 確定有東西存下來，才把用過的素材歸檔（失敗時素材要留在原位好重跑）
+    if saved and used_local and not args.keep_refs:
+        media.archive_used(used_local)
+
     print(f"\n🎉 完成，共產生 {len(saved)} 支影片於 {Path(args.out_dir).resolve()}")
 
 

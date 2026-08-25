@@ -8,7 +8,7 @@
 
 # 日本語
 
-このプロジェクトには **34 個の専門 Skill** が集まっており、**ビジネスコンテンツ制作**、**AI 映像生成（動態生成＝モーション生成 / テキスト → 動画 / 画像 → 動画）**、**画像プロンプトエンジニアリング**、**脚本・キャラクター創作**、さらに **GMI Cloud API を直接呼び出して画像・動画を出力する実行ツール** まで幅広くカバーします。すべての Skill は `.claude/skills/` ディレクトリ配下に置かれており、Claude Code が対応するトリガーワードを検出すると自動で読み込んで実行するため、手動での設定は不要です。
+このプロジェクトには **37 個の専門 Skill** が集まっており、**ビジネスコンテンツ制作**、**AI 映像生成（動態生成＝モーション生成 / テキスト → 動画 / 画像 → 動画）**、**画像プロンプトエンジニアリング**、**脚本・キャラクター創作**、さらに **GMI Cloud API を直接呼び出して画像・動画を出力する実行ツール** まで幅広くカバーします。すべての Skill は `.claude/skills/` ディレクトリ配下に置かれており、Claude Code が対応するトリガーワードを検出すると自動で読み込んで実行するため、手動での設定は不要です。
 
 ---
 
@@ -34,6 +34,7 @@ skill そのものを作成・最適化・翻訳するためのメタツール�
 |---|---|
 | [character-architect](.claude/skills/character-architect/SKILL.md) | ハリウッド脚本家 ＋ キャラクターアーキテクト（アカデミー賞級、社会学・心理学的な洞察を兼ね備える）。一行のセリフ、一つの小物、あるいは写真一枚の構図や光と影といった断片的な手がかりからキャラクターを逆算して組み立て、互いの違いを最大化しつつ、それぞれ内部で破綻のない繁体字中国語のキャラクター設定書を **3 つ** 生成します（外見・社会的属性、家庭環境とトラウマ、MBTI・星座・血液型の一貫性、口癖やマイクロ表情 ＋ 映画級のサマリー）。トリガーワード：「角色設定」「人設」「人物塑造」など。 |
 | [script-doctor-architect](.claude/skills/script-doctor-architect/SKILL.md) | ハリウッド最高峰のスクリプトドクター。脚本を受け取ると、緻密に構造化された「脚本分析レポート」を作成し、物語構造・キャラクター心理・出来事の時系列・市場でのポジショニングを細かく分解します。 |
+| [shot-script-director](.claude/skills/shot-script-director/SKILL.md) | 映画監督 ＋ 画面転写アーキテクト（分鏡導演）。短い脚本・台詞・散文の断片を、4〜6 個（通常 4〜5 個）の cut からなる構造化された「分鏡腳本（ショット・ブレイクダウン）」に翻訳します。各 cut は 景別・アングル／被写体／シーン／カメラワーク／雰囲気・情緒／セリフ・演技 を明記。「意味は隙間に宿る」という改編理論（外化・客観的相関物、サブテキスト、情報の経済＝サスペンス、時間の再構築、**台詞の転写＝「そもそも言う必要があるか」を問い、口語化・声の個別化・沈黙まで**）に基づき、説明しすぎず観客に推論させます。テキストの脚本のみを出力し、画像・動画は生成しません。トリガーワード：「分鏡腳本」「拍攝劇本轉譯」「劇本轉分鏡」など。※ storyboard-director（AI 描画 prompt を出力）とは別物です。 |
 
 ---
 
@@ -62,7 +63,9 @@ AI 画像生成モデル（Midjourney、Seedream、Nano Banana、SD）向けに�
 | Skill 名 | 用途 |
 |---|---|
 | [prompt-master-scene-architect](.claude/skills/prompt-master-scene-architect/SKILL.md) | アニメシーンアーキテクト。1 枚の 2D シーン画像から 360° の空間全体を割り出し、2×2 の 4 アングルグリッド（正面・左 90°・右 90°・後 180°）の英語 YAML prompt を生成します。 |
+| [set-design-director](.claude/skills/set-design-director/SKILL.md) | セット／プロダクションデザイン監督（佈景指導）。物語ドリブンのシーン・セット、あるいは指定の内装スタイル（北欧・和・侘寂・Japandi・インダストリアル・仏・Art Deco…）を、1 つの「デザインバイブル」（時代・様式・階級・60-30-10 配色・素材・光の論理・主役小物）を共有する 3 段（全景定場／中景の生活感／質感クローズアップ）の自然言語英語 prompt に変換し、各段に繁体字訳を付けます。即座に生成・質問なし、テキストのみ出力。 |
 | [prompt-master-image-editor](.claude/skills/prompt-master-image-editor/SKILL.md) | 自然言語による画像編集アーキテクト v4.0。曖昧な編集指示（例：「車を赤くする」）を、「編集後の完成画像」を余すところなく描写した高密度な英語 prompt に変換します。デフォルトで元の画風を保ちます。 |
+| [prompt-master-texture-repair](.claude/skills/prompt-master-texture-repair/SKILL.md) | 材質逆向・紋理修復プロンプトアーキテクト。劣化画像（背景ノイズ・塗りつぶし／過度な肌の磨き・プラスチック感・圧縮ダメージ）を分析し、物理的にリアルな質感を再生する **繁体字中国語の Img2Img（圖生圖）再描画 prompt** を 1 つ生成します。人物には毛穴と一本一本の髪、製品には金属／プラ／ガラス等の本物の材質を割り当て、背景は完全ノイズゼロを強制、元の光影・透視・構図をロック。人物には「局部重生強制指令」、製品には「產品精修」ブロックを自動付与。テキストのみ出力、画像は生成しません。トリガー：「圖片紋理修復」「肌膚紋理修復」「去髒」「去噪」など。 |
 | [prompt-master-9panel-grid](.claude/skills/prompt-master-9panel-grid/SKILL.md) | 九宮格（3×3）絵コンテ監督。「九宮格 / 3x3 storyboard grid」専用で、入力画像から核となるビジュアル特徴を抽出したうえで、9 コマ分の映画級カメラワークのバリエーションを YAML prompt で設計します。 |
 | [prompt-reverse-engineer](.claude/skills/prompt-reverse-engineer/SKILL.md) | ビジュアル言語リバースエンジニア。入力画像をピクセル単位で意味的に分解し（4 つの分析軸）、再現可能な英語 prompt と繁体字中国語の解説を生成します。特定のスタイルを **押し付けることはありません**。 |
 | [product-visual-architect](.claude/skills/product-visual-architect/SKILL.md) | AI 商品ビジュアルアーキテクト。商品のテキスト説明か画像から、互いに補完し合う 3 組の商用品質の撮影プロンプト（メイン画像／ライフスタイル／マクロなど）を作成します。各組は「ライティング・環境・構図・フォーカスと質感・色彩」の 5 つの要点に基づいて組み立てられ、中英対訳付き。Nano Banana／GPT-image2 などの高パラメータモデルに対応し、質問せず即座に生成します。 |
@@ -105,13 +108,14 @@ AI 画像生成モデル（Midjourney、Seedream、Nano Banana、SD）向けに�
 
 ---
 
-### 7️⃣ ソーシャルメディアビジュアルレイアウト
+### 7️⃣ ソーシャルメディア運用 — コピー / ビジュアル
 
-コラム記事の内容を、それに合ったソーシャルメディア用ビジュアルレイアウト案に落とし込みます。
+マーケティング要件をソーシャル投稿のコピーに、コラム記事の内容をビジュアルレイアウト案に、それぞれ落とし込みます。
 
 | Skill 名 | 用途 |
 |---|---|
-| [social-media-visual-designer](.claude/skills/social-media-visual-designer/SKILL.md) | シニア・ソーシャルメディアビジュアルデザイナー。コラム内容を受け取ると、すぐに 16:9 のミニマルな雑誌風ビジュアルレイアウト案を作成し、記事の性質に応じてカラーの方針を動的に決めます。 |
+| [fb-post-architect](.claude/skills/fb-post-architect/SKILL.md) | ソーシャル爆文アーキテクト（社群爆文架構師）。マーケティング要件を、FB の実際のランキングシグナル（シェアの重み・フォロー転換・滞在時間・ネガティブシグナル回避）に合わせて設計した、そのまま投稿できる繁体字中国語の FB 投稿へ変換します。**本命投稿 1 本**（モバイル改行済み・1 コメント目のリンク付き）＋ **別公式のフック代替案 3 つ** ＋ シグナル設計の解説を出力。戦略軸（分享型＝拡散 / 追蹤型＝フォロワー獲得 / 轉單型＝コンバージョン）を 1 つだけ選んで宣言します。爆文に不可欠な具体的素材（実数値・実体験・反直感の発見）が欠けている場合に限り質問し、**数字や事例を捏造することはいっさいありません**。テキストのみ出力。トリガーワード：「FB貼文」「FB文案」「臉書貼文」「爆文」など。 |
+| [social-media-visual-designer](.claude/skills/social-media-visual-designer/SKILL.md) | シニア・ソーシャルメディアビジュアル情報デザイナー。記事やテーマを SNS 画像カード（図卡）の設計企画に変換：7 ジャンル別カラーパレット（HEX 指定）、雑誌風ミニマルレイアウト、実写写真のアートディレクション、コピーに加え、背景写真用の英語 AI 画像生成プロンプトまで出力します。「社群圖卡」「圖卡提示詞」で発動。 |
 
 ---
 
@@ -151,12 +155,12 @@ Git / GitHub の自動化など、開発を補助するツール。
 biz-ai-video-course/
 ├── .claude/
 │   ├── settings.local.json
-│   └── skills/                          ← 34 個の skill のメインディレクトリ
+│   └── skills/                          ← 37 個の skill のメインディレクトリ
 │       ├── ai-music-prompt-generator/
 │       │   ├── SKILL.md                 ← skill の本体ファイル
 │       │   └── references/              ← Progressive Disclosure の詳細リファレンス
 │       ├── prompt-master-portrait/
-│       └── ... (全 34 個)
+│       └── ... (全 37 個)
 └── README.md                            ← 本ファイル
 ```
 
@@ -179,7 +183,7 @@ biz-ai-video-course/
 
 # 繁體中文
 
-這個專案集結了 **34 個專業 Skill**，涵蓋 **商業內容創作**、**AI 影音生成（動態生成 / 文生影 / 圖生影）**、**圖像提示詞工程**、**劇本與角色創作**，以及**直接呼叫 GMI Cloud API 出圖／出片的執行工具**。所有技能皆位於 `.claude/skills/` 目錄下，由 Claude Code 在偵測到對應觸發詞時自動載入並執行，無需手動設定。
+這個專案集結了 **37 個專業 Skill**，涵蓋 **商業內容創作**、**AI 影音生成（動態生成 / 文生影 / 圖生影）**、**圖像提示詞工程**、**劇本與角色創作**，以及**直接呼叫 GMI Cloud API 出圖／出片的執行工具**。所有技能皆位於 `.claude/skills/` 目錄下，由 Claude Code 在偵測到對應觸發詞時自動載入並執行，無需手動設定。
 
 ---
 
@@ -205,6 +209,7 @@ biz-ai-video-course/
 |---|---|
 | [character-architect](.claude/skills/character-architect/SKILL.md) | 好萊塢編劇 + 角色架構師（奧斯卡級，兼具社會學/心理學洞察）。從一句台詞、一件配飾或單張照片的構圖光影等碎片線索逆向建構角色，產出**三份**差異最大化、內部自洽的繁中角色檔案（外型/社會屬性、家庭背景與創傷、MBTI/星座/血型一致性、語言習慣與微表情 + 電影級摘要）。觸發詞：「角色設定」「人設」「人物塑造」等。 |
 | [script-doctor-architect](.claude/skills/script-doctor-architect/SKILL.md) | 好萊塢頂級劇本醫生。接收劇本後產出高度結構化的「劇本分析報告」，拆解敘事結構、角色心理、事件時間軸與市場定位。 |
+| [shot-script-director](.claude/skills/shot-script-director/SKILL.md) | 電影導演 ＋ 畫面轉譯架構師（分鏡導演）。接收一小段劇本／台詞／散文，轉譯成由 4–6 個（典型 4–5 個）cut 組成的結構化「分鏡腳本」，每個 cut 標明 景別・角度／主體／場景／運鏡／氛圍情緒／台詞演技。以「意義活在縫隙裡」的改編心法（外化・客觀對應物、潛台詞、資訊經濟＝懸念、時間重構、**台詞轉譯：先問要不要用說的、口語化、聲口分化、靜默**）為根基，露出最少讓觀眾自行推論。只輸出腳本文字，不生成圖片／影片。觸發詞：「分鏡腳本」「拍攝劇本轉譯」「劇本轉分鏡」等。※ 與 storyboard-director（輸出 AI 繪圖 prompt）不同。 |
 
 ---
 
@@ -233,7 +238,9 @@ biz-ai-video-course/
 | Skill 名稱 | 用途 |
 |---|---|
 | [prompt-master-scene-architect](.claude/skills/prompt-master-scene-architect/SKILL.md) | 動畫場景架構師。從單張 2D 場景圖推演完整 360° 環境，產出 2x2 四視角網格（正面、左 90°、右 90°、後 180°）的英文 YAML prompt。 |
+| [set-design-director](.claude/skills/set-design-director/SKILL.md) | 佈景／美術指導（Production Designer）。將敘事驅動的場景／佈景，或指名的室內風格（北歐／日式／侘寂／Japandi／工業／法式／Art Deco…）轉譯為共用同一份「設計聖經」（時代・風格・階級・60-30-10 色盤・材質・光源邏輯・主角道具）的三段（全景定場／中景生活痕跡／特寫質感情緒）自然語言英文 prompt，每段附繁中翻譯。立即生成、不提問，只輸出提示詞文字。 |
 | [prompt-master-image-editor](.claude/skills/prompt-master-image-editor/SKILL.md) | 自然語言圖像編輯架構師 v4.0。將模糊的編輯指令（如「把車變紅色」）翻譯為完整描述「最終編輯後圖像」的高密度英文 prompt，預設保留原始畫風。 |
+| [prompt-master-texture-repair](.claude/skills/prompt-master-texture-repair/SKILL.md) | 材質逆向工程・紋理修復提示詞架構師。分析劣化圖片（背景噪點／主體塗抹或過度磨皮／塑料感／壓縮損傷），產出一組重生真實物理質感的 **繁體中文 Img2Img（圖生圖）重繪 prompt**。人物給毛孔與一根根髮絲、產品給金屬／塑料／玻璃等真實材質、背景強制完全零噪點，並鎖定原圖光影・透視・構圖。人物自動附「局部重生強制指令」、產品附「產品精修」區塊。只輸出提示詞文字，不生成圖片。觸發詞：「圖片紋理修復」「肌膚紋理修復」「去髒」「去噪」等。 |
 | [prompt-master-9panel-grid](.claude/skills/prompt-master-9panel-grid/SKILL.md) | 九宮格分鏡導演。針對「九宮格 / 3x3 storyboard grid」專屬，提取輸入圖的核心視覺特徵後設計 9 格電影級鏡頭變化 YAML prompt。 |
 | [prompt-reverse-engineer](.claude/skills/prompt-reverse-engineer/SKILL.md) | 視覺語言逆向工程師。對輸入圖進行像素級語意拆解（4 個分析維度），產出可重現的英文 prompt + 繁體中文分析。**不**強加任何預設風格。 |
 | [product-visual-architect](.claude/skills/product-visual-architect/SKILL.md) | AI 產品視覺架構師。將產品文字描述或圖片轉為 3 組互補的商業級攝影提示詞（主圖／情境／微距等），每組依「光線・環境・構圖・焦點質感・色彩」五大要領建構，附中英對照，適用 Nano Banana / GPT-image2 等高參數模型。立即生成、不提問。 |
@@ -276,13 +283,14 @@ biz-ai-video-course/
 
 ---
 
-### 7️⃣ 社群視覺排版
+### 7️⃣ 社群經營 — 文案 / 視覺
 
-將專欄文章內容轉化為對應的社群視覺排版方案。
+將行銷需求轉化為社群貼文文案，將專欄文章內容轉化為對應的社群視覺排版方案。
 
 | Skill 名稱 | 用途 |
 |---|---|
-| [social-media-visual-designer](.claude/skills/social-media-visual-designer/SKILL.md) | 資深社群視覺設計師。接收專欄內容後立刻產出 16:9 極簡雜誌風視覺排版方案，依文章屬性動態決定色彩邏輯。 |
+| [fb-post-architect](.claude/skills/fb-post-architect/SKILL.md) | 社群爆文架構師。將行銷需求轉譯為可直接發佈的繁中 FB 貼文，針對平台真實的排序訊號（分享權重・追蹤轉換・停留時間・負面訊號迴避）而設計。產出**主推貼文 1 篇**（手機排版、含第一則留言）＋**不同公式的鉤子替代方案 3 個**＋訊號設計說明，並選定且宣告單一戰略軸（分享型＝擴散／追蹤型＝漲粉／轉單型＝轉換）。僅在缺乏爆文所需的具體素材（真實數字、親身經歷、反直覺發現）時才提問，**絕不捏造數字或案例**。只輸出文字。觸發詞：「FB貼文」「FB文案」「臉書貼文」「爆文」等。 |
+| [social-media-visual-designer](.claude/skills/social-media-visual-designer/SKILL.md) | 資深社群視覺資訊設計師。將文章或主題轉為社群圖卡設計企劃：七大類型配色（附色碼）、雜誌感極簡版式、真實照片攝影指導、圖卡文案，並附上背景照片的英文 AI 生圖提示詞。以「社群圖卡」「圖卡提示詞」觸發。 |
 
 ---
 
@@ -322,12 +330,12 @@ Git / GitHub 自動化等開發輔助工具。
 biz-ai-video-course/
 ├── .claude/
 │   ├── settings.local.json
-│   └── skills/                          ← 34 個 skill 主目錄
+│   └── skills/                          ← 37 個 skill 主目錄
 │       ├── ai-music-prompt-generator/
 │       │   ├── SKILL.md                 ← skill 主檔
 │       │   └── references/              ← 漸進式揭露的詳細參考
 │       ├── prompt-master-portrait/
-│       └── ... (共 34 個)
+│       └── ... (共 37 個)
 └── README.md                            ← 本檔案
 ```
 

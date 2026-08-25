@@ -10,6 +10,7 @@ Reference library for translating Chinese makeup concepts into precise English p
 5. [Color & Focal Point (色彩與焦點)](#5-color--focal-point-色彩與焦點)
 6. [Technique-to-Effect Cheat Sheet](#6-technique-to-effect-cheat-sheet)
 7. [Lighting Pairings (Showcase the Work)](#7-lighting-pairings-showcase-the-work)
+8. [Facial Identity Lock (五官鎖定)](#8-facial-identity-lock-五官鎖定)
 
 ---
 
@@ -173,3 +174,40 @@ The lighting clause must be chosen to make the chosen technique READABLE. Wrong 
 - `tight beauty close-up framing, shoulders just visible, 85mm lens compression`
 - `editorial half-body framing with the face centered in the upper third, fashion-magazine composition`
 - `extreme macro on the focal feature (lip OR eye)` — only for ONE option in a set, not all three
+
+---
+
+## 8. Facial Identity Lock (五官鎖定)
+
+On a source portrait, makeup must enhance the face **in place** — the model must never drift the subject's real proportions. Every compiled prompt embeds an identity-lock descriptor built from the checklist below, plus a hard "no-reshaping" clause. This is the antidote to feature distortion (the classic failures: a widened jaw slimmed, wide-set eyes pulled together, a high forehead lowered, natural lips overdrawn).
+
+### Lockable Markers Checklist
+Read these off the source image and name the distinctive ones explicitly in the prompt:
+- **Forehead** — height (tall/high vs low), hairline shape. *Often lowered by mistake — state it.*
+- **Eye spacing** — interocular distance (wide-set / average / close-set). *Most commonly distorted — always state it.*
+- **Eye shape & lid** — almond/round/upturned/downturned; monolid / inner-double (uchibutae) / double; iris color.
+- **Brows** — thickness, arch (straight/soft/arched), height above the eye.
+- **Nose** — bridge length & width, tip shape (rounded/pointed), nostril width.
+- **Mouth & lips** — mouth width, upper/lower lip ratio, cupid's-bow definition, philtrum length.
+- **Cheekbones** — height & prominence (softly-defined vs high/sharp).
+- **Face shape** — oval/round/heart/square/long; jaw width & angle; chin (pointed/round/tapered).
+- **Skin** — tone, undertone (warm/cool/neutral), plus any freckles/moles/asymmetry to preserve.
+
+### Reusable Identity-Lock Template
+Fill the brackets from the checklist and drop this in right after the subject clause:
+
+> "Critically preserve her exact facial identity and proportions from the source image — [forehead], [eye spacing], [eye shape & lid], [brows], [nose], [mouth & lips], [cheekbones], [face shape, jaw & chin], [skin & undertone]. The makeup adds ONLY color, texture, and soft dimensional shading — it must NOT slim or reshape the face, narrow the eye spacing, lower the forehead, alter the nose, overdraw or resize the lips, or change the jaw and chin. Bone structure, feature placement, spacing, and proportions stay exactly as photographed; enhancement is in-place trompe-l'œil only, identity 100% unchanged."
+
+### Reshaping Vocabulary → Identity-Safe Rephrase
+The reshaping terms elsewhere in this file are legal on a source portrait ONLY when rewritten as optical illusion + preservation. Use the right column:
+
+| Reshaping term (avoid raw) | Identity-safe rephrase |
+|---|---|
+| `narrowed nose-bridge contour` | `soft nose-side shadow for in-place dimension only, real nose width unchanged` |
+| `pushed-back jawline shadow` / "slim the face" | `cool shadow tucked under the jaw for depth only, actual jaw width & face shape unchanged` |
+| `elevated cheekbone` / "lift the features" | `highlight on the cheekbone arc that visually catches light, bone position unchanged` |
+| `overlined cupid's bow` / `pillowy 3D pout` | `clean definition on the natural lip line, not overdrawn, true lip size kept` |
+| `fox-eye lift pulling the shape up and out` | `winged liner traced along the actual eye shape, interocular gap & eye size unchanged` |
+| `forehead-shortening shadow at the hairline` | *(omit on a source portrait unless the user asks)* |
+
+> **Single-feature unlock:** if the user explicitly asks to change one feature (e.g., "make the lips fuller"), that feature alone is unlocked — everything else stays locked.

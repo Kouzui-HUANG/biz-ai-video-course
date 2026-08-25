@@ -21,15 +21,24 @@ Note on size: gpt-image-2 accepts any WxH with edges multiple of 16, longest
 edge <= 3840, aspect <= 3:1, total pixels 0.65M-8.3M. Exact 1920x1080 is
 rejected (1080 isn't divisible by 16) — use 1920x1088.
 
-Edit-source images resolve against the skill's uploads/ drop-zone (UPLOADS_DIR)
-in addition to the CWD and project root, so a bare filename or a directory path
-both work. A directory ref expands to every supported image directly inside it.
+Shared media folders (project root, shared with the gemini-3-pro-image and
+seedance-2-0 skills, all gitignored):
+    <project root>/uploads/       drop reference/edit-source images here
+    <project root>/uploads/done/  sources move here after a successful run
+    <project root>/outputs/       every result lands here, prefixed `gpt_`
+
+Edit-source images resolve against the shared uploads/ drop-zone (and its done/
+subfolder) in addition to the CWD and project root, so a bare filename or a
+directory path both work. A directory ref expands to every supported image
+directly inside it. After a successful edit the sources that were sitting in
+uploads/ are moved to uploads/done/ (disable with --keep-refs).
 """
 
 from __future__ import annotations
 
 import argparse
 import base64
+import importlib.util
 import json
 import os
 import re
@@ -39,6 +48,21 @@ from pathlib import Path
 
 import requests
 from dotenv import load_dotenv
+
+
+def _load_shared(name):
+    """Import <project root>/.claude/lib/<name>.py without touching sys.path."""
+    for d in Path(__file__).resolve().parents:
+        f = d / ".claude" / "lib" / f"{name}.py"
+        if f.exists():
+            spec = importlib.util.spec_from_file_location(name, f)
+            mod = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(mod)
+            return mod
+    sys.exit(f"[!] shared module not found: .claude/lib/{name}.py")
+
+
+media = _load_shared("media_paths")   # shared uploads/ + outputs/
 
 
 MODEL_GENERATE = "gpt-image-2-generate"
@@ -88,8 +112,10 @@ def find_project_root(start: Path) -> Path:
 ROOT = find_project_root(Path.cwd())
 SKILL_DIR = Path(__file__).resolve().parent.parent  # .claude/skills/gpt-image-2
 KEY_FILE = SKILL_DIR / ".gmi_api_key"
-UPLOADS_DIR = SKILL_DIR / "uploads"   # default drop-zone for edit-source images
-OUTPUT_DIR = SKILL_DIR / "outputs"    # default destination for generated/edited images
+UPLOADS_DIR = media.UPLOADS_DIR       # shared drop-zone for edit-source images
+DONE_DIR = media.DONE_DIR             # sources land here once successfully used
+OUTPUT_DIR = media.OUTPUTS_DIR        # shared destination for generated/edited images
+OUT_PREFIX = "gpt"                    # the shared folder tells sources apart by prefix
 
 
 # --------------------------------------------------------------------------- #
@@ -136,15 +162,16 @@ def is_url(s: str) -> bool:
 def resolve_image_path(ref: str) -> Path:
     """Resolve a local image/dir ref to a path.
 
-    Search order for relative refs: current working directory, project root,
-    then the skill's uploads/ drop-zone (UPLOADS_DIR). Absolute paths and the
-    first existing candidate win; otherwise fall back to a root-relative path so
-    callers surface a clear not-found error.
+    Search order for relative refs: current working directory, project root, the
+    shared uploads/ drop-zone, then uploads/done/ (so re-running with the same
+    bare filename still works after the source was archived). Absolute paths and
+    the first existing candidate win; otherwise fall back to a root-relative path
+    so callers surface a clear not-found error.
     """
     p = Path(ref).expanduser()
     if p.is_absolute():
         return p
-    for base in (Path.cwd(), ROOT, UPLOADS_DIR):
+    for base in (Path.cwd(), ROOT, UPLOADS_DIR, DONE_DIR):
         cand = base / p
         if cand.exists():
             return cand
@@ -163,7 +190,7 @@ def encode_image(ref: str, as_data_url: bool) -> str:
     p = resolve_image_path(ref)
     if not p.is_file():
         raise FileNotFoundError(
-            f"image not found: {ref} (searched CWD, {ROOT}, {UPLOADS_DIR})"
+            f"image not found: {ref} (searched CWD, {ROOT}, {UPLOADS_DIR}, {DONE_DIR})"
         )
     b64 = base64.b64encode(p.read_bytes()).decode()
     if as_data_url:
@@ -286,7 +313,7 @@ def download(urls: list[str], stem: str, fmt: str) -> list[Path]:
             print(f"[!] download skipped {url} ({resp.status_code})", file=sys.stderr)
             continue
         name = f"{stem}_{idx}{suffix}" if multi else f"{stem}{suffix}"
-        out = OUTPUT_DIR / name
+        out = media.unique_path(OUTPUT_DIR, name)   # shared folder: never clobber an earlier result
         out.write_bytes(resp.content)
         saved.append(out)
         print(f"[✓] {out} ({len(resp.content)} bytes)")
@@ -307,8 +334,7 @@ def run_generate(cfg: dict, prompt: str, args: argparse.Namespace) -> list[Path]
     }
     print(f"[mode] generate ({MODEL_GENERATE}) size={args.size} quality={args.quality} n={args.n}")
     urls = run_request(cfg, MODEL_GENERATE, payload)
-    stamp = time.strftime("%Y%m%d_%H%M%S")
-    return download(urls, f"gptgen_{stamp}", args.output_format)
+    return download(urls, f"{OUT_PREFIX}_{media.stamp()}", args.output_format)
 
 
 def run_edit_one(cfg: dict, prompt: str, image_ref: str, args: argparse.Namespace) -> list[Path]:
@@ -325,7 +351,7 @@ def run_edit_one(cfg: dict, prompt: str, image_ref: str, args: argparse.Namespac
     label = image_ref if is_url(image_ref) else Path(image_ref).name
     print(f"[mode] edit ({MODEL_EDIT}) src={label} size={args.size} quality={args.quality} n={args.n}")
     urls = run_request(cfg, MODEL_EDIT, payload)
-    return download(urls, f"{source_stem(image_ref)}_gptedit", args.output_format)
+    return download(urls, f"{OUT_PREFIX}_{media.stamp()}_{source_stem(image_ref)}", args.output_format)
 
 
 def run_edit_multi(cfg: dict, prompt: str, image_refs: list[str], args: argparse.Namespace) -> list[Path]:
@@ -347,7 +373,7 @@ def run_edit_multi(cfg: dict, prompt: str, image_refs: list[str], args: argparse
           f"quality={args.quality} n={args.n}")
     urls = run_request(cfg, MODEL_EDIT, payload)
     stem = "_".join(source_stem(r) for r in image_refs)[:60] or "image"
-    return download(urls, f"{stem}_gptedit", args.output_format)
+    return download(urls, f"{OUT_PREFIX}_{media.stamp()}_{stem}", args.output_format)
 
 
 # --------------------------------------------------------------------------- #
@@ -382,6 +408,9 @@ def parse_args() -> argparse.Namespace:
                    help=f"Number of images per request, 1-10 (default: {DEFAULT_N}).")
     p.add_argument("--data-url", action="store_true",
                    help="Send local edit images as data: URLs instead of raw base64 (fallback if edit is rejected).")
+    p.add_argument("--keep-refs", action="store_true",
+                   help="Do NOT move successfully used sources from uploads/ into uploads/done/ "
+                        "(use when trying several prompts on the same image).")
     p.add_argument("--api-key", default=None,
                    help="GMI API key (priority: this flag > $GMI_API_KEY > .gmi_api_key file).")
     return p.parse_args()
@@ -424,6 +453,7 @@ def validate(args: argparse.Namespace) -> None:
 def main() -> None:
     args = parse_args()
     validate(args)
+    media.ensure_dirs()
 
     prompt = resolve_prompt(args.prompt)
     if not prompt:
@@ -442,6 +472,7 @@ def main() -> None:
     do_edit = bool(image_refs)
     total = 0
     failures = 0
+    used_local: list[Path] = []   # sources to archive into uploads/done/ once they succeed
 
     if not do_edit:
         try:
@@ -453,6 +484,7 @@ def main() -> None:
         print(f"[batch] edit-multi: {len(image_refs)} image(s) -> 1 request")
         try:
             total += len(run_edit_multi(cfg, prompt, image_refs, args))
+            used_local += [resolve_image_path(r) for r in image_refs if not is_url(r)]
         except Exception as e:
             print(f"[!] edit-multi failed: {e}", file=sys.stderr)
             failures += 1
@@ -461,9 +493,18 @@ def main() -> None:
         for ref in image_refs:
             try:
                 total += len(run_edit_one(cfg, prompt, ref, args))
+                if not is_url(ref):
+                    used_local.append(resolve_image_path(ref))
             except Exception as e:
                 print(f"[!] {ref}: {e}", file=sys.stderr)
                 failures += 1
+
+    # Only sources that actually produced an image get archived — a failed run
+    # must leave its source in uploads/ so it can simply be retried.
+    if used_local and not args.keep_refs:
+        if args.mask and not is_url(args.mask):
+            used_local.append(resolve_image_path(args.mask))
+        media.archive_used(used_local)
 
     print(f"[done] saved {total} image(s) to {OUTPUT_DIR}" + (f"; {failures} failure(s)" if failures else ""))
     sys.exit(2 if failures else 0)

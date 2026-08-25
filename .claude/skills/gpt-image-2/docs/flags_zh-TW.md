@@ -16,7 +16,28 @@
 | `-f` / `--output-format <fmt>` | 否 | `png` | 只接受 `png`、`jpeg`。 |
 | `-n` / `--n <int>` | 否 | `2` | 每個請求的張數，1–10。 |
 | `--data-url` | 否 | 關閉 | 把本機編輯圖片改用 `data:` URL 送出，而非原始 base64（編輯被拒絕時的備援）。 |
+| `--keep-refs` | 否 | 關閉 | 生成成功後**不要**把用過的來源圖從 `uploads/` 搬進 `uploads/done/`。同一張圖要試多組 prompt 時用。 |
 | `--api-key <key>` | 否 | — | GMI 金鑰覆寫。優先序：此旗標 → `$GMI_API_KEY` → `.gmi_api_key` 檔。 |
+
+## 共用素材資料夾
+
+由 `.claude/lib/media_paths.py` 統一定義，與 `gemini-3-pro-image`、
+`seedance-2-0` 兩個 skill 共用（都已 gitignore）：
+
+| 路徑 | 角色 |
+|------|------|
+| `<專案根>/uploads/` | 編輯來源圖的上傳區 |
+| `<專案根>/uploads/done/` | 生成成功後來源圖搬到這裡 |
+| `<專案根>/outputs/` | 所有產出，靠模型前綴分辨 |
+
+- **輸入解析順序**（相對路徑）：CWD → 專案根 → `uploads/` → `uploads/done/`。
+  所以裸檔名找得到上傳區，重跑時也找得到已歸檔的同一張圖。
+- **資料夾路徑**會展開成裡面「最上層」的支援圖檔 —— 傳 `uploads` 就是把還
+  沒處理的全部改一輪，不會去動 `done/` 裡已完成的。
+- **歸檔**只在來源圖真的產出圖片後才做，而且只搬「直接躺在 `uploads/` 裡」
+  的檔案 —— 從磁碟其他地方指過來的檔案一律不動。失敗的那張會留在原位好重跑。
+- 需要換位置時，可用環境變數 `AI_MEDIA_ROOT`、`AI_UPLOADS_DIR`、
+  `AI_OUTPUTS_DIR` 覆寫。
 
 ## 結束代碼 (Exit codes)
 
@@ -26,12 +47,14 @@
   輸入檔不存在）。
 - `2` — 工作有跑但至少一張失敗；看 stderr 的 `[!]` 行。
 
-## 輸出檔名規則（`outputs/`）
+## 輸出檔名規則（共用 `outputs/`）
 
-- 生成：`gptgen_{YYYYmmdd_HHMMSS}[_k]{.png|.jpg}`
-- 編輯：`{source_stem}_gptedit[_k]{.png|.jpg}`（重跑會覆寫）
+- 生成：`gpt_{YYYYmmdd_HHMMSS}[_k]{.png|.jpg}`
+- 編輯：`gpt_{YYYYmmdd_HHMMSS}_{source_stem}[_k]{.png|.jpg}`
 - 只有在 `n > 1` 時才加上 `_k`（從 1 起算）。副檔名跟著
   `--output-format`（`png → .png`、`jpeg → .jpg`）。
+- `gpt_` 前綴用來跟同資料夾裡的 `gemini_` / `seedance_` 產出區分。既有檔案
+  永遠不會被覆寫 —— 撞名會自動加 `_1`、`_2`… 字尾。
 
 ## GMI Cloud API 規格
 

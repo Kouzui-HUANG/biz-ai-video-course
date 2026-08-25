@@ -8,12 +8,14 @@ GMI Cloud — Gemini 3 Pro Image Preview（Nano Banana Pro）圖像生成 / 編�
     1. （選用）--ref-file 本機參考圖會先上傳到臨時圖床 tmpfiles.org 取得公開網址
     2. POST 送出生成 / 編輯請求 → 取得 request_id
     3. 輪詢 GET，直到 success / failed / cancelled
-    4. 成功後把 outcome.media_urls 的圖片下載到 outputs/
+    4. 成功後把 outcome.media_urls 的圖片下載到共用 outputs/
+    5. 生成成功後，用過的本機參考圖自動移入 uploads/done/（--keep-refs 可停用）
 
-所有檔案（金鑰、上傳區、下載區）都在本 skill 資料夾內，且皆已 gitignore：
-    .gmi_api_key   API 金鑰
-    uploads/       本機參考圖暫存區（--ref-file 裸檔名會在此尋找）
-    outputs/       生成結果下載區
+上傳區與產出區是「專案根目錄下的共用資料夾」，三個生成 skill 共用（皆已 gitignore）：
+    <專案根>/uploads/       參考圖上傳區（--ref-file 裸檔名會在此尋找）
+    <專案根>/uploads/done/  已用過的參考圖
+    <專案根>/outputs/       生成結果下載區（本 skill 產出前綴 gemini_）
+金鑰仍留在本 skill 資料夾：.gmi_api_key
 
 純 Python 標準函式庫，無需 pip install。Python 3.8+。
 完整 API 規格見 references/gmi-api.md。
@@ -32,6 +34,7 @@ GMI Cloud — Gemini 3 Pro Image Preview（Nano Banana Pro）圖像生成 / 編�
 """
 
 import argparse
+import importlib.util
 import json
 import mimetypes
 import os
@@ -44,6 +47,21 @@ import uuid
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
+
+def _load_shared(name):
+    """載入 <專案根>/.claude/lib/<name>.py（不動 sys.path，避免撞名）。"""
+    for d in Path(__file__).resolve().parents:
+        f = d / ".claude" / "lib" / f"{name}.py"
+        if f.exists():
+            spec = importlib.util.spec_from_file_location(name, f)
+            mod = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(mod)
+            return mod
+    raise SystemExit(f"[錯誤] 找不到共用模組 .claude/lib/{name}.py")
+
+
+media = _load_shared("media_paths")   # 共用上傳區 / 產出區
+
 # --------------------------------------------------------------------------- #
 # API 常數（官方文件，勿改）
 # --------------------------------------------------------------------------- #
@@ -54,11 +72,12 @@ UPLOAD_API = "https://tmpfiles.org/api/v1/upload"   # 臨時圖床，約 1 小�
 USER_AGENT = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
               "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36")
 
-# 本 skill 資料夾內的固定路徑
+# 金鑰留在本 skill 資料夾；上傳區 / 產出區走專案根目錄的共用資料夾
 SKILL_DIR = Path(__file__).resolve().parent
 KEY_FILE = SKILL_DIR / ".gmi_api_key"
-UPLOADS_DIR = SKILL_DIR / "uploads"
-OUTPUTS_DIR = SKILL_DIR / "outputs"
+UPLOADS_DIR = media.UPLOADS_DIR
+OUTPUTS_DIR = media.OUTPUTS_DIR
+OUT_PREFIX = "gemini"                # 共用產出區靠前綴分辨來源模型
 
 # 合法選項
 VALID_IMAGE_SIZES = ["1K", "2K", "4K"]
@@ -102,14 +121,10 @@ def _request(method, url, api_key, body=None, timeout=60):
 # 上傳區：本機參考圖 → 臨時公開網址（GMI 只接受公開 URL）
 # --------------------------------------------------------------------------- #
 def upload_reference(path, timeout=120):
-    """把本機圖上傳到 tmpfiles.org，回傳可公開存取的直連網址。"""
-    p = Path(path)
-    if not p.exists():                       # 裸檔名 → 改在 uploads/ 內尋找
-        alt = UPLOADS_DIR / p.name
-        if alt.exists():
-            p = alt
-        else:
-            raise SystemExit(f"[錯誤] 找不到參考圖檔：{path}")
+    """把本機圖上傳到 tmpfiles.org，回傳 (公開直連網址, 來源檔路徑)。"""
+    p = media.resolve_upload(path)           # 裸檔名 → uploads/ → uploads/done/
+    if p is None:
+        raise SystemExit(f"[錯誤] 找不到參考圖檔：{path}（已找過 CWD、專案根、{UPLOADS_DIR}、{media.DONE_DIR}）")
     if p.suffix.lower() not in REF_IMAGE_EXTS:
         raise SystemExit(f"[錯誤] 不支援的格式 {p.suffix}（限 {', '.join(sorted(REF_IMAGE_EXTS))}）")
     size = p.stat().st_size
@@ -144,7 +159,7 @@ def upload_reference(path, timeout=120):
     url = url.replace("tmpfiles.org/", "tmpfiles.org/dl/")   # 轉成直連下載網址
     _verify_image_url(url)
     print(f"   ✔ 公開網址：{url}")
-    return url
+    return url, p
 
 
 def _verify_image_url(url, timeout=60):
@@ -194,18 +209,20 @@ def poll_request(api_key, request_id, interval, timeout):
 
 
 def download_images(resp, out_dir, ext):
-    media = (resp.get("outcome") or {}).get("media_urls") or []
-    if not media:
+    media_urls = (resp.get("outcome") or {}).get("media_urls") or []
+    if not media_urls:
         raise SystemExit(f"[錯誤] 成功但無 media_urls：{json.dumps(resp, ensure_ascii=False)}")
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
-    rid = resp.get("request_id", "output")
+    rid = media.short_id(resp.get("request_id", "output"))
+    ts = media.stamp()
     saved = []
-    for item in media:
+    for item in media_urls:
         url = item.get("url")
         if not url:
             continue
-        dest = out_dir / f"{rid}_{item.get('id', len(saved))}.{ext}"
+        # 共用產出區：gemini_<時間戳>_<請求短碼>_<序>.png
+        dest = media.unique_path(out_dir, f"{OUT_PREFIX}_{ts}_{rid}_{item.get('id', len(saved))}.{ext}")
         try:
             req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
             with urllib.request.urlopen(req, timeout=120) as r, open(dest, "wb") as fh:
@@ -242,14 +259,16 @@ def build_parser():
     p.add_argument("--ref", dest="refs", action="append", default=[], metavar="URL",
                    help="參考圖『公開網址』，可重複指定")
     p.add_argument("--ref-file", dest="ref_files", action="append", default=[], metavar="PATH",
-                   help="參考圖『本機路徑』，自動上傳取得網址，可重複（裸檔名會在 uploads/ 內尋找）")
+                   help="參考圖『本機路徑』，自動上傳取得網址，可重複（裸檔名會在共用 uploads/ 與 uploads/done/ 內尋找）")
     p.add_argument("--image-size", default="2K", choices=VALID_IMAGE_SIZES, help="輸出解析度")
     p.add_argument("--aspect-ratio", default="16:9", choices=VALID_ASPECT_RATIOS,
                    help="長寬比；做圖片編輯時建議改成與來源圖一致（如方形用 1:1）")
     p.add_argument("--output-format", default="png", choices=VALID_OUTPUT_FORMATS, help="輸出格式")
     p.add_argument("--count", type=int, default=DEFAULT_COUNT,
                    help=f"生成張數，每張為一次獨立 API 請求並行送出（上限 {MAX_COUNT}）")
-    p.add_argument("--out-dir", default=str(OUTPUTS_DIR), help="下載資料夾")
+    p.add_argument("--out-dir", default=str(OUTPUTS_DIR), help="下載資料夾（預設為共用產出區）")
+    p.add_argument("--keep-refs", action="store_true",
+                   help="生成成功後不要把用過的參考圖移入 uploads/done/（同一張要連續試多組 prompt 時用）")
     p.add_argument("--api-key", default=None,
                    help="API 金鑰（預設序：此旗標 → $GMI_API_KEY → .gmi_api_key 檔）")
     p.add_argument("--poll-interval", type=float, default=3.0, help="輪詢間隔秒數")
@@ -268,10 +287,15 @@ def main():
     if not 1 <= args.count <= MAX_COUNT:
         raise SystemExit(f"[錯誤] --count 須在 1～{MAX_COUNT} 之間（目前 {args.count}）。")
 
+    media.ensure_dirs()
+
     # 參考圖：本機檔先上傳取得網址，再與直接給的公開網址合併
     refs = list(args.refs)
+    used_local = []                          # 生成成功後要歸檔到 uploads/done/ 的來源檔
     for f in args.ref_files:
-        refs.append(upload_reference(f))
+        url, src = upload_reference(f)
+        refs.append(url)
+        used_local.append(src)
     if len(refs) > MAX_REF_IMAGES:
         raise SystemExit(f"[錯誤] 參考圖最多 {MAX_REF_IMAGES} 張（目前 {len(refs)}）。")
 
@@ -301,6 +325,11 @@ def main():
     for request_id in request_ids:
         final = poll_request(api_key, request_id, args.poll_interval, args.timeout)
         saved += download_images(final, args.out_dir, ext)
+
+    # 確定有東西存下來，才把用過的參考圖歸檔（失敗時素材要留在原位好重跑）
+    if saved and used_local and not args.keep_refs:
+        media.archive_used(used_local)
+
     print(f"\n🎉 完成，共產生 {len(saved)} 張圖片於 {Path(args.out_dir).resolve()}")
 
 

@@ -13,15 +13,23 @@ Use this skill **only** when the user explicitly names the model — `gemini 3 p
 
 This project contains MANY skills that *write image prompts*. Generic wording — 圖片生成 / 圖片編輯 / image generation / image editing / 九宮格 / 動漫化 / 三視圖 / 產品圖 / 彩妝 / 分鏡 / 逆向 — does **NOT** belong here; let the relevant prompt-writing skill handle those. If no explicit model name from the list appears, **do not activate**. Bare `nano banana` / `奈米香蕉` without `pro` is a different model — also do not activate.
 
-## Files in this skill folder
+## Files
+
+In this skill folder:
 
 | Path | Purpose | Git |
 |------|---------|-----|
 | `generate_image.py` | The program (stdlib only, Python 3.8+) | tracked |
 | `references/gmi-api.md` | Full API spec — read when debugging | tracked |
 | `.gmi_api_key` | API key (Bearer) | **gitignored** |
-| `uploads/` | Drop local reference images here | **gitignored** |
-| `outputs/` | Generated images land here | **gitignored** |
+
+**Shared media folders at the project root** — one drop-zone and one results folder for all three executable generation skills (`gemini-3-pro-image`, `gpt-image-2`, `seedance-2-0`), wired up by `.claude/lib/media_paths.py`:
+
+| Path | Purpose | Git |
+|------|---------|-----|
+| `uploads/` | Drop local reference images here (shared) | **gitignored** |
+| `uploads/done/` | Reference images move here after a successful run | **gitignored** |
+| `outputs/` | Generated images land here, prefixed `gemini_` (shared) | **gitignored** |
 
 ## Workflow
 
@@ -33,25 +41,27 @@ This project contains MANY skills that *write image prompts*. Generic wording �
    - `prompt` (required, ≤ 2000 chars). If the user gives a rough idea, you may compose a strong English prompt for them.
    - Reference images (optional):
      - public URL → `--ref <url>` (repeatable)
-     - **local file** → `--ref-file <path>` (repeatable). The script auto-uploads it to a temp host (tmpfiles.org, ~1 h auto-delete) and uses the resulting URL. Bare filenames are looked up in `uploads/`. Limits: ≤ 7 MB each, PNG/JPEG/WebP/HEIC/HEIF, ≤ 14 images total. (GMI accepts **public URLs only** — no base64/local upload to the API itself.)
+     - **local file** → `--ref-file <path>` (repeatable). The script auto-uploads it to a temp host (tmpfiles.org, ~1 h auto-delete) and uses the resulting URL. Bare filenames are looked up in the shared `uploads/`, then `uploads/done/`. Limits: ≤ 7 MB each, PNG/JPEG/WebP/HEIC/HEIF, ≤ 14 images total. (GMI accepts **public URLs only** — no base64/local upload to the API itself.)
 4. **Parameters** — apply defaults; ask the user **only** for a genuinely undecided necessary value:
    - `--count` (default **2**) — unless the user explicitly asks for a specific number, keep the default: every run delivers TWO variants to choose from. Each image is a separate API request submitted in parallel (max 8).
    - `--image-size` `1K`/`2K`/`4K` (default **2K**)
    - `--aspect-ratio` (default **16:9**). For **editing**, match the source image's ratio (square source → `1:1`) to preserve framing.
    - `--output-format` `png`/`jpeg` (default **png**)
-5. **Run** from this skill folder (the script resolves key/uploads/outputs relative to its own location):
+5. **Run** it — CWD doesn't matter, the script finds the key and the shared folders on its own:
    ```bash
-   cd .claude/skills/gemini-3-pro-image
    # text-to-image
-   python3 generate_image.py --prompt "a serene Japanese garden at dawn, soft mist"
-   # image editing with a local reference (auto-uploaded)
-   python3 generate_image.py --ref-file uploads/portrait.png --aspect-ratio 1:1 \
+   python3 .claude/skills/gemini-3-pro-image/generate_image.py \
+     --prompt "a serene Japanese garden at dawn, soft mist"
+   # image editing with a local reference (bare filename → shared uploads/, auto-uploaded)
+   python3 .claude/skills/gemini-3-pro-image/generate_image.py \
+     --ref-file portrait.png --aspect-ratio 1:1 \
      --prompt "give her worried eyebrows while keeping the smile, same art style"
    # single image only (when the user explicitly asks for one)
-   python3 generate_image.py --count 1 --prompt "..."
+   python3 .claude/skills/gemini-3-pro-image/generate_image.py --count 1 --prompt "..."
    ```
    For long/complex prompts, write the prompt to a temp file and pass `--prompt "$(cat /tmp/p.txt)"` to avoid shell-quoting issues.
-6. **Show the results** — the script prints each saved path under `outputs/` (two by default); open each with the Read tool so the user sees the images.
+6. **Show the results** — the script prints each saved path under the shared `outputs/` (two by default); open each with the Read tool so the user sees the images.
+7. **Used references self-archive** — on success the script moves the reference images it used out of `uploads/` into `uploads/done/`, so the drop-zone only ever shows what still needs doing. Pass `--keep-refs` when the user wants to try several prompts on the same image. Re-runs still accept the bare filename — the lookup covers `done/` too.
 
 ## Notes
 

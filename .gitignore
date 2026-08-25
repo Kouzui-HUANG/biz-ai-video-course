@@ -7,16 +7,16 @@
 .claude/settings.local.json
 .claude/worktrees/
 
-# GMI 工具型 skills（gemini-3-pro-image / seedance-2-0）— 金鑰 / 上傳區 / 下載區（機密與本機產物，切勿提交）
-.gmi_api_key
+# 三個 GMI 工具型 skill（gemini-3-pro-image / gpt-image-2 / seedance-2-0）共用的
+# 素材資料夾 —— 本機產物，切勿提交
+/uploads/            # 參考素材上傳區（含 done/ 已用過的素材）
+/outputs/            # 所有生成結果
+# 保險：舊版把上傳 / 產出區放在各 skill 資料夾內，若不慎重建也一併忽略
 uploads/
 outputs/
-.claude/skills/gemini-3-pro-image/.gmi_api_key
-.claude/skills/gemini-3-pro-image/uploads/
-.claude/skills/gemini-3-pro-image/outputs/
-.claude/skills/seedance-2-0/.gmi_api_key
-.claude/skills/seedance-2-0/uploads/
-.claude/skills/seedance-2-0/outputs/
+
+# GMI API 金鑰（仍留在各 skill 資料夾內）—— 機密，切勿提交
+.gmi_api_key
 
 # Python
 __pycache__/
