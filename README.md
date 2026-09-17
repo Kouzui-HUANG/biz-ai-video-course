@@ -8,7 +8,7 @@
 
 # 日本語
 
-このプロジェクトには **42 個の専門 Skill** が集まっており、**ビジネスコンテンツ制作**、**AI 映像生成（動態生成＝モーション生成 / テキスト → 動画 / 画像 → 動画）**、**画像プロンプトエンジニアリング**、**脚本・キャラクター創作**、さらに **GMI Cloud API を直接呼び出して画像・動画を出力する実行ツール** まで幅広くカバーします。すべての Skill は `.claude/skills/` ディレクトリ配下に置かれており、Claude Code が対応するトリガーワードを検出すると自動で読み込んで実行するため、手動での設定は不要です。
+このプロジェクトには **44 個の専門 Skill** が集まっており、**ビジネスコンテンツ制作**、**AI 映像生成（動態生成＝モーション生成 / テキスト → 動画 / 画像 → 動画）**、**画像プロンプトエンジニアリング**、**脚本・キャラクター創作**、さらに **GMI Cloud API を直接呼び出して画像・動画を出力する実行ツール** まで幅広くカバーします。すべての Skill は `.claude/skills/` ディレクトリ配下に置かれており、Claude Code が対応するトリガーワードを検出すると自動で読み込んで実行するため、手動での設定は不要です。
 
 ---
 
@@ -54,6 +54,7 @@ AI 画像生成モデル（Midjourney、Seedream、Nano Banana、SD）向けに�
 | [prompt-master-otaku-anima](.claude/skills/prompt-master-otaku-anima/SKILL.md) | 究極のオタク AI ＋ Anima モデル専用のプロンプト職人。断片的・曖昧な指示から萌え系キャラクターを設計し、Anima（テキストエンコーダ Qwen3）特有の「Danbooru タグ＋自然言語のハイブリッド」記法で、複数シーン分の高品質な英語 prompt を生成します。衣装を扱う際は costume-design-director を自動で呼び出して連携します。 |
 | [prompt-master-hybrid-realism](.claude/skills/prompt-master-hybrid-realism/SKILL.md) | アニメとリアルのハイブリッドレンダリング監督。2D アニメのキャラクターに、PBR ベースの物理的にリアルな質感（衣装・アクセサリー・背景）を融合させ、リアリティの高いバイリンガル prompt を生成します。 |
 | [prompt-master-makeup](.claude/skills/prompt-master-makeup/SKILL.md) | 達人級のメイクアップ・ビジュアルプロンプトエンジニア。プロのメイク理論を使って被写体ならではの特徴（そばかす、一重まぶた、左右非対称の骨格）を引き立て、画一的な「完璧」テンプレートは **あえて使いません**。 |
+| [prompt-master-portrait-lighting](.claude/skills/prompt-master-portrait-lighting/SKILL.md) | 人像ライティング＆空気感デザイン総監督。ポートレート写真と「唯美なビーチ撮影」のような曖昧なムード指定を受け取り、2 フェーズで動きます。フェーズ 1 では元画像の既存ライティングを読み取り、名前付きの照明設計案を 3 つ提案したうえで ABCD 形式の確認を行い、**そこで必ず停止**します。フェーズ 2 は確認後のみ、プロの照明理論（レンブラント／ループ／バタフライ／スプリット／クラムシェル、ライティング比とネガティブフィル、リムライトによる分離、ゴールデンアワー、ボリューメトリックな霧、ゴボ影、モチベーテッドな実光源、ティール＆オレンジの色分離）に基づく英語の**画像編集** prompt を 1 本＋繁体字訳＋ネガティブ prompt で出力します。顔の同一性・ポーズ・画角は厳格にロック。テキストのみ出力、画像は生成しません。 |
 | [prompt-master-gender-swap](.claude/skills/prompt-master-gender-swap/SKILL.md) | 性別転換ポートレートのプロンプトアーキテクト（性別轉換肖像）。2 フェーズ構成です。フェーズ 1 ではまだ prompt を書かず、画像を読み取って変換の向き（男→女／女→男／中性）を宣言したうえで、髪型・服装・年齢（任意で表情・画角・変換の度合い）を ABCD 形式の確認ブロック 1 つで確認します——髪型によって隠れる部位が変わり、描写の重み配分が根本から変わるためです。フェーズ 2 では、性的二形性の優先順位（眉弓 → 顎とアゴ先 → 首と肩のライン → 人中と唇 → 額の傾斜 → 肌と髭）に沿って性別を変換しつつ、同一人物と分かる要素（目の形・二重の折り・両眼の間隔・虹彩の色・鼻筋と鼻先・肌の色・ほくろなどの特徴・顔の角度・画角）を厳格にロックした英語の画像編集 prompt を 1 本出力。バストアップでは顔よりも肩のラインの方が強い性別シグナルになるため、肩幅・僧帽筋の傾き・鎖骨・首と喉仏・三角筋と腕のテーパー・胸郭の輪郭まで作り替え、連鎖する依存関係（年齢 → 髪色としわ、表情 → 頬の持ち上がり、肩幅を狭める → 背景の埋め合わせ、衣装替え → 新たに露出する部位）も解決し、最後に微調整用のスイッチを添えます。テキストのみ出力、画像は生成しません。トリガーワード：「性別轉換」「性轉」「男變女」「女變男」など。 |
 | [prompt-master-manga-screentone](.claude/skills/prompt-master-manga-screentone/SKILL.md) | AI ビジュアル錬金術師。入力画像を「高コントラスト・線画なし水彩 ＋ スクリーントーン（Screentone）」の漫画風 prompt に変換し、元の背景や繁体字中国語の看板・文字を **そのまま厳密に保持** します。 |
 
@@ -80,13 +81,14 @@ AI 画像生成モデル（Midjourney、Seedream、Nano Banana、SD）向けに�
 
 動態生成（モーション生成）、テキスト → 動画（t2v）、画像 → 動画（i2v）、ショート動画、絵コンテ、音楽、歌詞、ボイス設計向けのツール群。
 
-> **🎬 映像生成は 3 つから選択**（この 3 つは特に混同しやすいので、ユーザーのキーワードに応じて振り分けてください）：
+> **🎬 映像生成は 4 つから選択**（この 4 つは特に混同しやすいので、ユーザーのキーワードに応じて振り分けてください）：
 >
 > | やりたいこと | トリガーキーワード | 対応 Skill | 出力形式 |
 > |---|---|---|---|
 > | 汎用的な動態生成（**デフォルト**） | 動態 / 動態生成 / 動態提示詞 | `prompt-master-video-continuity` | 単一の YAML ブロック、音声トラック付き、≤ 1300 文字 |
 > | テキスト → 動画 | 文生影 / t2v / text-to-video | `prompt-master-text-to-video` | ワンショット ＋ マルチショットの 2 種のバイリンガル映画脚本 |
 > | 画像 → 動画 | 圖生影 / i2v / img2video | `prompt-master-image-to-video` | プラン A 繊細 ＋ プラン B ダイナミック、バイリンガル ＋ 構造サマリー |
+> | 複数 Clip の AI 短編ドラマ | AI短劇 / 導演分鏡 / 分段影片提示詞 | `ai-short-drama-director` | 監督企画 ＋ 10 列の絵コンテ表 ＋ Clip ごとの YAML（各 4〜15 秒、≤ 2500 文字） |
 
 | Skill 名 | 用途 |
 |---|---|
@@ -95,6 +97,7 @@ AI 画像生成モデル（Midjourney、Seedream、Nano Banana、SD）向けに�
 | [prompt-master-image-to-video](.claude/skills/prompt-master-image-to-video/SKILL.md) | 海螺 AI ビジュアルダイナミクスアーキテクト（**圖生影 / i2v**）。1 枚の画像を再現性の高いモーションプロンプトに変換し、「プラン A：繊細・ミクロ ＋ プラン B：壮大・爆発」という対照的な 2 案を生成します。どちらも英語の本文、中国語訳、構造サマリー（被写体・背景の動き、カメラワーク）付き。テキストのみを出力し、画像は生成しません。明確に「圖生影 / i2v」と指定されたときだけトリガーされます。テキストだけの構想は text-to-video、漠然とした「動態生成」は video-continuity を使ってください。 |
 | [prompt-master-short-video](.claude/skills/prompt-master-short-video/SKILL.md) | 雰囲気重視のショート動画チーフディレクター（Vlog 風）。1 枚の静止画から 15〜25 秒の TikTok／Reels／Shorts 台本を 3 つ生成し、女性主人公の佇まいと没入感のあるムードを大切にします。 |
 | [storyboard-director](.claude/skills/storyboard-director/SKILL.md) | アニメ映画の絵コンテ監督 ＋ AI 撮影エキスパート。キャラクター設定・シーン設計・文章で書かれたストーリーを、一連の映画級な英語 text-to-image prompt（絵コンテ）に変換します。 |
+| [ai-short-drama-director](.claude/skills/ai-short-drama-director/SKILL.md) | AI 短編ドラマ監督 ＋ 絵コンテ Clip アーキテクト。監督と絵コンテ作家を一人で兼ね、テーマ・ログライン・物語・脚本・キャラクター／シーン画像から、AI 短編ドラマのプロンプト一式を組み立てます——監督意図（6 種のフック公式、A〜G の 7 つの物語テンプレート、感情曲線、情報格差、反転密度）、固定ビジュアルアンカー付きのアセットリスト、Clip に対応づけた 10 列の絵コンテ表、そして Clip ごとに独立した英語 YAML 動画 prompt（`prompt-master-video-continuity` 形式、各 4〜15 秒、ロック文字列を全 Clip で一字一句繰り返して一貫性を保持）。デフォルトはゴシック怪奇系ダークファンタジー童話の映画的ルック（ユーザー指定のスタイルで上書き可）。ムードやジャンルだけの入力なら 3 つの方向性を提案して停止します。テキストのみ出力、画像・動画は生成しません。トリガーワード：「AI短劇」「導演分鏡」「分段影片提示詞」「暗黑童話」など。 |
 | [ai-music-prompt-generator](.claude/skills/ai-music-prompt-generator/SKILL.md) | Suno／Udio 専用の音楽プロンプト専門家。抽象的な感情やジャンル融合の要望（例：「古風 × サイバーパンク」）を、「凡庸さを排するプロトコル」を盛り込んだ 600〜800 文字のプロ品質 tags に落とし込みます。 |
 | [prompt-master-lyrics](.claude/skills/prompt-master-lyrics/SKILL.md) | 達人級の作詞アーキテクト ＋ Suno 構造タグ職人。バークリー音楽大学の Pat Pattison メソッドと中華圏の巨匠（林夕、姚謙、李宗盛、方文山）の手法を融合し、必ず 3 つの質問をしたうえで 3 パターンの歌詞を生成します。 |
 | [voice-design-director](.claude/skills/voice-design-director/SKILL.md) | ハリウッド級のボイス＆聴覚体験ディレクター。抽象的なキャラクター設定や感情の要望をもとに、文学的で演じやすい英語のボイスデザインを 3 つ提案します。 |
@@ -161,13 +164,13 @@ biz-ai-video-course/
 │   ├── settings.local.json
 │   ├── lib/
 │   │   └── media_paths.py               ← GMI 実行系 3 skill が共有する素材パス定義
-│   └── skills/                          ← 42 個の skill のメインディレクトリ
+│   └── skills/                          ← 44 個の skill のメインディレクトリ
 │       ├── ai-music-prompt-generator/
 │       │   ├── SKILL.md                 ← skill の本体ファイル
 │       │   ├── references/              ← Progressive Disclosure の詳細リファレンス
 │       │   └── docs/                    ← 繁体字の人間向け版（実行時は読み込まれません）
 │       ├── prompt-master-portrait/
-│       └── ... (全 42 個)
+│       └── ... (全 44 個)
 ├── prompts/                             ← 使い回したい prompt のテキスト置き場
 ├── uploads/                             ← GMI 実行系 skill の参考素材（.gitignore 対象）
 ├── outputs/                             ← 生成された画像・動画の出力先（.gitignore 対象）
@@ -193,7 +196,7 @@ biz-ai-video-course/
 
 # 繁體中文
 
-這個專案集結了 **42 個專業 Skill**，涵蓋 **商業內容創作**、**AI 影音生成（動態生成 / 文生影 / 圖生影）**、**圖像提示詞工程**、**劇本與角色創作**，以及**直接呼叫 GMI Cloud API 出圖／出片的執行工具**。所有技能皆位於 `.claude/skills/` 目錄下，由 Claude Code 在偵測到對應觸發詞時自動載入並執行，無需手動設定。
+這個專案集結了 **44 個專業 Skill**，涵蓋 **商業內容創作**、**AI 影音生成（動態生成 / 文生影 / 圖生影）**、**圖像提示詞工程**、**劇本與角色創作**，以及**直接呼叫 GMI Cloud API 出圖／出片的執行工具**。所有技能皆位於 `.claude/skills/` 目錄下，由 Claude Code 在偵測到對應觸發詞時自動載入並執行，無需手動設定。
 
 ---
 
@@ -239,6 +242,7 @@ biz-ai-video-course/
 | [prompt-master-otaku-anima](.claude/skills/prompt-master-otaku-anima/SKILL.md) | 究極阿宅 AI + Anima 模型專用提示詞職人。從碎片化/曖昧指示設計萌系角色，以 Anima（文字編碼器 Qwen3）特有的「Danbooru 標籤＋自然語言混合」記法產出多場景高品質英文 prompt；處理服裝時自動串接 costume-design-director。 |
 | [prompt-master-hybrid-realism](.claude/skills/prompt-master-hybrid-realism/SKILL.md) | 動漫與寫實混合渲染導演。把 2D 動漫角色與 PBR 物理寫實材質（服裝、配件、背景）融合，產出高擬真的雙語 prompt。 |
 | [prompt-master-makeup](.claude/skills/prompt-master-makeup/SKILL.md) | 大師級彩妝視覺提示詞工程師。將專業彩妝理論套用於放大主體獨特特徵（雀斑、單眼皮、不對稱骨相），**拒絕**標準化「完美」模板。 |
+| [prompt-master-portrait-lighting](.claude/skills/prompt-master-portrait-lighting/SKILL.md) | 人像光影與氛圍設計總監。接收一張人像照片與模糊的情緒需求（如「唯美的沙灘攝影」），以兩階段運作：階段一先判讀原圖既有光源，提出 3 個具名的光影設計提案與 ABCD 確認題組，然後**硬性停住**；階段二在使用者確認後，才依專業攝影打光理論（林布蘭／環形／蝴蝶／分割／蚌殼光、光比與減光、輪廓光分離、黃金時刻、體積光霧、gobo 造型陰影、有出處的實用光源、冷暖色分離）編譯出一段英文**圖片編輯** prompt ＋繁中翻譯＋負面提示詞，同時硬鎖五官身分、姿勢與構圖。只輸出提示詞文字，不生成／編輯圖片。 |
 | [prompt-master-gender-swap](.claude/skills/prompt-master-gender-swap/SKILL.md) | 性別轉換肖像提示詞架構師。兩階段運作：階段一收到肖像後**先不寫 prompt**，而是判讀並宣告轉換方向（男→女／女→男／中性），再用單一 ABCD 題組確認髮型、服裝與年齡（可選表情、取景與轉換程度）——因為髮型決定哪些五官被遮蔽，也就決定描述權重該怎麼分配。階段二依性別二態性優先權（眉弓 → 下顎與下巴 → 頸肩線 → 人中與唇 → 額頭斜度 → 膚質與鬍鬚）產出一段可直接執行的英文**圖像編輯** prompt，同時硬鎖必須存活的身分錨點（眼型、雙眼皮摺、瞳距、虹膜顏色、鼻樑與鼻頭、膚色、辨識性特徵、頭部角度、取景）。因為半身照裡肩線比臉更強烈地傳遞性別訊號，它連肩寬、斜方肌坡度、鎖骨跨距、頸部與喉結、三角肌與手臂收窄、胸廓輪廓一併改寫；並處理連鎖依賴（年齡→髮色與皺紋、表情→顴肌上提、肩變窄→背景補位、換衣→新露出的解剖結構），最後附微調開關。只輸出提示詞文字，不生成／編輯圖片。觸發詞：「性別轉換」「性轉」「男變女」「女變男」等。 |
 | [prompt-master-manga-screentone](.claude/skills/prompt-master-manga-screentone/SKILL.md) | AI 視覺煉金術士。將輸入圖轉為「高對比無線條水彩 + 網點 (Screentone)」漫畫風 prompt，**嚴格保留**原始背景與繁體中文招牌/文字。 |
 
@@ -265,13 +269,14 @@ biz-ai-video-course/
 
 針對動態生成、文生影 (t2v)、圖生影 (i2v)、短影音、分鏡、音樂、歌詞、人聲設計的工具集。
 
-> **🎬 影音生成三選一**（這三個最容易混淆，請依使用者的關鍵字路由）：
+> **🎬 影音生成四選一**（這四個最容易混淆，請依使用者的關鍵字路由）：
 >
 > | 你想要 | 觸發關鍵字 | 對應 Skill | 產出形式 |
 > |---|---|---|---|
 > | 泛用動態生成（**預設**） | 動態 / 動態生成 / 動態提示詞 | `prompt-master-video-continuity` | 單一 YAML 區塊、含音軌、≤ 1300 字元 |
 > | 文字 → 影片 | 文生影 / t2v / text-to-video | `prompt-master-text-to-video` | 單鏡頭 ＋ 多鏡頭兩套雙語電影腳本 |
 > | 圖片 → 影片 | 圖生影 / i2v / img2video | `prompt-master-image-to-video` | 方案 A 微觀 ＋ 方案 B 爆發，雙語 ＋ 結構摘要 |
+> | 多段 Clip 的 AI 短劇 | AI短劇 / 導演分鏡 / 分段影片提示詞 | `ai-short-drama-director` | 導演企劃 ＋ 十欄分鏡表 ＋ 每段 Clip 一個 YAML（各 4–15 秒、≤ 2500 字元） |
 
 | Skill 名稱 | 用途 |
 |---|---|
@@ -280,6 +285,7 @@ biz-ai-video-course/
 | [prompt-master-image-to-video](.claude/skills/prompt-master-image-to-video/SKILL.md) | 海螺 AI 視覺動態架構師（**圖生影 / i2v**）。將單張圖片轉譯為高可執行性的動態提示詞，產出「方案 A 微觀細膩 ＋ 方案 B 宏觀爆發」兩組對比提案，各含英文段落、中文翻譯與結構摘要（主體/背景動態、運鏡）。僅寫文字、不生成影像。**僅**在明確「圖生影 / i2v」時觸發；純文字構想請用 text-to-video、泛指「動態生成」請用 video-continuity。 |
 | [prompt-master-short-video](.claude/skills/prompt-master-short-video/SKILL.md) | 氛圍系短影音首席導演（Vlog 風）。從單張靜態圖產出 3 個 15–25 秒 TikTok/Reels/Shorts 腳本，著重女主角的氣質與沉浸式氛圍。 |
 | [storyboard-director](.claude/skills/storyboard-director/SKILL.md) | 動畫電影分鏡導演 + AI 攝影專家。將角色設定、場景設計與文字劇情翻譯成一系列電影級的英文 text-to-image prompt 分鏡。 |
+| [ai-short-drama-director](.claude/skills/ai-short-drama-director/SKILL.md) | AI 短劇導演 ＋ 分鏡 Clip 架構師。一人兼任導演與分鏡師，把主題、一句話故事、劇本或角色／場景圖，組成一整套 AI 短劇提示詞——導演意圖（6 種鉤子公式、A–G 七種敘事模板、情緒曲線、資訊差、反轉密度）、附鎖定視覺錨點的資產清單、對應 Clip 的十欄分鏡總表，以及每段 Clip 各自獨立的英文 YAML 影片 prompt（沿用 `prompt-master-video-continuity` 格式，每段 4–15 秒，鎖定字串在各 Clip 間一字不差重複以維持連戲）。預設為哥德怪誕暗黑童話電影感，可被使用者指定的風格覆寫；若只給情緒或類型，會先提 3 個方向再停下。只輸出提示詞文字，不生成圖片或影片。觸發詞：「AI短劇」「導演分鏡」「分段影片提示詞」「暗黑童話」等。 |
 | [ai-music-prompt-generator](.claude/skills/ai-music-prompt-generator/SKILL.md) | Suno / Udio 專用音樂提示詞專家。將抽象情緒/曲風融合需求（如「古風 × 賽博龐克」）轉譯成 600–800 字元、含「反平庸協議」的生產級 tags。 |
 | [prompt-master-lyrics](.claude/skills/prompt-master-lyrics/SKILL.md) | 大師級作詞架構師 + Suno 結構詞匠。融合 Berklee Pat Pattison 系統與華語大師（林夕、姚謙、李宗盛、方文山）流程，強制 3 題提問後產出 3 個變體歌詞。 |
 | [voice-design-director](.claude/skills/voice-design-director/SKILL.md) | 好萊塢級人聲與聽覺體驗總監。針對抽象角色設定或情緒需求，產出 3 個富文學感、可演繹的英文聲線設計。 |
@@ -346,13 +352,13 @@ biz-ai-video-course/
 │   ├── settings.local.json
 │   ├── lib/
 │   │   └── media_paths.py               ← 三個 GMI 執行工具共用的素材路徑定義
-│   └── skills/                          ← 42 個 skill 主目錄
+│   └── skills/                          ← 44 個 skill 主目錄
 │       ├── ai-music-prompt-generator/
 │       │   ├── SKILL.md                 ← skill 主檔
 │       │   ├── references/              ← 漸進式揭露的詳細參考
 │       │   └── docs/                    ← 繁中人類可讀版（執行時不會被載入）
 │       ├── prompt-master-portrait/
-│       └── ... (共 42 個)
+│       └── ... (共 44 個)
 ├── prompts/                             ← 想留著重複使用的 prompt 文字檔
 ├── uploads/                             ← GMI 執行工具的參考素材（已列入 .gitignore）
 ├── outputs/                             ← 生成的圖片／影片產出區（已列入 .gitignore）
