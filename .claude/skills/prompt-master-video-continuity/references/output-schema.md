@@ -1,6 +1,8 @@
 # Output Schema Reference
 
-## YAML Structure (≤ 3000 characters total)
+Multi-Shot mode (default) structure. Single-Take mode (一鏡到底) uses `references/single-take-schema.md` instead; the Audio Trigger Mechanism below applies to both modes.
+
+## Multi-Shot YAML Structure (≤ 3000 characters total)
 
 ```yaml
 project_meta:
@@ -58,6 +60,7 @@ multi_shot_sequence:
 ### When to Generate
 * A shot containing a visible human subject → `audio_prompt` is **mandatory**.
 * A shot with no human (landscape, object, abstract) → **omit** the `audio_prompt` field entirely.
+* Single-Take mode: same rule per beat — `camera_flow[].sfx` carries the synced sound; `single_take.audio_prompt` is one continuous `[Ambience]` bed.
 
 ### [DEFAULT] No Dialogue
 * **Never invent spoken lines.** By default `audio_prompt` carries **non-verbal sound only**: breathing, sigh, laughter, footsteps, cloth rustle, wind, room tone.

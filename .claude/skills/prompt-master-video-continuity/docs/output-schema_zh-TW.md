@@ -4,7 +4,9 @@
 
 # 輸出範本參考
 
-## YAML 結構（總計 ≤ 3000 字元）
+多鏡頭模式（預設）的結構。一鏡到底模式請改用 `references/single-take-schema.md`；下方的「音軌觸發機制」兩種模式通用。
+
+## 多鏡頭 YAML 結構（總計 ≤ 3000 字元）
 
 ```yaml
 project_meta:
@@ -43,6 +45,7 @@ multi_shot_sequence:
 ### 何時生成
 * 鏡頭包含可見人類 → `audio_prompt` **必填**。
 * 鏡頭無人類（風景、物體、抽象畫面）→ **完全省略** `audio_prompt` 欄位。
+* 一鏡到底模式：各節拍套用相同規則——`camera_flow[].sfx` 承載同步聲音；`single_take.audio_prompt` 為貫穿全程的單一 `[Ambience]` 環境音底。
 
 ### 【預設】無台詞
 * **絕不自行編造台詞。** 預設情況下 `audio_prompt` 只承載**非語言聲響**：呼吸、嘆息、笑聲、腳步、衣料摩擦、風聲、空間殘響。
