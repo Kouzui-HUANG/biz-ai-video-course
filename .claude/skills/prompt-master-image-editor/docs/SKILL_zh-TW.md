@@ -45,12 +45,19 @@ description: 高階自然語言圖像編輯架構師 (Advanced NL Image Editing 
 *(用簡短的繁體中文向使用者說明：你如何解讀他們的自然語言需求，提取了哪些核心意圖，並為畫面額外補充了哪些關鍵細節以增強視覺張力。)*
 
 ### 🎨 最終提示詞 (The Ultimate Prompt)
-*(嚴格以全英文輸出為「單一連續段落」。絕對不要使用任何 [A]、[B]、[C]、[D] 標籤或小標題。請確保 ABCD 四個維度的細節無縫融合為極度豐富且流暢的描述性長句，而非單字堆疊。)*
+*(嚴格以全英文輸出為「單一連續段落」，並**整段包在一個標註 `text` 的程式碼區塊裡**，讓使用者一鍵複製。區塊內只能放提示詞本體——不放標題、粗體、條列、引用符號、中文或備註；任何補充說明都寫在區塊之後。絕對不要使用任何 [A]、[B]、[C]、[D] 標籤或小標題。為了在確保修改生效的同時不遺漏必要元素，提示詞必須依照「黃金解構順序」組成：)*
 
-- **Photography Composition**: *(Your highly detailed English description here...)*
-- **Art Style & Medium**: *(Your highly detailed English description here...)*
-- **Subject Details**: *(Your highly detailed English description here...)*
-- **Scene & Atmosphere**: *(Your highly detailed English description here...)*
+1. **Target Modifications（修改目標前置）**：*(開頭就明確寫出使用者要求的修改或修正，給它最高權重。例："A structurally flawless architectural setting featuring...")*
+2. **Preserved Visual Elements（保留元素：主體與背景）**：*(無縫描述必須保持不變的主體，以及所有不能遺失的既有背景物件。例："Framed within this is a girl with blue hair... The background features Japanese houses and a wooden desk.")*
+3. **Photography, Art Style & Atmosphere（攝影、畫風與氛圍）**：*(以鏡頭語言、光線、天氣收尾，並明確要求維持原圖媒材風格；除非使用者要求，否則不強加寫實攝影感。把構圖鎖定在原圖景別——若編輯必須維持原裁切，加上明確指令如 "keep the exact same framing and crop; do not zoom out, widen, or extend the composition."；只有使用者真的想露出更多主體時才描述擴景。畫面有皮膚時，把〈乾淨膚質渲染區塊〉的負面半段融入這段結尾。)*
+
+交付格式：
+
+````
+```text
+<完整英文提示詞——單一連續段落>
+```
+````
 
 ## 6. Standard Appendix — 乾淨膚質渲染區塊 (Clean-Skin Render Block)
 
@@ -66,7 +73,7 @@ description: 高階自然語言圖像編輯架構師 (Advanced NL Image Editing 
 
 **非攝影媒材**：若目標是插畫、動漫、繪畫或線稿，保留正面半段與「數位瑕疵」類詞彙（banding、posterization、dithering、compression artifacts、speckling），但刪掉相機專屬詞彙（base ISO、sensor noise、signal-to-noise、film grain）。例外：若原圖本身刻意帶顆粒或網點作為風格的一部分，則必須保留並明確指出。
 
-**獨立 Negative Prompt 欄位（可選）**：只要使用者的工具有這個欄位，就主動提供下列清單——寫在這裡比塞進正面提示詞更有效：
+**獨立 Negative Prompt 欄位（可選）**：只要使用者的工具有這個欄位，就主動提供下列清單，並放在**獨立於主提示詞的另一個程式碼區塊**裡——寫在這裡比塞進正面提示詞更有效：
 
 ```
 chroma noise, color noise, luminance noise, grain, film grain, sensor noise, speckle, stipple, dither, color banding, posterization, compression artifacts, blotchy skin, mottled skin, uneven skin tone, patchy complexion, discolored skin, muddy skin, dirty face, grimy, soot, smudges, green cast, grey cast, magenta cast, oversharpened, harsh pore texture, acne, blemishes
