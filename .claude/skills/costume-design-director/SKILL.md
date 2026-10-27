@@ -12,6 +12,7 @@ Design philosophy: **Wardrobe is Narrative** — clothing is a visual extension 
 - **No physics/logic violations**: Never pair incompatible items with context (e.g., strapless mini dress in winter without outerwear; neon colors at a funeral).
 - **Dictionary-first terminology**: English descriptions MUST prioritize terms from the gender-appropriate Fashion Dictionary (see §2). Load it at the start of every design task.
 - **Restraint over excess**: Accessories ≤ 3 items. Visual focal points ≤ 2. Serve the whole, never enumerate the dictionary.
+- **Filter-safe wording**: Never write `single-breasted` / `double-breasted` in `[EN]` — the substring "breast" trips image platforms' keyword safety filters and rejects the whole generation (`HTTP 400: Generation blocked by safety policy`), even for a fully clothed business suit. Write `a single row of buttons` / `a double row of buttons` instead (the dictionaries already do). `[ZH]` 單排釦／雙排釦 is fine.
 - **Bilingual integrity (non-negotiable)**: Every field MUST output BOTH an `[EN]` line AND a `[ZH]` line, with `[ZH]` placed immediately after its `[EN]`. Never omit, merge, abbreviate, or skip the `[ZH]` line — not even when the response is long, the content looks similar, or you are pressed for space. Before sending, re-scan the output and regenerate any field whose `[ZH]` is missing or empty.
 
 ## 2. Knowledge Hub

@@ -21,7 +21,7 @@ description: Elite Visual Prompt Engineer & Art Director. Use this skill to tran
 ### 階段二：三維度方案生成 (Phase 2: Tri-Variant Prompt Generation)
 待使用者回答上述 3 個問題後，請基於其回覆，建構 **3 個具備高度差異性**（例如：寫實電影感 / 抽象表現主義 / 賽博龐克概念藝術）的提示詞方案。
 
-每個提示詞方案必須嚴格遵守以下 `[ABCD 結構]`，並以英文輸出最終提示詞，以便模型直接使用：
+每個提示詞方案都必須涵蓋以下 `[ABCD 結構]` 的四個維度。ABCD 結構**僅作為內部構思框架**——請把四個維度融合成**一段連貫的自然語言英文段落**，以便模型直接使用：
 
 * **A. 攝影與構圖 (Photography Composition)**: 
     定義鏡頭距離 (Close-up, Wide shot), 拍攝角度 (Low angle, Dutch angle), 焦距 (35mm, 85mm), 景深 (Bokeh, f/1.8), 構圖法則 (Rule of thirds), 相機型號模擬 (Leica, Sony A7R)。
@@ -39,5 +39,9 @@ description: Elite Visual Prompt Engineer & Art Director. Use this skill to tran
 * **設計理念**：[簡述為什麼這樣設計，約 50 字]
 * **Prompt**: 
 ```text
-(A) [攝影與構圖], (B) [藝術風格與媒介], (C) [主體特徵], (D) [場景與氛圍] --ar 16:9 [或其他參數]
+[一段連貫的英文段落，融合攝影與構圖、藝術風格與媒介、主體特徵、場景與氛圍]
 ```
+
+**提示詞規則：**
+* **不標維度標籤**：提示詞內絕不寫 `(A)` `(B)` `(C)` `(D)` 或任何小標題——ABCD 拆解只留在內部流程。
+* **不加參數**：絕不附加長寬比或任何模型參數（例如 `--ar 16:9`、`--v 6`）——由使用者在生成工具中自行設定。

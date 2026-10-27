@@ -19,7 +19,7 @@ sleeveless, short sleeves, long sleeves, three-quarter sleeves, rolled-up sleeve
 neckline, crew neck, V-neck, scoop neck, boat neck, henley neck, spread collar, point collar, button-down collar, club collar, wing collar, band collar, mandarin collar, Nehru collar, shawl collar, notch lapel, peak lapel, camp collar, Cuban collar, Balmoral collar, pin collar, tab collar, cutaway collar, stand collar, funnel neck, mock neck, turtleneck, cowl neck, hood, collarless
 
 ### 風格修飾（Details & Modifiers）
-frilled, ruffled, pleated, embroidered, striped, plaid, flannel, checkered, polka dot, floral print, geometric print, animal print, tie-dye, color block, ombré, oversized, slim fit, regular fit, relaxed fit, tailored, cropped, sheer, mesh, knitted, ribbed, quilted, distressed, raw hem, button-down, button-up, zipper front, half-zip, quarter-zip, drawstring, snap button, double-breasted, single-breasted, patch pocket, flap pocket, welt pocket, chest pocket, pattern, embroidery, monogram, logo, graphic print, acid wash, garment-dyed, pigment-dyed, stonewashed, open clothes
+frilled, ruffled, pleated, embroidered, striped, plaid, flannel, checkered, polka dot, floral print, geometric print, animal print, tie-dye, color block, ombré, oversized, slim fit, regular fit, relaxed fit, tailored, cropped, sheer, mesh, knitted, ribbed, quilted, distressed, raw hem, button-down, button-up, zipper front, half-zip, quarter-zip, drawstring, snap button, double row of buttons, single row of buttons, patch pocket, flap pocket, welt pocket, chest pocket, pattern, embroidery, monogram, logo, graphic print, acid wash, garment-dyed, pigment-dyed, stonewashed, open clothes
 
 ---
 
@@ -71,7 +71,7 @@ cotton, modal, silk, satin, flannel, fleece, terry cloth, waffle knit, ribbed, s
 ## 五、制服／套裝（Uniforms & Suits）
 
 ### 正裝／西裝
-two-piece suit, three-piece suit, tuxedo, dinner jacket, morning coat, frock coat, tailcoat, double-breasted suit, single-breasted suit, slim-fit suit, classic-fit suit, Italian-cut suit, British-cut suit, linen suit, seersucker suit, velvet suit, corduroy suit, tweed suit, pinstripe suit, power suit, business suit, lounge suit, Mao suit, Zhongshan suit
+two-piece suit, three-piece suit, tuxedo, dinner jacket, morning coat, frock coat, tailcoat, suit with a double row of buttons, suit with a single row of buttons, slim-fit suit, classic-fit suit, Italian-cut suit, British-cut suit, linen suit, seersucker suit, velvet suit, corduroy suit, tweed suit, pinstripe suit, power suit, business suit, lounge suit, Mao suit, Zhongshan suit
 
 ### 制服
 military uniform, naval uniform, pilot uniform, police uniform, firefighter uniform, chef uniform, school uniform, sailor suit, butler uniform, bellboy uniform, doorman uniform, security uniform, medical scrubs, lab coat, clerical vestments
@@ -80,7 +80,7 @@ military uniform, naval uniform, pilot uniform, police uniform, firefighter unif
 blazer, suit jacket, waistcoat, vest, dress shirt, dress pants, tie, necktie, bow tie, pocket square, cummerbund, suspenders, braces, cufflinks, tie clip, tie bar, lapel pin, boutonniere, sash, epaulette, badge, insignia, belt, dress belt
 
 ### 風格修飾
-pinstripe, chalk stripe, herringbone, houndstooth, windowpane, glen plaid, tartan, solid, textured, peak lapel, notch lapel, shawl lapel, slim lapel, wide lapel, double-breasted, single-breasted, two-button, three-button, one-button, vented, double-vented, unvented, half-canvas, full-canvas, fused, embroidered, braided trim, piping, gold button, pattern, embroidery
+pinstripe, chalk stripe, herringbone, houndstooth, windowpane, glen plaid, tartan, solid, textured, peak lapel, notch lapel, shawl lapel, slim lapel, wide lapel, double row of buttons, single row of buttons, two-button, three-button, one-button, vented, double-vented, unvented, half-canvas, full-canvas, fused, embroidered, braided trim, piping, gold button, pattern, embroidery
 
 ---
 

@@ -83,7 +83,7 @@ sailor suit, school uniform, maid outfit, nurse uniform, military uniform, fligh
 blazer, vest, necktie, bow tie, sash, armband, badge, epaulette, crest, pleated skirt, dress shirt, knee-high socks, loafers
 
 ### 風格修飾
-frilled, striped, plaid, embroidered, braided trim, piping, gold button, double-breasted, single-breasted, pattern, embroidery
+frilled, striped, plaid, embroidered, braided trim, piping, gold button, double row of buttons, single row of buttons, pattern, embroidery
 
 ---
 
