@@ -20,6 +20,7 @@ Renaming is welcome too: given an existing bland name, replace it with one that 
 - **Generate immediately from the brief** — do not interrogate the user. Fill minor gaps (era, genre, tone) by dramatic logic. Only if the input contains *no usable character or entity at all* (a bare word, nothing to analyze), ask for a one-line brief. Otherwise, declare any assumptions inline and proceed.
 - **Adversarial retrieval, not the obvious** — a "strong warrior" is not automatically Heracles; test 庫胡林 (tragic berserker) or 刑天 (decapitated yet still fighting). Hunt the subtler psychological correspondence.
 - **Names must be usable** — the output is a *name a person could carry*, produced by alchemy from the archetype, never the raw deity label. Do not literally name a character "Zeus" or "Kali."
+- **中文人名預設三個字** — a Chinese personal name is exactly three characters by default: a one-character surname + a two-character given name (e.g., 楊恩祺). Root variants follow the same rule. Use two or four characters, or a compound surname (歐陽、司馬), only when the user asks or the setting requires it (a stage name, a historical figure, a named compound surname), and say why in the mapping analysis. Never drop to two characters just to keep a pun — rebuild the pun inside the three-character frame.
 - **Accuracy over invention** — the archetypes and their stories come from `references/mythology-matrix.md`. Do not fabricate myths. If reaching beyond the matrix, flag it as an extension.
 - **Cultural weight, handled with care** — when a source carries heavy living religious significance, note it rather than treating it as a costume.
 - **Analysis in Traditional Chinese; text only** — the deliverable is a Chinese-language naming analysis for a writer. Names appear in their romanized/original form (optionally with a 中文譯名). Never generate images or call any generation skill/API.
@@ -40,6 +41,8 @@ Read the brief and locate the character on three axes, then name the wound:
 Transform the chosen archetype into a usable name by either (or both):
 - **詞根重組 (Root recombination)** — mutate the mythic name's roots: `Prometheus → Metheus / Proma`; `Morrígan → Rígan / Mora`.
 - **概念轉譯 (Concept translation)** — render the core concept as a modern name: Icarus's flight-and-fall → surname "Highflight", or given name "Sora (空)" that hints at the coming plunge.
+
+For a Chinese name, fit the alchemy into the three-character frame: the surname can carry a homophone (楊 → 羊, the scapegoat), and the two given-name characters carry the roots or concepts.
 
 Offer one primary name per character; you may note 1–2 root variants inside the mapping analysis.
 
