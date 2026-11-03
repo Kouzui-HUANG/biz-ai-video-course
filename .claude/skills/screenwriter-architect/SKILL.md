@@ -23,10 +23,12 @@ Take a shallow, vague or single-sentence idea and return a **shootable first-dra
 
 - **`references/intake-protocol.md`** — the 立項問診 question bank (設定／劇情／長度), selection rules, ABCD block format, defaults table. Read in **Phase 1**, always.
 - **`references/revision-protocol.md`** — the mandatory internal multi-draft loop with every pass's audit questions, the final checklist, stop condition and retreat paths. Read at the **start of Phase 2**, always.
-- **`references/craft-structure.md`** — logline, want vs need, theme argument, scene-level 目標-阻礙-結果 & value turn, 因此／但是 causality, arc, 外化/客觀對應物, setup & payoff, 配角功能, budget, 商業短片／短影音／AI 影片 rules, 場次表 method. Read in **Pass 0 and Pass 1**.
+- **`references/craft-structure.md`** — logline, want vs need, theme argument, scene-level 目標-阻礙-結果 with 核心問題 & 主要對方 (whoever the answer depends on), value turn & 位階 vs 籌碼, 為誰而戰, 因此／但是 causality, arc, tone set by stakes reversibility, 主動 ≠ 控制, 外化/客觀對應物, setup & payoff, 配角功能, budget, 商業短片／短影音／AI 影片 rules, 場次表 method (with a 主要轉換 column). Read in **Pass 0 and Pass 1**.
 - **`references/craft-dialogue.md`** — 6 techniques for poetic-yet-plain dialogue, 7 forbidden patterns, 4 tests, 一句三功能, and the 7-step rewrite blade, all with 中文 before/after examples. Read in **Pass 2 and Pass 3**.
 - **`references/audience-pass.md`** — the 觀眾冷讀 method: 資訊帳本 (must-know ledger), inference-step limits by runtime, 人心 vs 事件設定 gaps, nine audits, the least-intrusive fix order and a before/after case. Read in **Pass 0** (to draft the ledger) and **Pass 4**.
 - **`references/format-and-output.md`** — runtime → 頁數／場次數／台詞量 table, screenplay format, 動作行 rules, and the exact six-block deliverable skeleton. Read in **Pass 0** (to size the story) and again **before output**.
+- **`references/situation-design.md`** — OPTIONAL situation toolkit: seven knobs (對手與控制／輸贏結構／誰知道什麼／規矩／關係與為誰／賭注／位階與籌碼), the 14 transformations with thresholds, genre set by stakes reversibility, and the 22-card index. Read in **Pass 1** when a scene turns but still has no force (find the flat knob, or check the closest card's required roles and failure condition), and in **Pass 0** only when the user explicitly asks for a situation type by name (「寫一個復仇故事」). Never pick a card on your own — a brief that describes a conflict, or only a theme, gets no card. Cards stay internal; their names never reach the output.
+- **`references/situation-cards.md`** — 22 situation cards (required roles, fixed knobs, usual turns, failure condition, calibration titles) plus 4 whole-film skeletons. Read only the card being used or diagnosed.
 
 ## 3. Cognitive Loop (SOP)
 
@@ -51,7 +53,7 @@ Run the full loop in `references/revision-protocol.md`: **Pass 0 骨架＋資訊
 
 ## 5. Forbidden Patterns
 
-- **不准展示內部過程** — no Draft α–ε, no visible scratchpad, no audit tables, cold-read monologue or 資訊帳本 in the output.
+- **不准展示內部過程** — no Draft α–ε, no visible scratchpad, no audit tables, cold-read monologue, 資訊帳本 or situation jargon (card, knob or transformation names, or analysis phrases such as 「最壞結果可挽回」) anywhere in the output, 【立項假設】 included.
 - **不准角色說出主題** —「原來人生就是不斷失去啊」-class lines are an automatic rewrite.
 - **不准用形容詞演戲** —「他難過地看著她」 → find the action instead.
 - **不准寫鏡頭指示** in the screenplay body (景別／運鏡 belong to shot-script-director) unless a shot IS the narrative device.
