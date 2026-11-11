@@ -1,31 +1,45 @@
 ---
 name: skill-translator
-description: Generates human-readable Traditional Chinese (zh-TW) translations of skill files (SKILL.md and references). It operates on a progressive disclosure basis, storing the translations safely in a docs/ folder to avoid polluting the AI's context window. Use this skill immediately after skill-optimizer or whenever a user requests a translated/readable version of an existing skill.
+description: Writes or refreshes the human-readable Traditional Chinese (zh-TW) copy of a skill's SKILL.md (and its references on request) in the skill's docs/ folder, kept out of the AI's runtime context. Use when the user asks to translate a skill or update its Chinese docs (「翻譯技能」「技能中文版」「更新中文說明」「SKILL_zh-TW」), and as the last step after skill-optimizer. Not for translating prompts or other text.
 ---
 
-# Role: Skill Localizer & Context Protector (zh-TW)
+# Skill Translator (zh-TW)
 
-Your objective is to translate highly technical, dense AI prompt instructions into easily readable Traditional Chinese for human referents. You must perform this translation **without ever compromising the AI's runtime context window**.
+The AI reads `SKILL.md`; people (the user and course students) read `docs/SKILL_zh-TW.md`. Keep the two saying the same thing, without the translation ever entering the AI's context.
 
-## 1. The Core Directive (Context Window Protection)
+## Rules
 
-The AI Agent relies on `SKILL.md` being as lightweight as possible. Creating human-readable translations risks bloating the context window if the AI tries to read them during normal operation. 
+1. **Never point to `docs/`** from SKILL.md or any `references/` file. Claude reads what SKILL.md points to, so a single link would load the same instructions twice in a second language, and a stale translation could contradict the original.
+2. **Translate, don't edit.** Don't add, drop or "improve" anything: the copy has to show what the skill actually does. Keep the Markdown structure. Keep verbatim: code, file paths, frontmatter keys, trigger phrases, prompt templates and quoted user phrases, because users and tools match on those exact strings.
+3. **Wording:** Traditional Chinese as used in Taiwan. Keep industry terms in English where that's normal (Frontmatter, Progressive Disclosure, eval, few-shot), with a short Chinese gloss the first time if it helps.
+4. **Show the source date** so a stale copy is easy to spot (format below).
 
-**ABSOLUTE RULE**: The translated files you create MUST NEVER be linked, referenced, or mentioned within the core `SKILL.md` or any operational `references/*.md` files. They must remain completely invisible to the skill's standard cognitive loop.
+## File format
 
-## 2. Translation Workflow
+Save `<skill-dir>/docs/SKILL_zh-TW.md`; a translated reference goes to `docs/<NAME>_zh-TW.md`. Start the file like this:
 
-When invoked to translate a skill into Traditional Chinese, execute the following steps:
+```markdown
+# <skill-name>（zh-TW 人類可讀版）
 
-1. **Target Analysis**: Identify the target skill directory and read its `SKILL.md` (and any related `references/*.md` files if requested).
-2. **Translation**: Translate the content into fluent, natural Traditional Chinese (zh-TW). 
-    * Ensure technical terms (e.g., "Few-Shot", "Frontmatter", "Progressive Disclosure") are either translated accurately or kept in English if that is the industry standard.
-    * Maintain the original Markdown structure, headers, and bullet points.
-3. **Storage**: 
-    * Create a `docs/` subdirectory inside the target skill's folder (e.g., `.agent/skills/<target-skill>/docs/`).
-    * Save the translated `SKILL.md` as `docs/SKILL_zh-TW.md`.
-    * If translating reference files, save them as `docs/REFERENCE_NAME_zh-TW.md`.
-4. **Final Verification**: Double-check the original `SKILL.md` and ensure you **DID NOT** accidentally add a link to the new `docs/` folder inside it. 
+> 本文件為 `SKILL.md` 的繁體中文對照翻譯，僅供人類閱讀；AI 執行時不會載入本檔。
+> 原檔最後更新：YYYY-MM-DD。內容若有出入，以 `SKILL.md` 為準。
 
-### Why the `docs/` folder?
-By placing translations in a `docs/` folder and actively omitting any reference to it in the main `SKILL.md`, the AI's Progressive Disclosure pattern guarantees that these translated files will never be autonomously loaded into the context window, preserving 100% of the AI's reasoning capacity for execution.
+## Frontmatter 說明
+
+- **name**：`<skill-name>`
+- **description（觸發條件）**：<translated description>
+```
+
+Then translate the body. Take the date from `git log -1 --format=%cs -- <skill-dir>/SKILL.md`, or from the file's modification date when it has uncommitted changes.
+
+## Workflow
+
+1. Read the target `SKILL.md`, plus any `references/*.md` the user asked for.
+2. Translate following the rules, and write the file(s) in `docs/`.
+3. Check that SKILL.md and the references still contain no link to, or mention of, `docs/`.
+4. **Sync mode** (when asked to update all translations): for each skill with a `docs/SKILL_zh-TW.md`, compare the date in its header (or the file dates) with SKILL.md's last change, and re-translate the stale ones. Report which ones you updated.
+
+## Gotchas
+
+- 「翻譯這段提示詞」 is about prompt text, not a skill: it isn't this skill's job.
+- References that are already in Chinese don't need a copy; note that in the header instead.

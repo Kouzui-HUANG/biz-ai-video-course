@@ -21,3 +21,7 @@ outputs/
 # Python
 __pycache__/
 *.pyc
+
+# skill-creator 評測工作區與 `claude plugin eval` 報告（本機產物）
+/.skill-workspaces/
+.claude/skills/*/evals/results/

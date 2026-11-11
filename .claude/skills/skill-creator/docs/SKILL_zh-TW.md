@@ -1,362 +1,476 @@
+# skill-creator（zh-TW 人類可讀版）
+
+> 本文件為 `SKILL.md` 的繁體中文對照翻譯，僅供人類閱讀；AI 執行時不會載入本檔。
+> 原檔最後更新：2026-11-11。內容若有出入，以 `SKILL.md` 為準。
+> `references/` 與 `agents/` 底下的檔案為 Anthropic 的英文原文，未另行翻譯（其中 `references/description-optimization.md` 與 `references/other-environments.md` 另含以英文撰寫的本地新增內容）。
+
+## Frontmatter 說明
+
+- **name**：`skill-creator`
+- **description（觸發條件）**：建立、改進技能，並用 eval（評測）測試技能（有技能 vs. 對照組〔baseline〕的執行、審閱檢視器、benchmark〔基準測試〕、觸發調校）。只要使用者想做一個技能、改變某個既有技能的功能、修正某個技能一再犯的錯，或為技能撰寫或執行測試案例，即使沒有說出 eval 這個詞也要使用（「做一個技能」「把這個流程做成技能」「修改技能」「技能一直出錯」「改完跑測試」「幫技能做測試」）。不適用於精簡 SKILL.md（→ skill-optimizer），也不負責其 zh-TW 說明文件（→ skill-translator）。
+- **license**：`Complete terms in LICENSE.txt`（完整條款見 LICENSE.txt）
+- **metadata**：
+  - **upstream**（上游來源）：Anthropic 的 skill-creator（Apache-2.0），同步於 2026-11-08
+  - **local-changes**（本地修改）：2026-11-11：新增內規（house rules）；description 最佳化與其他環境的說明移至 references/
+
 ---
-name: skill-creator
-description: Guide for creating effective skills. This skill should be used when users want to create a new skill (or update an existing skill) that extends Claude's capabilities with specialized knowledge, workflows, or tool integrations. You MUST ALWAYS load and trigger skill-optimizer and skill-translator to finalize the skill creation.
-license: Complete terms in LICENSE.txt
+
+# Skill Creator（技能建立器）
+
+一個用來建立新技能、並反覆迭代改進技能的技能。
+
+從高層次來看，建立技能的流程大致如下：
+
+- 決定你要這個技能做什麼，以及大致該怎麼做
+- 寫出技能的草稿
+- 設計幾個測試提示詞，讓能使用該技能的 Claude 跑這些提示詞
+- 協助使用者從質性與量化兩方面評估結果
+  - 在這些執行於背景進行的同時，如果還沒有量化 eval，就先擬幾個（如果已經有了，可以直接沿用，或在你覺得需要調整時加以修改）。接著向使用者說明這些 eval（若原本就有，就說明既有的那些）
+  - 用 `eval-viewer/generate_review.py` 腳本把結果呈現給使用者檢視，也讓他們看看量化指標
+- 根據使用者評估結果後給的回饋改寫技能（量化 benchmark 若暴露出明顯缺陷，也據此修改）
+- 重複以上步驟，直到你滿意為止
+- 擴充測試集，以更大的規模再試一次
+
+使用這個技能時，你的工作是判斷使用者目前處於這個流程的哪個階段，然後切入，協助他們推進這些階段。舉例來說，使用者可能會說 "I want to make a skill for X"（我想做一個處理 X 的技能）。你可以幫忙釐清他們的意思、寫草稿、寫測試案例、弄清楚他們想怎麼評估、跑完所有提示詞，然後重複。
+
+另一方面，使用者也可能已經有技能的草稿了。這種情況下，你可以直接進入循環中的評測／迭代部分。
+
+當然，你應該隨時保持彈性；如果使用者說 "I don't need to run a bunch of evaluations, just vibe with me"（我不需要跑一堆評測，跟我一起憑感覺來就好），那就改照這種方式做。
+
+接著，在技能完成之後（不過再強調一次，順序可以彈性調整），你還可以執行技能 description 改進器來最佳化技能的觸發——我們為它另外準備了一整支腳本。
+
+這樣可以吧？可以。
+
+這個版本是 Anthropic 的 skill-creator，再加上下方針對本技能庫的**內規**（house rules）。兩者有衝突時，以內規為準：內規反映的是本技能庫的規模與使用對象。
+
+## 與使用者溝通（Communicating with the user）
+
+skill creator 的使用者，對程式術語的熟悉程度可能天差地遠。如果你還沒聽說（你又怎麼可能聽說，這是最近才開始的事），現在有一股趨勢：Claude 的強大能力正激勵水電工打開他們的終端機，也讓爸媽和爺爺奶奶上 Google 搜尋 "how to install npm"（如何安裝 npm）。另一方面，大多數使用者應該還是相當懂電腦的。
+
+所以請留意情境中的線索，判斷該怎麼措辭！在預設情況下，大致給你一點概念：
+
+- "evaluation"（評估）和 "benchmark"（基準測試）算是邊緣，但還可以
+- 至於 "JSON" 和 "assertion"（斷言），要先從使用者身上看到明確的線索、確定他們知道這些是什麼，才能不加解釋地直接使用
+
+有疑慮時，簡短解釋一下術語是可以的；如果不確定使用者懂不懂，也儘管附上簡短的定義來說明。
+
+用使用者的語言回覆；本技能庫的使用者大多使用繁體中文或日文。
+
+## 本技能庫的內規（House rules for this library）
+
+*本地新增：本節以及 `metadata` 中列出的修改，變更了 Anthropic 以 Apache-2.0 授權的 skill-creator。*
+
+這個版本只為一套技能庫服務：`.claude/skills/` 裡數十個創意指導與提示詞撰寫類的技能，主要以繁體中文使用，並會交給課程學員，而學員可能在 Claude Code、Claude.ai 或其他代理（agent）中執行它們。
+
+1. **先確認它該不該是一個（新的）技能。** 幾乎每個工作階段都需要的規則，應該放在 `CLAUDE.md`，而不是做成技能。建立技能之前，先掃過既有技能，看看有沒有重疊：近乎重複的技能，是選錯技能的主因。優先擴充既有技能，否則就讓兩者的 description 明確區隔開來。
+
+2. **Description 預算。** 所有技能的 description 共用同一份清單預算（在 Claude Code 中約為上下文視窗的 1%），而且 Claude Code 的內建技能也會用掉其中一部分。一旦超出，最少用到的技能會失去 description，觸發也不再可靠，所以「寫得強勢又冗長」（"pushy and long"）的做法，在這裡規模一大就撐不住：
+   - 目標約 300 個字元；只有在技能有容易混淆的相鄰技能時才放寬到 500；絕不超過 1,024（Agent Skills 規格；Claude.ai 與 API 會拒收更長的）；
+   - 先用一句話說明它做什麼，接著寫 "Use when …"，列出使用者實際會打的詞句（中文與英文），最後針對最容易混淆的相鄰技能，最多加上一兩條 "not for X (→ other-skill)" 的轉介；
+   - 不要有角色頭銜（"Elite…"、"Chief…"），不要有流程指示，不要有 `<` 或 `>`，也不要有「冒號後接空格」（嚴格的 YAML 解析器會拒收，包括 Claude.ai 上傳；Claude Code 雖然能容忍）；
+   - 改完 description 後檢查整份清單：執行 `claude -p "ok" --debug`，如果仍然超出預算，`~/.claude/debug/` 裡最新的檔案會寫出 "Skill listing over budget: N skills, X chars > Y budget"。
+
+3. **可攜的 frontmatter。** 只使用 `name`（與資料夾名稱完全相同）、`description`、`license`、`compatibility`、`metadata` 和 `allowed-tools`；其他鍵在 Claude Code 以外都是硬性錯誤（hard error）。僅限 Claude Code 的可見度設定（`name-only`、`user-invocable-only`）要寫在設定鍵 `skillOverrides` 裡，而不是 frontmatter。
+
+4. **捕捉使用者的知識，而非通用知識。** 技能的價值在於 Claude 推斷不出來的東西：使用者的修正、品味、失敗案例與自家格式。省略泛泛的技藝講解和通用的提示詞建議。在 2026 年的 benchmark 中，依模型的通用知識寫成的技能，表現比完全不用技能還差。
+
+5. **規則留在 SKILL.md。** 硬性規則（禁止事項、必要格式、數值上限、輸出語言）應放在 SKILL.md 靠前的位置：分散在多個檔案中的規則容易被漏掉，而且在上下文壓縮（context compaction）之後，只有技能的前約 5,000 個 token 會被重新附上。只把查閱用資料（型錄、詞彙表、大型範例庫、變體細節）移到 `references/`，而且每份都要附上 "read this when…"（何時該讀）的指引。
+
+6. **Gotchas（踩雷紀錄）。** 每個技能都以 `## Gotchas` 一節作結：寫下實際發生過的失敗，以及應該改怎麼做。當使用者修正某個輸出時，除了加上這條 gotcha，*還要*加一個測試案例，用它的斷言抓住這個問題，這樣之後的編輯或模型更新就無法悄悄讓問題復發。Claude 的記憶裡可能已經存有這類修正，但學員拿到的只有技能檔案。
+
+7. **創作類技能也要測試。** 這裡的技能大多產出提示詞或腳本。它們的硬性規則（數量、禁用詞或禁用鏡頭、長度上限、格式、語言）都是很好的斷言；品味則交給審閱檢視器。所以即使是「主觀」的技能，也預設要建議測試案例。
+
+8. **換模型後要重測。** 模型更換時，重跑 eval。如果無技能的對照組現在在某個部分已經追平技能，那個部分就不再發揮作用：提議把它刪掉。
+
+9. **工作區不要放在 `.claude/skills/` 裡。** 把 `<skill-name>-workspace/` 放在 repo 根目錄的 `.skill-workspaces/` 底下（已設為 git 忽略），而不是放在技能旁邊，讓技能資料夾裡只有技能。
+
+10. **每次建立或更新技能，都依這個順序收尾：** 測試通過或使用者認可 → **skill-optimizer** → **skill-translator**（寫出 `docs/SKILL_zh-TW.md`）→ 若新增了技能，或技能的用途或觸發條件有變，就更新它在 `README.md` 中的那一列（日本語與繁體中文兩張表都要）。這裡的技能都是就地編輯，所以只有在使用者要求時才打包 `.skill` 檔。
+
 ---
 
-# Skill Creator (技能建立器)
+## 建立技能（Creating a skill）
 
-本技能提供建立有效技能的指南。
+### 掌握意圖（Capture Intent）
 
-## 關於技能 (About Skills)
+先理解使用者的意圖。目前的對話可能已經包含使用者想保存下來的工作流程（例如他們說 "turn this into a skill"〔把這個做成技能〕）。若是如此，先從對話紀錄中擷取答案——用了哪些工具、步驟的順序、使用者做過的修正、觀察到的輸入／輸出格式。使用者可能需要補上缺漏，並應在進入下一步之前確認。
 
-技能是模組化、獨立的套件，透過提供專業知識、工作流程和工具來擴展 Claude 的能力。將它們視為特定領域或任務的「入門指南」— 它們將 Claude 從通用型代理轉換為具備模型無法完全擁有的程序性知識的專業代理。
+1. 這個技能應該讓 Claude 能做到什麼？
+2. 這個技能應該在什麼時候觸發？（使用者的哪些說法／情境）
+3. 預期的輸出格式是什麼？
+4. 要不要建立測試案例來驗證技能有效？輸出可以客觀驗證的技能（檔案轉換、資料擷取、程式碼生成、固定的工作流程步驟）能從測試案例中獲益。輸出偏主觀的技能（寫作風格、藝術）仍然有可測試的硬性規則（格式、數量、禁止事項），所以在本技能庫中，預設要建議測試案例，品味的判斷則交給檢視器（內規第 7 條）。由使用者決定。
 
-### 技能提供的內容 (What Skills Provide)
+### 訪談與研究（Interview and Research）
 
-1. 特定的工作流程 (Specialized workflows) - 針對特定領域的多步驟程序
-2. 工具整合 (Tool integrations) - 處理特定文件格式或 API 的指示
-3. 領域專業知識 (Domain expertise) - 公司特定的知識、架構 (schemas)、業務邏輯
-4. 綑綁資源 (Bundled resources) - 用於複雜和重複性任務的腳本、參考資料和素材
+主動詢問邊界情況、輸入／輸出格式、範例檔案、成功標準與相依項目。等這部分都釐清之後，再開始寫測試提示詞。
 
-## 核心原則 (Core Principles)
+檢查有哪些可用的 MCP——如果對研究有幫助（搜尋文件、尋找類似技能、查詢最佳實務），有子代理可用時就透過子代理平行研究，否則就在當前對話中直接進行。先備妥背景資訊再上場，以減輕使用者的負擔。
 
-### 簡潔是關鍵 (Concise is Key)
+### 撰寫 SKILL.md（Write the SKILL.md）
 
-上下文視窗是一項公共資源。技能必須與 Claude 所需的所有其他內容共享上下文視窗：系統提示詞、對話歷史、其他技能的元數據，以及實際的使用者請求。
+根據對使用者的訪談，填寫以下組成部分：
 
-**預設假設：Claude 已經非常聰明。** 僅添加 Claude 尚未擁有的上下文。對每一段資訊提出質疑：「Claude 真的需要這個解釋嗎？」以及「這段文字值得它所消耗的 token 成本嗎？」
+- **name**：技能識別名稱，與資料夾名稱完全相同（小寫字母、數字、連字號）
+- **description**：何時觸發、做什麼。這是主要的觸發機制——既要寫技能做什麼，**也要**寫何時使用它的具體情境。所有「何時使用」的資訊都放在這裡，不要放在本文。Claude 確實有「觸發不足」（undertrigger）的傾向（也就是在技能派得上用場時卻不使用它），但在本技能庫中，解法是寫出有辨識度的觸發詞，而不是加長篇幅：請遵循內規第 2 條。例如，與其寫 "Helps with video prompts."（協助處理影片提示詞。），不如寫 "Writes multi-shot video-generation prompts in YAML with audio tracks. Use when the user asks for 動態提示詞, 影片提示詞 or a video prompt from reference images. Not for text-to-video prose scripts (→ prompt-master-text-to-video)."（意思是：以 YAML 撰寫含音軌的多鏡頭影片生成提示詞；在使用者要求動態提示詞、影片提示詞，或依參考圖要一份影片提示詞時使用；不適用於文生影的散文腳本〔→ prompt-master-text-to-video〕。）
+- **compatibility**：所需工具、相依項目（選填，很少需要）
+- **技能的其餘部分 :)**
 
-偏好提供簡潔的範例，而非冗長的解釋。
+### 技能撰寫指南（Skill Writing Guide）
 
-### 設定適當的自由度 (Set Appropriate Degrees of Freedom)
-
-根據任務的脆弱性和可變性來搭配合適的具體程度：
-
-**高自由度 (基於文字的指示)**：當多種方法都有效、決策取決於上下文，或者由啟發式方法引導時使用。
-
-**中等自由度 (帶有參數的虛擬程式碼或腳本)**：當存在偏好的模式、可接受一定程度的變化，或者配置會影響行為時使用。
-
-**低自由度 (具體的腳本、少量參數)**：當操作非常脆弱且容易出錯、一致性至關重要，或者必須遵循特定順序時使用。
-
-將 Claude 想像成在探索一條路徑：懸崖旁的狹窄橋樑需要具體的護欄 (低自由度)，而開闊的原野則允許多種路線 (高自由度)。
-
-### 技能的剖析 (Anatomy of a Skill)
-
-每個技能都包含一個必備的 SKILL.md 檔案和可選的綑綁資源：
+#### 技能的結構（Anatomy of a Skill）
 
 ```
 skill-name/
-├── SKILL.md (必備)
-│   ├── YAML frontmatter 元數據 (必備)
-│   │   ├── name: (必備)
-│   │   ├── description: (必備)
-│   │   └── compatibility: (可選，極少需要)
-│   └── Markdown 指示說明 (必備)
-└── Bundled Resources 綑綁資源 (可選)
-    ├── scripts/          - 可執行的程式碼 (Python/Bash 等)
-    ├── references/       - 打算在需要時載入上下文的參考文件
-    └── assets/           - 用於輸出的檔案 (模板、圖示、字體等)
+├── SKILL.md（必備）
+│   ├── YAML frontmatter（name、description 為必填）
+│   └── Markdown 指示（以 ## Gotchas 作結）
+├── 隨附資源（選用）
+│   ├── scripts/    - 可執行的程式碼，用於確定性／重複性的任務
+│   ├── references/ - 視需要載入上下文的文件
+│   └── assets/     - 用於輸出的檔案（範本、圖示、字型）
+├── evals/          - 測試案例（見下方「測試案例」）
+└── docs/           - 給人閱讀的 zh-TW 版本，由 skill-translator 撰寫；SKILL.md 絕不引用
 ```
 
-#### SKILL.md (必備)
+#### Progressive Disclosure（漸進式揭露）
 
-每個 SKILL.md 包含：
+技能採用三層載入系統：
+1. **Metadata**（name + description）——一律在上下文中（約 100 個單字）
+2. **SKILL.md 本文**——技能觸發時就會進入上下文（理想上 <500 行）
+3. **隨附資源**——視需要載入（沒有上限，腳本不必載入就能執行）
 
-- **Frontmatter** (YAML)：包含 `name` 和 `description` 欄位 (必備)，以及可選欄位如 `license`、`metadata` 和 `compatibility`。Claude 只會讀取 `name` 和 `description` 來決定何時觸發技能，因此請清晰且全面地說明這個技能是什麼以及何時應該使用它。`compatibility` 欄位用於註明環境需求 (目標產品、系統套件等)，但大多數技能不需要它。
-- **Body** (Markdown)：使用該技能的指示和指引。只有在技能觸發後 (如果有的話) 才會載入。
+這些字數都是概略值，需要的話可以放心寫得更長。
 
-#### 綑綁資源 (Bundled Resources - 可選)
+**關鍵模式：**
+- SKILL.md 保持在 500 行以內；接近這個上限時，多加一層階層結構，並清楚指引使用技能的模型接下來該去哪裡繼續。
+- 在 SKILL.md 中清楚引用參考檔案，並說明何時該讀它們
+- 大型參考檔案（>300 行）要附上目錄
+- 拆出去的是查閱用資料，不是規則（內規第 5 條）
 
-##### 腳本 (`scripts/`)
-
-可執行的程式碼 (Python/Bash 等)，用於需要確定性可靠度或一再被重複編寫的任務。
-
-- **何時包含**：當同一段程式碼被重複編寫或需要確定性可靠度時
-- **範例**：用於旋轉 PDF 任務的 `scripts/rotate_pdf.py`
-- **好處**：節省 token、具確定性、可以在不載入上下文的情況下執行
-- **注意**：腳本可能仍需要被 Claude 讀取，以進行修補或針對特定環境的調整
-
-##### 參考資料 (`references/`)
-
-打算在需要時載入上下文的文件和參考素材，以提供 Claude 過程思考的資訊。
-
-- **何時包含**：當存在 Claude 在工作時應該參考的文件時
-- **範例**：用於財務架構的 `references/finance.md`，用於公司保密協議模板的 `references/mnda.md`，用於公司政策的 `references/policies.md`，用於 API 規格的 `references/api_docs.md`
-- **使用案例**：資料庫架構 (schemas)、API 文件、領域知識、公司政策、詳細的工作流程指南
-- **好處**：保持 SKILL.md 精簡，僅在 Claude 判斷需要時載入
-- **最佳實踐**：如果檔案很大 (>10k 字)，請在 SKILL.md 中包含 grep 搜尋模式
-- **避免重複**：資訊應該存在於 SKILL.md 或參考檔案中，而不是兩者皆有。對於詳細資訊，優先使用參考檔案，除非它是技能的真正核心——這使 SKILL.md 保持精簡，同時讓資訊可被發現，而不會佔用上下文視窗。在 SKILL.md 中僅保留必要的程序性指示和工作流程指導；將詳細的參考資料、架構和範例移至參考檔案。
-
-##### 素材 (`assets/`)
-
-不打算載入上下文的檔案，而是用於 Claude 產生的最終輸出中。
-
-- **何時包含**：當技能需要將用於最終輸出的檔案時
-- **範例**：用於品牌素材的 `assets/logo.png`，用於 PowerPoint 模板的 `assets/slides.pptx`，用於 HTML/React 樣板的 `assets/frontend-template/`，用於字體的 `assets/font.ttf`
-- **使用案例**：模板、圖片、圖示、樣板程式碼 (boilerplate code)、字體、被複製或修改的範例文件
-- **好處**：將輸出資源與文件分離，使 Claude 能夠使用檔案而無需將其載入上下文
-
-#### 不該包含在技能中的內容 (What to Not Include in a Skill)
-
-技能應該只包含直接支持其功能的必要檔案。不要建立多餘的文件或輔助檔案，包括：
-
-- README.md
-- INSTALLATION_GUIDE.md
-- QUICK_REFERENCE.md
-- CHANGELOG.md
-- 等等
-
-技能應該只包含 AI 代理完成當前工作所需的資訊。它不應該包含關於建立該技能的過程、設定和測試程序、面向使用者的文件等輔助上下文。建立額外的文件檔案只會增加混亂和困惑。
-
-### 漸進式揭露設計原則 (Progressive Disclosure Design Principle)
-
-技能使用三層載入系統來有效管理上下文：
-
-1. **Metadata (name + description)** - 永遠在上下文中 (~100 字)
-2. **SKILL.md 本文** - 當技能觸發時載入 (<5k 字)
-3. **綑綁資源 (Bundled resources)** - 當 Claude 需要時載入 (無限制，因為腳本可以在不讀入上下文視窗的情況下執行)
-
-#### 漸進式揭露模式 (Progressive Disclosure Patterns)
-
-將 SKILL.md 本文保持在必要內容，並限制在 500 行以內，以最小化上下文膨脹。接近此限制時，將內容拆分到獨立檔案中。將內容拆分到其他檔案時，非常重要的是在 SKILL.md 中引用它們，並清楚說明何時閱讀它們，以確保技能閱讀者知道它們的存在以及何時使用。
-
-**關鍵原則：** 當技能支援多種變體、框架或選項時，只將核心工作流程和選擇指南保留在 SKILL.md 中。將特定於變體的細節 (模式、範例、配置) 移至獨立的參考檔案中。
-
-**模式1：帶有參考資料的高階指南 (Pattern 1: High-level guide with references)**
-
-```markdown
-# PDF 處理
-
-## 快速開始
-
-使用 pdfplumber 提取文字：
-[程式碼範例]
-
-## 進階功能
-
-- **表單填寫**：查看 [FORMS.md](FORMS.md) 獲取完整指南
-- **API 參考**：查看 [REFERENCE.md](REFERENCE.md) 獲取所有方法
-- **範例**：查看 [EXAMPLES.md](EXAMPLES.md) 獲取常見模式
-```
-
-Claude 只有在需要時才會載入 FORMS.md、REFERENCE.md 或 EXAMPLES.md。
-
-**模式2：特定領域的組織 (Pattern 2: Domain-specific organization)**
-
-對於具有多個領域的技能，按領域組織內容以避免載入無關的上下文：
-
-```
-bigquery-skill/
-├── SKILL.md (概述和導航)
-└── reference/
-    ├── finance.md (收入、計費指標)
-    ├── sales.md (機會、銷售漏斗)
-    ├── product.md (API 使用、功能)
-    └── marketing.md (行銷活動、歸因)
-```
-
-當使用者詢問關於銷售指標時，Claude 只會閱讀 sales.md。
-
-同樣的，對於支援多種框架或變體的技能，按變體組織：
-
+**按領域組織**：當技能支援多個領域／框架時，依變體來組織：
 ```
 cloud-deploy/
-├── SKILL.md (工作流程 + 服務商選擇)
+├── SKILL.md（工作流程 + 選擇）
 └── references/
-    ├── aws.md (AWS 部署模式)
-    ├── gcp.md (GCP 部署模式)
-    └── azure.md (Azure 部署模式)
+    ├── aws.md
+    ├── gcp.md
+    └── azure.md
 ```
+Claude 只會讀取相關的那份參考檔案。
 
-當使用者選擇 AWS 時，Claude 只讀取 aws.md。
+#### 不出人意料原則（Principle of Lack of Surprise）
 
-**模式3：條件性細節 (Pattern 3: Conditional details)**
+這點不必多說，但技能不得包含惡意軟體、漏洞利用程式碼，或任何可能危害系統安全的內容。技能的內容若被描述出來，其意圖不應讓使用者感到意外。不要配合那些要求建立誤導性技能，或專為協助未授權存取、資料外洩或其他惡意活動而設計之技能的請求。不過像 "roleplay as an XYZ"（扮演某某角色）這類是可以的。
 
-顯示基本內容，連結到進階內容：
+#### 寫作模式（Writing Patterns）
 
+指示中優先使用祈使句。
+
+**定義輸出格式**——可以這樣寫：
 ```markdown
-# DOCX 處理
-
-## 建立文件
-
-使用 docx-js 建立新文件。查看 [DOCX-JS.md](DOCX-JS.md)。
-
-## 編輯文件
-
-對於簡單編輯，直接修改 XML。
-
-**對於追蹤修訂**：查看 [REDLINING.md](REDLINING.md)
-**對於 OOXML 細節**：查看 [OOXML.md](OOXML.md)
+## Report structure
+ALWAYS use this exact template:
+# [Title]
+## Executive summary
+## Key findings
+## Recommendations
 ```
 
-Claude 只有在使用者需要這些功能時才會閱讀 REDLINING.md 或 OOXML.md。
+**範例模式**——附上範例很有用。可以用這樣的格式（不過如果範例本身就含有 "Input" 和 "Output"，你可能要稍微變通一下）：
+```markdown
+## Commit message format
+**Example 1:**
+Input: Added user authentication with JWT tokens
+Output: feat(auth): implement JWT-based authentication
+```
 
-**重要指導方針：**
+**Gotchas 模式**——在本文結尾列出實際發生過的失敗（內規第 6 條）：
+```markdown
+## Gotchas
+- "single-breasted" in an image prompt trips the safety filter (HTTP 400): write "a single row of buttons".
+```
 
-- **避免深層次巢狀引用** - 使參考檔案與 SKILL.md 保持單層級關係。所有參考檔案應直接從 SKILL.md 連結。
-- **結構化較長的參考檔案** - 對於超過 100 行的檔案，在頂部包含目錄，以便 Claude 在預覽時能看到完整範圍。
+### 寫作風格（Writing Style）
 
-## 技能建立流程 (Skill Creation Process)
+試著向模型解釋事情為什麼重要，而不是堆砌強硬又陳腐的 MUST。運用心智理論（theory of mind），讓技能保有通用性，而不是極度侷限於特定範例。先寫出草稿，再用全新的眼光審視、改進它。
 
-建立技能包含以下步驟：
+### 測試案例（Test Cases）
 
-1. 透過具體範例理解技能
-2. 規劃可重複使用的技能內容 (腳本、參考資料、素材)
-3. 初始化技能 (執行 init_skill.py)
-4. 編輯技能 (實作資源並撰寫 SKILL.md)
-5. 打包技能 (執行 package_skill.py)
-6. 最佳化與翻譯 (強制性後處理)
-7. 根據實際使用情況迭代
+寫完技能草稿後，想出 2–3 個貼近真實的測試提示詞——就是真實使用者實際會說的那種話。在本技能庫中，至少要有一個是根據過去的某次修正而來（內規第 6 條）。把它們分享給使用者：〔不必一字不差照用這段話〕「以下是我想試的幾個測試案例。這些看起來對嗎？還是你想再多加幾個？」然後執行它們。
 
-按照順序執行這些步驟，只有在有明確理由表明不適用時才跳過。
+把每個測試案例各自存成技能目錄中 `evals/` 底下的一個資料夾。先不要寫斷言——只寫提示詞就好。斷言會在下一步、趁執行還在進行時再擬。
 
-### 步驟1：透過具體範例理解技能 (Step 1: Understanding the Skill with Concrete Examples)
+```
+my-skill/
+├── SKILL.md
+└── evals/
+    └── flags-negative-quantity/   # 案例名稱：小寫加連字號，要說明測的是什麼
+        ├── prompt.md              # 先寫執行設定，再寫使用者的任務提示詞
+        ├── case.yaml              # 名稱，以及好的結果長什麼樣子
+        ├── graders/               # 每條斷言一個檔案；步驟 2 之前先放佔位檔
+        └── files/                 # 輸入檔案，只在測試需要時才放
+```
 
-除非技能的使用模式已經非常清楚，否則不要跳過此步驟。即使在修改現有技能時，這一步仍很有價值。
+寫第一個之前，先讀 `references/schemas.md` 的 "Test cases" 一節並照抄其中的範本，因為格式很嚴格。這些都是你自己寫、自己讀的純文字檔，所以在任何地方運作方式都一樣，不需要額外工具。這個目錄結構正是 `claude plugin eval` 讀取的格式，所以有 Claude Code 的使用者之後可以在終端機或 CI 中執行完全相同的測試。
 
-為了建立一個有效的技能，清楚了解將如何使用該技能的具體範例。這種理解可以來自直接的使用者範例，或生成並通過使用者反饋驗證的範例。
+**如果技能已經有 `evals/evals.json`**（舊格式），其中的測試仍然算數：把它們和案例資料夾合在一起，當成同一組來執行。這個檔案屬於使用者，所以除非他們要求，絕不要編輯、轉換或刪除它；任何新增或修改的內容都放進案例資料夾。`references/schemas.md` 的 "evals.json" 一節說明了這兩組測試如何合併。
 
-例如，在建立 image-editor (圖片編輯器) 技能時，相關問題包括：
+## 執行與評估測試案例（Running and evaluating test cases）
 
-- 「image-editor 技能應支援哪些功能？編輯、旋轉、還有其他的嗎？」
-- 「你能給一些這個技能如何被使用的範例嗎？」
-- 「我可以想像使用者會提出像『移除這張照片的紅眼』或『旋轉這張圖片』的要求。你還能想像這個技能有其他使用方式嗎？」
-- 「使用者說什麼應該觸發這個技能？」
+本節是一整段連續的流程——不要中途停下。**不要**使用 `/skill-test` 或任何其他測試用技能。
 
-為了避免讓使用者感到不知所措，不要在單一訊息中詢問太多問題。從最重要的問題開始，根據需要跟進，以達到最佳效果。
+把結果放在 `<skill-name>-workspace/`；在本 repo 中，這個資料夾要放在 repo 根目錄的 `.skill-workspaces/` 底下（內規第 9 條）。在工作區內，依迭代整理結果（`iteration-1/`、`iteration-2/` 等），而在每個迭代目錄中，每個測試案例各有一個以案例名稱命名的目錄。每一輪迭代都要沿用相同的目錄名稱，因為檢視器是依據這個路徑，把一次執行和它先前的輸出與回饋對應起來。不要一開始就把這些全部建好——邊做邊建目錄就好。
 
-當清楚了解技能應支援的功能時，總結此步驟。
+```
+<skill-name>-workspace/
+└── iteration-1/
+    ├── flags-negative-quantity/  # 每個測試案例一個目錄
+    │   ├── eval_metadata.json    # 檢視器從這裡取得提示詞
+    │   ├── with_skill/           # 一種組態；只跑一次時，它同時也是執行目錄
+    │   │   ├── outputs/          # 該次執行產出的檔案
+    │   │   ├── grading.json
+    │   │   └── timing.json
+    │   └── without_skill/        # 對照組（或 old_skill/），內含同樣的項目
+    ├── handles-empty-file/
+    ├── benchmark.json
+    └── benchmark.md
+```
 
-### 步驟2：規劃可重複使用的技能內容 (Step 2: Planning the Reusable Skill Contents)
+請遵守這個目錄結構，因為檢視器和彙整腳本都會讀取它。執行目錄（run directory）是指存放某次執行之 `outputs/`、`grading.json` 與 `timing.json` 的那個目錄。如果某個組態（configuration）跑了不只一次，就在其中為每次執行各建一個目錄（`with_skill/run-1/`、`with_skill/run-2/`……）；`eval_metadata.json` 則留在原處。
 
-為了將具體範例轉化為有效技能，透過以下方式分析每個範例：
+### 步驟 1：在同一回合啟動所有執行（有技能組與對照組，兩者都要）
 
-1. 考慮如何從零開始執行該範例
-2. 識別在重複執行這些工作流程時，哪些腳本、參考資料和素材會有所幫助
+針對每個測試案例，在同一回合中啟動兩個子代理——一個有技能，一個沒有。這點很重要：不要先啟動有技能的執行，之後才回頭補對照組。一次全部啟動，讓它們大約同時完成。
 
-範例：建立 `pdf-editor` 技能以處理如「幫我旋轉這個 PDF」的要求時，分析顯示：
+**有技能的執行（With-skill run）：**
 
-1. 旋轉 PDF 需要每次重新編寫相同的程式碼
-2. 一個 `scripts/rotate_pdf.py` 腳本如果在技能中儲存會很有幫助
+```
+Execute this task:
+- Skill path: <path-to-skill>
+- Task: <eval prompt>
+- Input files: <full paths of the test's input files, or "none">
+- Save outputs to: <workspace>/iteration-<N>/<case-name>/with_skill/outputs/
+- Outputs to save: <what the user cares about — e.g., "the .docx file", "the final CSV">
+```
 
-範例：設計 `frontend-webapp-builder` 技能以響應如「幫我建一個待辦事項應用」或「建一個儀表板來追蹤我的步數」時，分析顯示：
+**對照組執行（Baseline run）**（提示詞相同，但對照組是什麼要看情境）：
+- **建立新技能時**：完全不用技能。相同提示詞、不給技能路徑，存到 `without_skill/outputs/`。
+- **改進既有技能時**：用舊版本。編輯之前先替技能建立快照（`cp -r <skill-path> <workspace>/skill-snapshot/`），然後讓對照組子代理指向這份快照。存到 `old_skill/outputs/`。
 
-1. 編寫前端網頁應用需要每次寫相同的樣板 HTML/React
-2. 在技能中儲存包含樣板 HTML/React 專案檔案的 `assets/hello-world/` 模板會很有用
+為每個測試案例寫一份 `eval_metadata.json`（斷言暫時可以留空），直接放在該測試案例的目錄中，與 `with_skill/` 並列。檢視器和 benchmark 從不查看技能的 `evals/` 資料夾：它們是從這個檔案取得提示詞的，少了它，檢視器會顯示 "(No prompt found)"（找不到提示詞）。每一輪迭代的每個測試案例都要重新寫一份——不要以為它會從先前的迭代延續過來。
 
-範例：建立 `big-query` 技能處理如「今天有多少使用者登入？」的要求時，分析顯示：
+```json
+{
+  "eval_name": "flags-negative-quantity",
+  "prompt": "The user's task prompt",
+  "assertions": []
+}
+```
 
-1. 查詢 BigQuery 需要每次重新發現資料表層級結構和關聯
-2. 一份記錄資料表結構的 `references/schema.md` 檔案如果儲存在技能中會很有幫助
+`eval_name` 是案例名稱，`prompt` 是該測試去掉設定區塊後的提示詞，`assertions` 則列出它的斷言（絕不包含佔位評分檔）。
 
-為了確定技能的內容，分析每個具體範例，建立一個要包含的可重複使用資源清單：腳本、參考資料和素材。
+### 步驟 2：趁執行進行中，擬定斷言
 
-### 步驟3：初始化技能 (Step 3: Initializing the Skill)
+不要只是乾等執行結束——這段時間可以好好利用。為每個測試案例擬定量化斷言，並向使用者說明。如果某個測試已經有斷言（它的 `graders/` 資料夾中佔位檔以外的檔案，或舊版 `evals/evals.json` 中的 `expectations` / `assertions`），就檢視它們，並說明它們檢查的是什麼。
 
-到了這個階段，是時候真正建立技能了。
+好的斷言可以客觀驗證，名稱也具描述性——在 benchmark 檢視器中要清楚易讀，讓人瞄一眼結果就馬上知道每條斷言檢查什麼。主觀性的技能（寫作風格、設計品質）比較適合質性評估——不要把斷言硬套在需要人類判斷的事情上。
 
-只有當正在開發的技能已經存在，並且需要進行迭代或打包時，才跳過此步驟。在此情況下，繼續下一步。
+擬好之後，把每條斷言各存成該案例 `graders/` 資料夾中的一個檔案，刪除佔位檔，並把同樣的句子放進該測試 `eval_metadata.json` 的 `assertions` 清單。每條斷言都要針對結果本身來措辭（"summary.md states a total revenue of 693.5"，即「summary.md 寫明總營收為 693.5」），而不是針對本工作流程把結果存在哪裡（"…in the outputs folder"，即「……在 outputs 資料夾中」），這樣它在 `claude plugin eval` 底下也同樣成立。
 
-從零開始建立新技能時，必須始終運行 `init_skill.py` 腳本。該腳本能方便地產生一個新的技能目錄範本，並自動包含技能所需的所有內容，使技能建立過程更高效、更可靠。
+對於要交給人類判斷的測試，保留佔位檔。它存在只是為了讓 `claude plugin eval` 能載入這個案例，所以在這裡不會被評分。
 
-使用方法：
+也要向使用者說明他們會在檢視器中看到什麼——包括質性的輸出與量化的 benchmark。
+
+### 步驟 3：每完成一個執行，就記錄計時資料
+
+每個子代理任務完成時，你會收到一則包含 `total_tokens` 與 `duration_ms` 的通知。立刻把這些資料存到執行目錄中的 `timing.json`：
+
+```json
+{
+  "total_tokens": 84852,
+  "duration_ms": 23332,
+  "total_duration_seconds": 23.3
+}
+```
+
+這是記錄這些資料的唯一機會——它只透過任務通知傳來，不會保存在其他地方。每則通知一到就處理，不要想著累積起來批次處理。
+
+### 步驟 4：評分、彙整，並啟動檢視器
+
+所有執行都完成後：
+
+1. **為每次執行評分**——啟動一個評分子代理（或直接在當前對話中評分），讓它讀 `agents/grader.md`，並對照輸出逐條評估每個斷言。把結果存到各執行目錄中的 `grading.json`。grading.json 的 expectations 陣列必須使用 `text`、`passed` 和 `evidence` 這三個欄位（而不是 `name`/`met`/`details` 或其他變體）——檢視器依賴的正是這些確切的欄位名稱。對於可以用程式檢查的斷言，就寫一支腳本來執行，而不是用肉眼判斷——腳本更快、更可靠，而且可以在各輪迭代中重複使用。
+
+2. **彙整成 benchmark**——在 skill-creator 目錄下執行彙整腳本：
+   ```bash
+   python -m scripts.aggregate_benchmark <workspace>/iteration-N --skill-name <name>
+   ```
+   這會產生 `benchmark.json` 和 `benchmark.md`，列出每個組態的 pass_rate、時間與 token 數，附上平均值 ± 標準差以及差值（delta）。如果要手動產生 benchmark.json，請參閱 `references/schemas.md` 中檢視器所預期的確切 schema。
+每個 with_skill 版本都要排在對應的對照組之前。
+
+3. **做一輪分析**——閱讀 benchmark 資料，找出彙總統計可能掩蓋的模式。該注意哪些事，請見 `agents/analyzer.md`（"Analyzing Benchmark Results" 一節）——例如不論有沒有技能都一律通過的斷言（不具鑑別力）、變異很大的 eval（可能不穩定），以及時間／token 之間的取捨。把你的觀察加進 `benchmark.json` 的 `notes` 清單，接在腳本已寫入的任何備註之後；不要取代那些備註。
+
+4. **啟動檢視器**，同時呈現質性輸出與量化資料：
+   ```bash
+   nohup python <skill-creator-path>/eval-viewer/generate_review.py \
+     <workspace>/iteration-N \
+     --skill-name "my-skill" \
+     --benchmark <workspace>/iteration-N/benchmark.json \
+     > /dev/null 2>&1 &
+   VIEWER_PID=$!
+   ```
+   從第 2 輪迭代起，還要加上 `--previous-workspace <workspace>/iteration-<N-1>`。
+
+   **Cowork／無頭（headless）環境：** 如果無法使用 `webbrowser.open()`，或環境沒有顯示器，就改用 `--static <output_path>` 寫出一個獨立的 HTML 檔，而不是啟動伺服器。使用者點下 "Submit All Reviews"（送出所有審閱）時，回饋會被下載成一個 `feedback.json` 檔。下載後，把 `feedback.json` 複製到工作區目錄，讓下一輪迭代取用。
+
+注意：請用 generate_review.py 建立檢視器；不需要自己寫客製化的 HTML。
+
+5. **告訴使用者**，大致像這樣：「我已經在你的瀏覽器中打開結果了。共有兩個分頁——'Outputs' 可以逐一點閱每個測試案例並留下回饋，'Benchmark' 則顯示量化比較。看完之後，回到這裡告訴我一聲。」
+
+### 使用者在檢視器中會看到什麼（What the user sees in the viewer）
+
+"Outputs" 分頁一次顯示一個測試案例：
+- **Prompt**（提示詞）：給定的任務
+- **Output**（輸出）：技能產出的檔案，能內嵌顯示的就直接內嵌顯示
+- **Previous Output**（先前輸出，第 2 輪迭代起）：摺疊區塊，顯示上一輪迭代的輸出
+- **Formal Grades**（正式評分，有執行評分時）：摺疊區塊，顯示各斷言通過／未通過
+- **Feedback**（回饋）：一個會在輸入時自動儲存的文字框
+- **Previous Feedback**（先前回饋，第 2 輪迭代起）：使用者上一次的意見，顯示在文字框下方
+
+"Benchmark" 分頁顯示統計摘要：每個組態的通過率、耗時與 token 用量，並附上逐項 eval 的細目與分析觀察。
+
+可用上一個／下一個按鈕或方向鍵切換。看完後，使用者點 "Submit All Reviews"，所有回饋就會存進 `feedback.json`。
+
+### 步驟 5：讀取回饋
+
+使用者告訴你他們看完後，讀取 `feedback.json`：
+
+```json
+{
+  "reviews": [
+    {"run_id": "flags-negative-quantity-with_skill", "feedback": "the chart is missing axis labels", "timestamp": "..."},
+    {"run_id": "handles-empty-file-with_skill", "feedback": "", "timestamp": "..."},
+    {"run_id": "csv-summary-2-with_skill", "feedback": "perfect, love this", "timestamp": "..."}
+  ],
+  "status": "complete"
+}
+```
+
+回饋留空代表使用者覺得沒問題。把改進重點放在使用者有具體意見的測試案例上。
+
+用完檢視器伺服器後，把它關掉：
 
 ```bash
-scripts/init_skill.py <skill-name> --path <output-directory>
+kill $VIEWER_PID 2>/dev/null
 ```
 
-該腳本將：
+---
 
-- 在指定路徑建立技能目錄
-- 產生帶有適當 frontmatter 和 TODO 佔位符的 SKILL.md 範本
-- 建立範例資源目錄：`scripts/`、`references/` 和 `assets/`
-- 在每個目錄中加入可自訂或刪除的範例檔案
+## 改進技能（Improving the skill）
 
-初始化後，根據需要自訂或刪除產生的 SKILL.md 和範例檔案。
+這是整個循環的核心。你已經跑完測試案例，使用者也審閱了結果，現在你需要根據他們的回饋讓技能變得更好。
 
-### 步驟4：編輯技能 (Step 4: Edit the Skill)
+### 如何思考改進（How to think about improvements）
 
-在編輯（新產生或現有的）技能時，請記住這個技能是為另一個 Claude 實例建立的。請包含對 Claude 而言有益且非顯然的資訊。考慮哪些程序性知識、特定領域細節或可重複使用的素材將幫助另一個 Claude 實例更有效地執行這些任務。
+1. **從回饋中歸納通則。** 從大局來看，這裡真正在做的事，是打造能在各式各樣的提示詞中被使用上百萬次（也許真的是字面上的一百萬次，搞不好更多，誰知道呢）的技能。你和使用者在這裡只拿少數幾個範例反覆迭代，是因為這樣推進得比較快。使用者對這些範例瞭若指掌，評估新的輸出也很快。但如果你和使用者共同開發的技能只對這幾個範例有效，那它就毫無用處。遇到頑固的問題時，與其加入瑣碎、過度擬合（overfit）的修改，或令人窒息的嚴苛 MUST，不如試著另闢蹊徑，換個比喻，或推薦不同的工作模式。嘗試的成本相對低，說不定就會找到很棒的做法。
 
-#### 學習經證實的設計模式 (Learn Proven Design Patterns)
+2. **讓提示詞保持精簡。** 刪掉沒有發揮作用的內容。務必閱讀執行紀錄（transcript），而不只是最終輸出——如果看起來技能讓模型浪費大量時間做沒有生產力的事，可以試著拿掉技能中導致這種行為的部分，看看會發生什麼事。
 
-根據您的技能需求，參考以下實用指南：
+3. **解釋原因。** 盡力解釋你要求模型做的每件事背後的**原因**。現今的 LLM 很*聰明*。它們有良好的心智理論，在好的執行框架（harness）下，能超越死板的指示，真正把事情做成。即使使用者的回饋很簡短或帶著挫折感，也要試著真正理解任務、理解使用者為什麼會這樣寫、他們實際上寫了什麼，再把這份理解轉化到指示中。如果你發現自己用全大寫寫下 ALWAYS 或 NEVER，或使用極度僵硬的結構，那就是黃燈警訊——可以的話，換個說法，解釋背後的理由，讓模型理解你要求的事情為什麼重要。這是更人性化、更強大，也更有效的做法。
 
-- **多步驟流程 (Multi-step processes)**：請查看 references/workflows.md 以了解順序工作流程和條件邏輯
-- **特定輸出格式或品質標準 (Specific output formats or quality standards)**：請查看 references/output-patterns.md 以了解模板和範例模式
+4. **找出各測試案例之間的重複工作。** 閱讀測試執行的紀錄，留意子代理是否都各自寫了類似的輔助腳本，或對某件事採取了相同的多步驟做法。如果 3 個測試案例都讓子代理寫了一支 `create_docx.py` 或 `build_chart.py`，這就是強烈的訊號，表示技能應該內附那支腳本。寫一次，放進 `scripts/`，並告訴技能要使用它。這樣以後每次呼叫都不必重新發明輪子。
 
-這些檔案包含有效技能設計的既定最佳實務。
+這項任務相當重要（我們在這裡可是想創造每年數十億的經濟價值！），而你的思考時間並不是瓶頸；慢慢來，好好反覆推敲。我建議先寫出一版修訂草稿，再用全新的眼光審視並改進。盡全力揣摩使用者的想法，理解他們想要什麼、需要什麼。
 
-#### 從可重複使用的技能內容開始 (Start with Reusable Skill Contents)
+### 迭代循環（The iteration loop）
 
-開始實作時，先處理上述識別的可重複使用資源：`scripts/`、`references/` 和 `assets/` 檔案。注意，此步驟可能需要使用者的輸入。例如，在實作 `brand-guidelines` 技能時，使用者可能需要提供用於儲存在 `assets/` 的品牌素材或範本，或者提供用於 `references/` 的文件。
+改進技能之後：
 
-加入的腳本必須實際運行測試，確保沒有錯誤且輸出符合預期。如果有許多類似的腳本，只需測試其中具代表性的部分，以平衡確保功能正常和完成時間。
+1. 把你的改進套用到技能上
+2. 把所有測試案例重跑一遍，結果放進新的 `iteration-<N+1>/` 目錄，對照組也要跑。如果你在建立新技能，對照組一律是 `without_skill`（無技能）——這在各輪迭代間都不變。如果你在改進既有技能，就自行判斷用什麼當對照組比較合理：使用者一開始帶來的原始版本，或上一輪迭代。
+3. 啟動審閱檢視器，並以 `--previous-workspace` 指向上一輪迭代
+4. 等使用者審閱完並告訴你他們看完了
+5. 讀取新的回饋，再次改進，如此重複
 
-應該刪除技能不需要的任何範例檔案和目錄。初始化腳本在 `scripts/`、`references/` 和 `assets/` 中建立範例檔案只是為了展示結構，但大多數技能不需要全部這些檔案。
+持續進行，直到：
+- 使用者表示滿意
+- 回饋全部留空（一切看起來都很好）
+- 你已經無法取得有意義的進展
 
-#### 更新 SKILL.md (Update SKILL.md)
+---
 
-**寫作指引：** 必須使用祈使句/不定式形式。
+## 進階：盲測比較（Advanced: Blind comparison）
 
-##### Frontmatter
+當你想更嚴謹地比較技能的兩個版本時（例如使用者問 "is the new version actually better?"〔新版真的比較好嗎？〕），可以使用盲測比較系統。細節請讀 `agents/comparator.md` 和 `agents/analyzer.md`。基本概念是：把兩份輸出交給一個獨立的代理，不告訴它哪份是哪份，讓它評判品質。然後分析勝出的一方為什麼勝出。
 
-撰寫包含 `name` 和 `description` 的 YAML frontmatter：
+這是選用功能，需要子代理，而且大多數使用者用不到。通常人類審閱的循環就已足夠。
 
-- `name`：技能名稱
-- `description`：這是技能的主要觸發機制，並幫助 Claude 理解何時使用該技能。
-  - 包含技能的功能以及何時使用它的具體觸發條件/上下文。
-  - 將所有「何時使用」的資訊放在這裡 - 不要放在本文中。本文僅在觸發後載入，因此本文中的「何時使用此技能」章節對 Claude 沒有幫助。
-  - `docx` 技能的敘述範例："Comprehensive document creation, editing, and analysis with support for tracked changes, comments, formatting preservation, and text extraction. Use when Claude needs to work with professional documents (.docx files) for: (1) Creating new documents, (2) Modifying or editing content, (3) Working with tracked changes, (4) Adding comments, or any other document tasks"
+---
 
-不要在 YAML frontmatter 中加入任何其他欄位。
+## Description 最佳化（Description Optimization）
 
-##### 本文 (Body)
+SKILL.md frontmatter 中的 description 欄位，是決定 Claude 是否呼叫某個技能的主要機制。建立或改進技能之後，主動提議最佳化 description，以提升觸發準確度。
 
-撰寫使用技能及其綑綁資源的指示。
+使用者同意後，讀取 `references/description-optimization.md` 並照著做：先準備約 20 個貼近真實的「應觸發／不應觸發」查詢交給使用者審閱，再執行 `scripts/run_loop.py`——它會測試 description、提出改寫版本，並依保留集（held-out）分數挑出最好的一版。這需要 `claude` CLI。在本 repo 中，直接跑的觸發測試讀數會接近 0%，原因是真正的技能早已安裝，而且平行執行的多個 worker（工作程序）會互相競爭；那份參考文件說明了避開這個問題的沙盒（sandbox）與單一 worker 設定。
 
-### 步驟5：打包技能 (Step 5: Packaging a Skill)
+請記住，Claude 只會在遇到自己無法輕鬆處理的任務時才去參考技能，所以觸發查詢（以及測試提示詞）應該是有一定份量的任務，而不是一步就能完成的請求。
 
-技能開發完成後，必須將其打包為可分發的 .skill 檔案，以便與使用者分享。打包流程會自動先驗證技能，確保其符合所有要求：
+---
+
+### 打包與呈現（Package and Present；僅在有檔案傳遞工具時）
+
+這裡的技能是就地編輯的，所以只有在使用者要求 `.skill` 檔時才做這一步（內規第 10 條）。
+
+檢查你是否能使用向使用者呈現檔案的工具——`present_files`，或 Cowork remote 中的 `SendUserFile`。兩者都沒有就跳過這一步。如果有，就打包技能，並用該工具把產生的 `.skill` 檔傳給使用者：
 
 ```bash
-scripts/package_skill.py <path/to/skill-folder>
+python -m scripts.package_skill <path/to/skill-folder>
 ```
 
-可選的輸出目錄指定：
+如果使用者所屬的組織允許建立技能，呈現出來的 `.skill`（或單獨的 `SKILL.md`）檔案卡片上會出現 **Save skill**（儲存技能）按鈕；點下去就會把技能安裝到使用者的個人檔案（profile）中。
 
-```bash
-scripts/package_skill.py <path/to/skill-folder> ./dist
-```
+---
 
-打包腳本將：
+## 其他環境（Other environments）
 
-1. **自動驗證** 技能，檢查：
+不是在 Claude Code 裡？在 Claude.ai、Cowork，或沒有子代理也沒有 `claude` CLI 的代理中（例如 Antigravity，它的工作區技能放在 `.agent/skills/`），有好幾個步驟會不同。執行任何測試之前，先讀 `references/other-environments.md`。
 
-   - YAML frontmatter 格式與必填欄位
-   - 技能命名慣例和目錄結構
-   - 描述的完整性和品質
-   - 檔案組織和資源引用
+---
 
-2. **打包** 如果驗證通過，將建立一個以技能命名的 .skill 檔案（例如 `my-skill.skill`），其中包含所有檔案並保持正確的目錄結構以供分發。 .skill 檔案是帶有 .skill 副檔名的 zip 檔案。
+## 參考檔案（Reference files）
 
-如果驗證失敗，腳本將回報錯誤並退出而不建立套件。請修復任何驗證錯誤，然後再次運行打包命令。
+agents/ 目錄包含給專門子代理的指示。需要啟動相關子代理時再讀。
 
-### 步驟6：最佳化與翻譯 (強制性後處理) (Step 6: Optimize and Translate - Mandatory Post-Processing)
+- `agents/grader.md`——如何對照輸出評估斷言
+- `agents/comparator.md`——如何對兩份輸出進行盲測 A/B 比較
+- `agents/analyzer.md`——如何分析某個版本為何勝過另一個
 
-建立或更新技能後，請**務必**觸發最佳化和翻譯工作流程，以確保該技能滿足上下文視窗效率並且對人類使用者友善。
+references/ 目錄有其他補充文件：
+- `references/schemas.md`——檔案格式：測試案例資料夾、舊版 evals.json、grading.json 等
+- `references/description-optimization.md`——觸發調校的流程，包括用於已安裝技能的沙盒
+- `references/other-environments.md`——Claude.ai、Cowork，以及沒有子代理或 `claude` CLI 的代理
 
-1. **觸發 `skill-optimizer`**：對新建立或更新的技能呼叫 `skill-optimizer` 工具，以實施漸進式揭露原則，將厚重內容提取至 `references/` 檔案中，並極小化 `SKILL.md` 的佔用空間。
-2. **觸發 `skill-translator`**：當最佳化完成後，呼叫 `skill-translator` 工具來產生繁體中文 (zh-TW) 版本的說明。這將會儲存到一個 `docs/` 資料夾（例如 `docs/SKILL_zh-TW.md`）。
+---
 
-### 步驟7：迭代 (Step 7: Iterate)
+## Gotchas（踩雷紀錄）
 
-測試完技能後，使用者可能要求改進。這通常發生在使用技能之後，因為如何執行該技能有最新的上下文。
+- **技能一再犯下 SKILL.md 明令禁止的錯誤時，往往是別處還留著相反的建議。** shot-script-director 禁止空鏡（呼吸鏡），但它的某份參考文件卻仍建議切到一個空房間。修正反覆出現的錯誤時，在加重強調之前，先搜尋整個技能資料夾（包括參考文件與範例），找出任何與該規則牴觸的內容。
+- **觸發測試讀數為 0% 時，通常是測試本身的問題，而不是 description 的問題。** 先檢查沙盒和 `--num-workers 1`（`references/description-optimization.md`）。直接跑的測試還可能在 repo 裡留下一個空的 `.claude/commands/` 資料夾；把它刪掉。
+- 只安裝了桌面版 App 時，**`claude` 可能不在 PATH 上**；請見 `references/description-optimization.md` 中關於 CLI 的說明。
 
-**迭代工作流程：**
+---
 
-1. 在實際任務中使用技能
-2. 留意操作困難或效率低下的地方
-3. 識別應該如何更新 SKILL.md 或綑綁資源
-4. 實施改變並再次測試
+為了強調，這裡再重複一次核心循環：
+
+- 弄清楚這個技能是關於什麼
+- 起草或編輯技能
+- 讓能使用該技能的 Claude 跑測試提示詞
+- 與使用者一起評估輸出：
+  - 建立 benchmark.json，並執行 `eval-viewer/generate_review.py` 協助使用者審閱
+  - 執行量化 eval
+- 重複，直到你和使用者都滿意為止
+- 收尾時先跑 skill-optimizer，再跑 skill-translator，必要時再更新 README 的對應列（內規第 10 條）
+- 只有在使用者要求時才打包 `.skill` 檔
+
+如果你有 TodoList 這類東西，請把這些步驟加進去，以免忘記。如果你在 Cowork 中，請特別把 "Create test cases and run `eval-viewer/generate_review.py` so human can review them"（建立測試案例並執行 `eval-viewer/generate_review.py`，讓人類可以審閱）放進你的 TodoList，確保這件事一定會做到。
+
+祝好運！
