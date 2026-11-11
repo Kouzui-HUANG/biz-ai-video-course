@@ -1,34 +1,6 @@
 ---
 name: gpt-image-2
-description: >
-  Generate or edit images with OpenAI's gpt-image-2 via GMI Cloud's
-  async request-queue API (console.gmicloud.ai). One dual-mode script:
-  with NO input image it runs `gpt-image-2-generate` (text-to-image);
-  with one or more input images it runs `gpt-image-2-edit` (one request
-  per image). Submits the job, polls until done, and downloads every
-  result image to the shared project-root `outputs/` folder. Defaults:
-  quality=medium, output_format=png, size=1920x1088, n=2. API key is read
-  from a `.gmi_api_key` file in the skill folder (also accepts `--api-key`
-  or `$GMI_API_KEY`).
-  ACTIVATION IS BY EXPLICIT MODEL NAME ONLY. This skill ACTUALLY
-  GENERATES / EDITS real images and spends API credits, so TRIGGER ONLY
-  when the user explicitly names this model / provider — "gpt-image-2",
-  "gpt image 2", "GMI", "GMI Cloud" — e.g. "用 gpt-image-2 生圖",
-  "用 gpt-image-2 改圖", "GMI 生圖", "GMI Cloud 生圖", "跑 gpt-image-2",
-  "gpt image 2 編輯", "gpt image 2 生成".
-  DO NOT TRIGGER on generic image wording that does NOT name gpt-image-2 /
-  GMI — e.g. "編輯圖片", "圖片編輯", "載入圖片編輯", "圖片編輯技能", "改圖",
-  "修圖", "編輯這張圖", "轉為黑白線稿", "圖片生成", "生圖", "image editing",
-  "edit image", "image generation". Those are PROMPT-WRITING requests, NOT
-  generation:
-    • editing an image / a hypothetical visual change → use
-      `prompt-master-image-editor` (writes an English edit prompt only,
-      never generates an actual image).
-    • other prompt tasks → the relevant `prompt-master-*` skill.
-  Also DO NOT TRIGGER for: Stable Diffusion / TensorArt generation
-  (use `sd-image-gen`), Gemini / nano banana editing
-  (use `nano-banana-pro-edit`), upscaling (use `sd-upscaler`), or image
-  selection / judging (use `image-judge`).
+description: Actually generates or edits images with OpenAI gpt-image-2 through GMI Cloud, which spends API credits; results go to outputs/. Use only when the user names gpt-image-2 or GMI, e.g. 「用 gpt-image-2 生圖」「GMI 改圖」. Generic wording such as 編輯圖片, 改圖 or 生圖 is a prompt-writing request (→ prompt-master-image-editor or another prompt-master skill).
 ---
 
 # gpt-image-2

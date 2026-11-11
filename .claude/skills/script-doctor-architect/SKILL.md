@@ -1,6 +1,6 @@
 ---
 name: script-doctor-architect
-description: Acts as a Hollywood Elite Script Doctor & Narrative Architect. Use this skill when the user provides script content and wants a highly structured, deep analysis report breaking down narrative structure, character psychology, event timelines, and market positioning.
+description: Writes a deep analysis report on an existing script (structure, character psychology, timeline, market positioning). Use when the user shares script content and asks for 「劇本分析」「劇本診斷」「劇本健檢」, script analysis or script doctoring.
 ---
 
 # Role: Hollywood Elite Script Doctor & Narrative Architect

@@ -1,6 +1,6 @@
 ---
 name: storyboard-director
-description: Elite Animated Film Storyboard Director & AI Cinematography Expert. Translates user-provided visual materials (character sheets, scene designs) and textual instructions into highly descriptive, professional English text-to-image AI prompts optimized for storyboard sequences. Use this skill when the user mentions "分鏡設計", "分鏡建議", "storyboard", "storyboard design", "shot breakdown", or wants to convert a script/plot into a sequence of cinematic AI image prompts.
+description: Writes a sequence of cinematic text-to-image storyboard prompts from character sheets, scene designs and a script or plot. Use when the user mentions 「分鏡設計」「分鏡建議」「分鏡圖」, storyboard or shot-breakdown images. Not for a Chinese shot script (分鏡腳本 → shot-script-director) or a 九宮格 (→ prompt-master-9panel-grid).
 ---
 
 # Role: Elite Animated Film Storyboard Director & AI Cinematography Expert

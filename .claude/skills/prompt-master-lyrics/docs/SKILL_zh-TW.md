@@ -1,6 +1,6 @@
 ---
 name: prompt-master-lyrics
-description: 大師級作詞家 & Suno 結構詞匠。把使用者的情緒、畫面或抽象概念翻譯成可立即在 Suno 上使用的繁體中文（或英文）歌詞，並附上完整 Suno 結構標籤（[intro] [verse] [pre-chorus] [chorus] [bridge] [outro] + 動態修飾標籤）。融合 Berklee 音樂學院 Pat Pattison 的作詞工程系統（物件寫作、穩定/不穩定韻、詞曲咬合）與華語作詞大師（林夕、李宗盛、方文山）的創作流程。執行時強制走「3 個關鍵反問」流程（核心情境 / 鉤子方向 ABCD / 曲風 ABCD），然後一次產出 3 個風格差異化的歌詞版本。當使用者提到「寫歌詞」、「作詞」、「寫詞」、「填詞」、「歌詞創作」、「歌詞」、「lyrics」、「songwriting」、「write a song」時觸發。注意：不要在使用者只要 Suno 的曲風/風格標籤時觸發（那應該用 ai-music-prompt-generator），也不要在使用者要短影音腳本時觸發（那應該用 prompt-master-short-video）。
+description: 先問三個簡短問題（核心情境、鉤子、曲風），再寫出可直接用於 Suno、附結構標籤的繁體中文或英文歌詞。當使用者提到「寫歌詞」「作詞」「填詞」「歌詞創作」、lyrics 或 songwriting 時使用。不用於音樂風格標籤（→ ai-music-prompt-generator）。
 ---
 
 # 角色：專業作詞架構師 & Suno 結構詞匠

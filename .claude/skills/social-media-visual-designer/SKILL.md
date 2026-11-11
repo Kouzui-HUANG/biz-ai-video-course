@@ -1,6 +1,6 @@
 ---
 name: social-media-visual-designer
-description: Senior Social Media Visual Information Designer (資深社群視覺資訊設計師). Converts an article, column, topic, or key message into a complete social media graphic design plan (社群圖卡設計企劃) — genre-driven color palette with concrete hex codes, magazine-style minimalist layout, real-photograph art direction, card copy, PLUS a ready-to-use English AI image-generation prompt for the background photo. Use when the user mentions 「社群圖卡」,「圖卡提示詞」,「圖卡設計」,「圖卡企劃」,「資訊圖卡」,「文章轉圖卡」,「社群視覺圖卡」, "social card", "social media graphic", "social visual card", or provides article content expecting a visual card design plan. It ONLY outputs the design-plan TEXT (including the image prompt) — it never generates actual images and never calls any generation API. Do NOT trigger for - Facebook post copywriting (use fb-post-architect), product photography prompts (use product-visual-architect), generic image-editing prompts (use prompt-master-image-editor), or short-video scripts (use prompt-master-short-video).
+description: Turns an article or key message into a social-media graphic card plan (palette with hex codes, layout, card copy, background image prompt). Use when the user mentions 「社群圖卡」「圖卡設計」「圖卡企劃」「資訊圖卡」「文章轉圖卡」 or social card. Not for Facebook post copy (→ fb-post-architect).
 ---
 
 # Senior Social Media Visual Information Designer

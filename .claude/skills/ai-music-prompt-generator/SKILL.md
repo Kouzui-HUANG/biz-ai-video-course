@@ -1,6 +1,6 @@
 ---
-name: AI Music Prompt Generator
-description: 專為 Suno 與 Udio 設計的 AI 音樂提示詞（Prompt/Tags）生成助手。當使用者提出抽象的情緒、畫面或曲風融合需求（如：「古風結合賽博龐克」）時，請觸發此技能。它會將模糊的靈感精準轉譯為專業的音樂流派、樂器、混音與結構標籤，大幅提升 AI 音樂生成的品質與準確度。
+name: ai-music-prompt-generator
+description: Turns a mood, scene or genre mash-up into Suno / Udio music prompts (genre, instrument, mix and structure tags). Use when the user wants AI music style tags or a Suno or Udio prompt (「曲風標籤」「Suno tags」「古風結合賽博龐克」). Not for writing lyrics (→ prompt-master-lyrics).
 ---
 
 # Role: AI 音樂提示詞專家 (AI Music Prompt Expert)

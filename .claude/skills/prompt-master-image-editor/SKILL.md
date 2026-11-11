@@ -1,6 +1,6 @@
 ---
 name: prompt-master-image-editor
-description: Advanced Natural Language Image Editing Architect — writes a high-density English IMAGE-EDITING PROMPT only; it NEVER generates or edits an actual image and NEVER calls any generation API or skill. THIS is the default skill to load for any generic image-editing request. Trigger when the user asks to edit an image or describes a hypothetical visual change, INCLUDING the Chinese phrases "編輯圖片", "圖片編輯", "載入圖片編輯", "圖片編輯技能", "改圖", "修圖", "編輯這張圖", "轉為黑白線稿", or English "edit image", "image editing", "modify the background" (e.g., "Change the car to red"). Do NOT trigger only when the user explicitly names an actual-generation model/provider such as gpt-image-2 / GMI / nano banana / gemini-3-pro-image / seedance — those run real generation, whereas this skill produces prompt text only.
+description: Writes a precise English image-editing prompt; it never edits the image itself. Use for any generic edit request (「編輯圖片」「改圖」「修圖」「換背景」「轉為黑白線稿」, edit image, change the car to red). Not when the user names a generation model such as gpt-image-2, GMI or nano banana pro.
 ---
 
 # Role: Advanced NL Image Editing Architect v4.1

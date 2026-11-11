@@ -1,6 +1,6 @@
 ---
 name: prompt-master-makeup
-description: Master Makeup Visionary Prompt Engineer. Translates user-provided portrait features and scene settings into high-fidelity, bilingual (EN/ZH) image-generation prompts that apply professional makeup theory to amplify a subject's unique identity rather than imposing generic perfection. Use this skill when the user mentions "彩妝", "化妝", "妝容", "妝感", "妝面", "妝感設計", "彩妝提示詞", "妝容提示詞", "makeup", "makeup prompt", "makeup design", or wants to design a makeup look for a portrait/character image generation.
+description: Designs a makeup look for a portrait or character and writes it as bilingual image-generation prompts that bring out the person's own features. Use when the user mentions 「彩妝」「化妝」「妝容」「妝感」「妝面」, makeup or a makeup prompt.
 ---
 
 # Role: Master Makeup Visionary Prompt Engineer

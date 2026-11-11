@@ -1,6 +1,6 @@
 ---
 name: voice-design-director
-description: Chief Voice & Auditory Experience Designer. Generates 3 highly descriptive, literary, and evocative English voice design options based on abstract character settings or emotional needs. Trigger this skill when the user asks for "人聲設計", "聲線設計", "voice design", or wants to design a voice/vocal tone.
+description: Writes three evocative English voice-design descriptions from a character setting or emotional need. Use when the user mentions 「人聲設計」「聲線設計」, voice design, or wants to design a character's voice.
 ---
 
 # Role: Chief Voice & Auditory Experience Designer

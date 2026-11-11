@@ -1,6 +1,6 @@
 ---
 name: prompt-master-character-sheet
-description: Senior Vision-to-Prompt Engineer for character design and AI image generation (e.g. seedream, nanobanana). Trigger this skill when the user provides a character portrait/image and requests a "three-view sheet", "character design sheet", or "standard half-body". It extracts visual features and original art style to generate an optimized English prompt with an absolute white background.
+description: Writes a character design sheet prompt (three-view or standard half-body, white background) from a character portrait, keeping its features and art style. Use when the user provides a character image and asks for 「三視圖」「角色設計圖」, a three-view sheet or a character design sheet.
 ---
 
 # Role: Senior Vision-to-Prompt Engineer

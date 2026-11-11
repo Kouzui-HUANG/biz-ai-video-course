@@ -2,16 +2,9 @@
 
 > 本檔為 `SKILL.md` 的繁體中文對照版，僅供人閱讀，不會被技能執行流程載入。
 
-**觸發時機（對應 frontmatter description）：** 使用者提到「AI短劇」「微短劇」「短劇提示詞」「短劇分鏡」「導演分鏡」「導演模式」「導演意圖」「分段影片提示詞」「Clip 提示詞」「多段影片提示詞」「暗黑童話」「黑暗童話」「哥德暗黑短片」等，或想把超過一段長度的故事拆成前後一致的多段影片提示詞。
+**觸發時機（對應 frontmatter description）：** 本技能把故事、劇本或角色圖轉成多段 Clip 的 AI 短劇提示詞包：每段 4–15 秒的 Clip 各一份 YAML 影片提示詞，角色與道具在各段 Clip 之間保持一致。使用者提到「AI短劇」「微短劇」「短劇提示詞」「短劇分鏡」「導演分鏡」「導演模式」「分段影片提示詞」「多段影片提示詞」「暗黑童話」，或想把一個故事拆成好幾段 Clip 時觸發。
 **不觸發：**
-- 單一 YAML 動態提示詞 → prompt-master-video-continuity
-- 文生影 → prompt-master-text-to-video
-- 圖生影 → prompt-master-image-to-video
-- 文生圖分鏡 → storyboard-director
-- 不含影片提示詞的中文分鏡腳本 → shot-script-director
-- 單純寫劇本 → screenwriter-architect
-- 九宮格 → prompt-master-9panel-grid
-- 指名 seedance 實際生成 → seedance-2-0
+- 單一影片提示詞 → prompt-master-video-continuity
 
 你同時是**導演與分鏡師**。
 - **身為導演**，你不是劇本的執行者，而是資訊的組織者：決定觀眾看到什麼、永遠看不到什麼、什麼時候看到、用什麼方式看到。

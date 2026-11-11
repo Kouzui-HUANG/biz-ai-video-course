@@ -20,9 +20,9 @@ skill そのものを作成・最適化・翻訳するためのメタツール�
 
 | Skill 名 | 用途 |
 |---|---|
-| [skill-creator](.claude/skills/skill-creator/SKILL.md) | 新しい skill を作成したり、既存の skill を修正したりするための標準作業手順（SOP）ガイド。仕上げに skill-optimizer と skill-translator を自動で呼び出して連携します。 |
-| [skill-optimizer](.claude/skills/skill-optimizer/SKILL.md) | 既存の SKILL.md をリファクタリング・圧縮するツール。「漸進的開示（Progressive Disclosure）」の原則を適用して SKILL.md を 100〜200 行以内に抑え、context window の汚染を防ぎます。 |
-| [skill-translator](.claude/skills/skill-translator/SKILL.md) | SKILL.md を人間が読みやすい繁体字中国語版に翻訳して `docs/` フォルダに保存します。AI の実行時の context には **いっさい影響しません**。 |
+| [skill-creator](.claude/skills/skill-creator/SKILL.md) | 新しい skill の作成や既存 skill の修正を、テスト（skill あり／なしの比較実行、レビュー画面、ベンチマーク、トリガー調整）で確かめながら進める手順。Anthropic 公式版をベースに、本ライブラリのハウスルール（description の文字数予算、Gotchas、ユーザーの修正をテストケース化など）を追加しています。仕上げに skill-optimizer と skill-translator を呼び出します。 |
+| [skill-optimizer](.claude/skills/skill-optimizer/SKILL.md) | 既存 skill をスリム化・再構成するツール。description を 300 字前後（上限 1,024 字）に整え、守るべきルールは SKILL.md の冒頭に残し、参照用の資料だけを `references/` に移します。Claude がすでに知っている内容は削除し（削除した項目は一覧で報告）、最後に動作を確認します。 |
+| [skill-translator](.claude/skills/skill-translator/SKILL.md) | SKILL.md を人間が読みやすい繁体字中国語版に翻訳して `docs/` フォルダに保存します（原文の更新日つき。古くなった訳の一括更新にも対応）。AI の実行時の context には **いっさい影響しません**。 |
 
 ---
 
@@ -163,6 +163,7 @@ Git / GitHub の自動化など、開発を補助するツール。
 ```
 biz-ai-video-course/
 ├── .claude/
+│   ├── settings.json                    ← skill 一覧の予算を context の 1.5% に設定（全 skill の description が収まるように）
 │   ├── settings.local.json
 │   ├── lib/
 │   │   └── media_paths.py               ← GMI 実行系 3 skill が共有する素材パス定義
@@ -180,7 +181,7 @@ biz-ai-video-course/
 ```
 
 各 skill には以下が含まれます：
-- **`SKILL.md`**：簡潔なコア指示（200 行未満）。役割、Prime Directives（最優先事項）、実行フローを定義します。
+- **`SKILL.md`**：簡潔なコア指示（上限 500 行、多くは 200 行未満）。役割、Prime Directives（最優先事項）、実行フローを定義します。
 - **`references/`**：Progressive Disclosure パターンで切り出した詳細なナレッジベース（スタイル辞典、分析フレームワークなど）。必要なときにだけ skill が自分で読み込みます。
 - **`docs/`**（一部の skill）：`skill-translator` が生成した、人間が読みやすい繁体字中国語版。実行時に AI が読み込むことは **いっさいありません**。
 
@@ -210,9 +211,9 @@ biz-ai-video-course/
 
 | Skill 名稱 | 用途 |
 |---|---|
-| [skill-creator](.claude/skills/skill-creator/SKILL.md) | 建立新 skill 或修改既有 skill 的標準作業流程指南，會自動串接 skill-optimizer 與 skill-translator 完成收尾。 |
-| [skill-optimizer](.claude/skills/skill-optimizer/SKILL.md) | 重構與壓縮既有 SKILL.md，套用「漸進式揭露 (Progressive Disclosure)」原則，將 SKILL.md 控制在 100–200 行以內，避免污染 context window。 |
-| [skill-translator](.claude/skills/skill-translator/SKILL.md) | 將 SKILL.md 翻譯成繁體中文人類可讀版本，存放於 `docs/` 資料夾，**完全不影響** AI 執行 context。 |
+| [skill-creator](.claude/skills/skill-creator/SKILL.md) | 建立新 skill 或修改既有 skill，並用測試驗證（有／無技能對照執行、審閱畫面、benchmark、觸發調校）。以 Anthropic 官方版為基礎，加上本技能庫的 house rules（描述字數預算、Gotchas、把使用者的修正變成測試案例等），收尾時串接 skill-optimizer 與 skill-translator。 |
+| [skill-optimizer](.claude/skills/skill-optimizer/SKILL.md) | 精簡與重構既有 skill：description 壓到 300 字左右（上限 1,024 字），必須遵守的規則留在 SKILL.md 前段，只把查表型資料移到 `references/`；刪掉 Claude 本來就會的內容（逐條列出供確認），最後做行為檢查。 |
+| [skill-translator](.claude/skills/skill-translator/SKILL.md) | 將 SKILL.md 翻譯成繁體中文人類可讀版本，存放於 `docs/` 資料夾（標註原檔日期，可一次同步過期的譯本），**完全不影響** AI 執行 context。 |
 
 ---
 
@@ -353,6 +354,7 @@ Git / GitHub 自動化等開發輔助工具。
 ```
 biz-ai-video-course/
 ├── .claude/
+│   ├── settings.json                    ← 把 skill 清單預算設為 context 的 1.5%（讓所有 skill 的 description 都放得下）
 │   ├── settings.local.json
 │   ├── lib/
 │   │   └── media_paths.py               ← 三個 GMI 執行工具共用的素材路徑定義
@@ -370,7 +372,7 @@ biz-ai-video-course/
 ```
 
 每個 skill 內含：
-- **`SKILL.md`**：精簡的核心指令（< 200 行），定義角色、Prime Directives 與執行流程。
+- **`SKILL.md`**：精簡的核心指令（上限 500 行，多數 < 200 行），定義角色、Prime Directives 與執行流程。
 - **`references/`**：用 Progressive Disclosure 模式分離出的詳細知識庫（風格詞典、分析框架等），僅在需要時由 skill 主動載入。
 - **`docs/`**（部分 skill）：由 `skill-translator` 產出的繁體中文人類可讀版本，**完全不會**被 AI 在執行時讀取。
 

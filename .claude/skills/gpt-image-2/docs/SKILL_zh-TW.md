@@ -1,22 +1,6 @@
 ---
 name: gpt-image-2
-description: >
-  透過 GMI Cloud 的非同步 request-queue API（console.gmicloud.ai）
-  使用 OpenAI 的 gpt-image-2 生成或編輯圖片。單一腳本、雙模式：
-  沒有輸入圖片就跑 `gpt-image-2-generate`（文生圖）；有一張以上輸入
-  圖片就跑 `gpt-image-2-edit`（每張圖一個請求）。送出工作後輪詢直到
-  完成，再把每張結果圖下載到專案根目錄的共用 `outputs/` 資料夾。
-  預設：quality=medium、output_format=png、size=1920x1088、n=2。
-  API 金鑰從 skill 資料夾內的 `.gmi_api_key` 檔讀取（也接受 `--api-key`
-  或 `$GMI_API_KEY`）。
-  觸發條件：使用者想用 gpt-image-2／「gpt image 2」／GMI／GMI Cloud
-  生成 / 建立 / 編輯 / 重繪圖片，或使用中文片語「gpt-image-2」
-  「gpt image 2」「用 gpt-image-2 生圖」「用 gpt-image-2 改圖」
-  「GMI 生圖」「GMI Cloud 生圖」「跑 gpt-image-2」「gpt image 2 編輯」
-  「gpt image 2 生成」時。
-  不要觸發在：Stable Diffusion／TensorArt 生圖（請用 `sd-image-gen`）、
-  Gemini／nano banana 編輯（請用 `nano-banana-pro-edit`）、
-  放大（請用 `sd-upscaler`）、或圖片挑選／評分（請用 `image-judge`）。
+description: 透過 GMI Cloud 以 OpenAI gpt-image-2 實際生成或編輯圖片，會花費 API 額度；結果存放在 outputs/。只在使用者指名 gpt-image-2 或 GMI 時使用，例如「用 gpt-image-2 生圖」「GMI 改圖」。編輯圖片、改圖或生圖這類一般說法屬於撰寫提示詞的需求（→ prompt-master-image-editor 或其他 prompt-master 技能）。
 ---
 
 # gpt-image-2

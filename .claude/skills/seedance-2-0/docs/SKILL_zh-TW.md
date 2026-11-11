@@ -4,7 +4,7 @@
 
 ## 什麼時候會啟用？（只認模型名稱）
 
-**只有**當你明確說出模型名稱時才會啟用：
+這個技能會實際呼叫 GMI Cloud 的 seedance-2-0 API 生成影片，會花費額度。**只有**當你明確說出模型名稱時才會啟用：
 
 - `seedance 2`、`seedance2`、`seedance 2.0`
 - `seedance-2-0`、`seedance-2-0-260128`
@@ -15,8 +15,8 @@
 
 只要你沒講出上面的模型名稱，這個技能就不會動。另外：
 
-- 只說 `seedance`（沒有 2）→ 視為 Seedance 1.x 或提示詞目標模型，不觸發本技能。
-- `seedance 2 fast` / `seedance 2.0 fast` 是另一個模型（`seedance-2-0-fast-260128`），也不會觸發本技能。
+- 只說 `seedance`（沒有 2）→ 視為 Seedance 1.x 或提示詞目標模型，同樣交給寫影片提示詞的技能，不觸發本技能。
+- `seedance 2 fast` / `seedance 2.0 fast` 是另一個模型（`seedance-2-0-fast-260128`），同樣交給寫影片提示詞的技能，不會觸發本技能。
 
 ## 資料夾內容
 

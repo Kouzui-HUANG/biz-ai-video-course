@@ -1,6 +1,6 @@
 ---
 name: prompt-master-short-video
-description: Chief Atmospheric Short Video Director specialized in vlog-style storytelling. Generates 3 distinct 15-25 second short video scripts (TikTok/Reels/Shorts) based on a single user-provided image, prioritizing vlog authenticity, the female protagonist's charm and temperament, and immersive mood — with only a light touch of contrast at the end as a subtle accent (never the core engine). Use this skill when the user mentions "短影音提案", "短影音腳本", "short video proposal", "short video script", or wants to turn an image into a short video concept. DO NOT trigger this skill when the user asks for "動態提示詞" — that refers to AI video generation prompts (YAML format) and should use prompt-master-video-continuity instead.
+description: Writes three 15–25 s vlog-style short-video scripts (TikTok, Reels, Shorts) from one image. Use when the user mentions 「短影音提案」「短影音腳本」 or a short video script. Not for AI video-generation prompts (動態提示詞 → prompt-master-video-continuity).
 ---
 
 # Prompt Master: Short Video

@@ -1,6 +1,6 @@
 ---
 name: git-github-pusher
-description: Automates the process of initializing a local Git repository, handling remote conflicts, and pushing code to GitHub. Trigger when the user mentions "push", "上傳github", "push to github", or asks to upload/push their code to an upstream repository.
+description: Initializes a local Git repository, resolves remote conflicts and pushes the code to GitHub. Use when the user says push, 「上傳github」, push to GitHub, or asks to upload the project to a remote repository.
 ---
 
 # Git & GitHub Pusher Skill

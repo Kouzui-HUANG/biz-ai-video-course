@@ -1,6 +1,6 @@
 ---
 name: prompt-master-otaku-anima
-description: 究極のオタクAI & Anima モデル専用プロンプト職人。ユーザーからの断片的・曖昧な指示（テキストや画像のアイデア）を基に魅力的な「萌えキャラ」をデザインし、Anima（テキストエンコーダ Qwen3）特有の「Danbooruタグ＋自然言語ハイブリッド」記法で高品質な英語プロンプトを複数シーン分生成します。衣装デザイン時には自動的に costume-design-director スキルと連携します。
+description: 針對 Anima 模型（Qwen3 文字編碼器），從零碎的指示設計萌系角色，並以 Danbooru 標籤＋自然語言的混合寫法，寫出多個場景的英文提示詞。遇到「Anima」「萌えキャラ」「萌角色」或 Anima 提示詞的需求時使用。服裝方面與 costume-design-director 協作。
 ---
 
 # 角色：究極御宅族 AI 與 Anima 模型專用提示詞大師

@@ -1,6 +1,6 @@
 ---
 name: lightnovel-title-architect
-description: Light-Novel-Style Title Architect (輕小說式書名企劃). Reads user material — proposal, logline, synopsis, script, character sheet or rough idea — and proposes 3–5 light-novel / web-novel-style work titles (書名・作品名・片名・劇名) for novels, web serials, anime, games, films and 微短劇, each with an abbreviation/hashtag, a cross-media short name and a check against spoilers, broken promises (タイトル詐欺) and copycat titles. Text only; never generates images. Use when the user says 「書名企劃」,「作品名發想」,「片名提案」,「劇名提案」,「書名發想」,「取書名」,「取片名」,「想書名」,「作品命名」,「輕小說書名」,「網文書名」,「長書名」,「タイトル案」, "title ideas", "name my novel", or asks what to call a story, script or project. Do NOT trigger for naming characters, places or factions (→ cultural-naming-director), social-post headlines (→ fb-post-architect), or code/file/skill naming.
+description: Proposes 3–5 light-novel or web-novel style titles for a story, script or project, each with a short name, a hashtag and checks against spoilers and copycats. Use when the user mentions 「書名企劃」「作品名發想」「片名提案」「劇名提案」「取書名」「取片名」「輕小說書名」 or asks what to call a story. Not for naming characters or places (→ cultural-naming-director).
 ---
 
 # Role: Light-Novel-Style Title Architect (輕小說式書名企劃)

@@ -1,6 +1,6 @@
 ---
 name: blocking-plan-director
-description: Blocking Plan Director (運鏡平面圖導演). Turns ONE scene image (+ optional actor images) into ONE English image prompt for a top-down 90° orthographic, photoreal ArchViz 3D floor plan of that exact space with a clean vector blocking overlay - red dashed actor path through numbered marks, blue solid camera path through C1-Cn icons with field-of-view wedges and move labels, plus a legend. An actor image keeps that actor's look on the plan figure; without one a white clay mannequin (白模假人) stands in. Also outputs a zh-TW layout check and a time-coded Mark/C beat table reusable by prompt-master-video-continuity 一鏡到底. Generates immediately, prompt text only. Use when the user mentions 「運鏡平面圖」「空間動線」「走位圖」「機位圖」「動線圖」「場面調度圖」「拍攝平面圖」「俯視格局圖」, blocking diagram, camera floor plan, overhead shot plan, or wants actor/camera paths drawn on a scene. Not for 2x2 multi-view grids (prompt-master-scene-architect), 分鏡/storyboards, video prompts, or real generation with a named model.
+description: Writes one image prompt for a top-down floor plan of a scene image with actor and camera paths drawn on it, plus a beat table reusable for 一鏡到底 video prompts. Use when the user mentions 「運鏡平面圖」「走位圖」「機位圖」「動線圖」「場面調度圖」, blocking diagram or camera floor plan. Not for 2x2 multi-view grids (→ prompt-master-scene-architect).
 ---
 
 # Role: Blocking Plan Director (運鏡平面圖導演)

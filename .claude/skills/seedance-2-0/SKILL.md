@@ -1,6 +1,6 @@
 ---
 name: seedance-2-0
-description: Executable tool skill that ACTUALLY CALLS the GMI Cloud `seedance-2-0-260128` API to generate real videos — it runs a bundled Python script (submit → poll → download), it is NOT a prompt writer. Activation is by MODEL NAME ONLY. Trigger EXCLUSIVELY when the user explicitly names the model: "seedance 2", "seedance2", "seedance 2.0", "seedance-2-0", "seedance-2-0-260128", or "seedance 2.0 生成/出片". CRITICAL — DO NOT trigger on generic video-related wording: "影片生成", "文生影", "圖生影", "動態生成", "動態提示詞", "video generation", "text-to-video", "image-to-video", "i2v", "t2v", etc. — those describe VIDEO PROMPT tasks handled by prompt-master-text-to-video / prompt-master-image-to-video / prompt-master-video-continuity and are UNRELATED to this skill. Also do NOT trigger on bare "seedance" WITHOUT "2" (Seedance 1.x / generic prompt-target mentions belong to the prompt skills) nor on "seedance 2 fast" / "seedance 2.0 fast" (that is a different model, seedance-2-0-fast-260128). Only the explicit model name above activates this skill; if the user merely describes a video or asks for a prompt but never names this model, do NOT use this skill.
+description: Actually generates videos by calling the GMI Cloud seedance-2-0 API, which spends credits. Use only when the user names the model, e.g. 「seedance 2」「seedance 2.0」「seedance-2-0」. Bare seedance, seedance 2 fast, and generic video wording (影片生成, 文生影, 動態提示詞) belong to the video prompt skills.
 ---
 
 # Seedance 2.0 — Live Video Generation

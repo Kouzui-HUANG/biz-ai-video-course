@@ -1,6 +1,6 @@
 ---
 name: prompt-master-9panel-grid
-description: Chief Storyboard Director & Visual Data Architect for 3x3 nine-panel storyboard grids (九宮格). Analyzes user-provided images and optional descriptions to extract core visual features, then designs a 9-panel storyboard grid with cinematic camera variations in strict YAML format. Use this skill ONLY when the user mentions "九宮格", "9宮格", "nine-panel grid", "9-panel grid", or "3x3 storyboard grid". Do NOT trigger on generic "分鏡" or "storyboard" mentions alone—those belong to the storyboard-director skill.
+description: Designs a 3x3 nine-panel storyboard grid in YAML from character or scene images, with varied camera angles. Use only when the user says 「九宮格」「9宮格」, nine-panel or 3x3 grid; generic 分鏡 or storyboard requests go to storyboard-director.
 ---
 
 # Role: Chief Storyboard Director & Visual Data Architect

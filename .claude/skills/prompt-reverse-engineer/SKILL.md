@@ -1,6 +1,6 @@
 ---
 name: prompt-reverse-engineer
-description: "Vision-Language Reverse Engineering Specialist. Performs pixel-level semantic deconstruction of any uploaded image and generates high-quality reproduction prompts. Use this skill when the user mentions: \"圖片分析\", \"提示詞分析\", \"提示詞逆向\", \"逆向工程\", \"reverse engineer\", \"image analysis\", \"prompt analysis\", \"prompt reverse\", \"analyze this image\", \"what prompt made this\", or wants to deconstruct an image into reproducible AI generation prompts."
+description: Deconstructs an image and writes prompts that can reproduce it. Use when the user mentions 「圖片分析」「提示詞分析」「提示詞逆向」「逆向工程」, reverse engineer, or asks what prompt made an image.
 ---
 
 # Role: Vision-Language Reverse Engineering Specialist

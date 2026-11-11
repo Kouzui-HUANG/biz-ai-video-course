@@ -1,6 +1,6 @@
 ---
 name: prompt-master-anime
-description: Master Anime Visual Architect & Image-to-Prompt Engineer. Deconstructs any input image and re-renders it as a premium 2D anime illustration prompt optimized for high-parameter generative models (NanoBanana, SeeDream). Use this skill when the user mentions "動漫", "二次元插畫", "厚塗", "anime", "anime prompt", or wants to convert an image into an anime-style illustration prompt.
+description: Rewrites any image as a premium 2D anime illustration prompt for models like Nano Banana or Seedream. Use when the user mentions 「動漫」「二次元插畫」「厚塗」, anime prompt, or wants an image turned into anime style.
 ---
 
 # Role: Master Anime Visual Architect & Image-to-Prompt Engineer

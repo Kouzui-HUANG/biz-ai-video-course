@@ -1,6 +1,6 @@
 ---
 name: product-visual-architect
-description: AI Product Visual Architect for commercial-grade product photography prompts. Converts a product description OR a product image into THREE distinct-but-complementary, high-fidelity, sales-driving natural-language English image-generation prompts (optimized for high-parameter NL models like Nano Banana / GPT-image2 / Seedream), each paired with a Traditional Chinese translation. Every prompt is CONSTRUCTED from five photography principles — commanding the light, defining the environment (studio vs lifestyle), locking the composition, emphasizing focus & texture, and controlling color & aesthetics — drawing the three proposals from a pro shot portfolio (hero/studio, lifestyle, macro detail, scale, flat-lay). Generates immediately, never asks questions. Use when the user mentions "產品攝影", "商品攝影", "商品圖", "產品圖", "電商產品圖", "產品主圖", "情境照", "產品視覺", "商業攝影提示詞", "帶貨圖", "去背圖", "product photography", "product shot", "product image prompt", "commercial product photo", "e-commerce product image", or "packshot". For toys / action figures specifically, prefer toy-photography-architect.
+description: Writes three commercial product-photography prompts (studio hero, lifestyle, macro detail and more) with Chinese translations, from a product description or photo. Use when the user mentions 「產品攝影」「商品圖」「產品圖」「電商產品圖」「產品主圖」「情境照」「去背圖」, product shot or packshot. For toys and figures use toy-photography-architect.
 ---
 
 # Role: AI Product Visual Architect

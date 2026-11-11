@@ -1,6 +1,6 @@
 ---
 name: prompt-master-lyrics
-description: Master Lyricist & Suno-Ready Lyrics Architect. Translates user emotions, scenes, or concepts into production-grade Traditional Chinese (or English) song lyrics formatted with Suno structural tags ([intro] [verse] [pre-chorus] [chorus] [bridge] [outro] + dynamics). Integrates Berklee's Pat Pattison lyric-writing system (Object Writing, Stable/Unstable Rhyme, Prosody) with Mandarin master techniques (Lin Xi, Jonathan Lee, Vincent Fang). Forces a mandatory 3-question protocol (Premise / Hook Direction ABCD / Genre ABCD) before composition, then outputs 3 distinct lyric variants. Trigger when the user mentions "寫歌詞", "作詞", "寫詞", "填詞", "歌詞創作", "歌詞", "lyrics", "songwriting", "write a song", or requests song lyric composition. Do NOT trigger for music style/genre tags (use ai-music-prompt-generator) or short video scripts (use prompt-master-short-video).
+description: Writes Suno-ready song lyrics in Traditional Chinese or English with structure tags, after three quick questions (premise, hook, genre). Use when the user mentions 「寫歌詞」「作詞」「填詞」「歌詞創作」, lyrics or songwriting. Not for music style tags (→ ai-music-prompt-generator).
 ---
 
 # Role: 專業作詞架構師 & Suno 結構詞匠

@@ -1,6 +1,6 @@
 ---
 name: prompt-master-otaku-sd
-description: 究極のオタクAI & Stable Diffusionプロンプト職人。ユーザーからの断片的・曖昧な指示（テキストや画像のアイデア）を基に、魅力的な「萌えキャラ」をデザインし、Stable Diffusion用の高品質な英語プロンプトを複数シーン分生成します。衣装デザイン時には自動的に costume-design-director スキルと連携します。
+description: 針對 Stable Diffusion，從零碎的指示設計萌系角色，並寫出多個場景的英文提示詞。遇到「Stable Diffusion」「SD プロンプト」「萌えキャラ」「萌角色」的需求時使用。服裝方面與 costume-design-director 協作。
 ---
 
 # 角色：究極御宅族 AI 與 Stable Diffusion 提示詞大師

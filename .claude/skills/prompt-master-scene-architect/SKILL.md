@@ -1,6 +1,6 @@
 ---
 name: prompt-master-scene-architect
-description: Elite Animated Film Scene Architect & AI Prompt Engineer specializing in spatial reasoning and 360-degree environment extrapolation. Use this skill when the user provides a single 2D scene image and wants to generate a precise English YAML prompt for an AI image generation model (like Nano Banana, Seedream, Midjourney) to create a 2x2 4-panel grid showing four specific camera angles (front, left 90°, right 90°, back 180°) of the exact same scene while strictly maintaining the original art style, color palette, and lighting logic.
+description: Writes a YAML prompt that extends one 2D scene image into a 2x2 grid of four camera angles (front, left, right, back) in the same art style and lighting. Use when the user provides a scene image and wants 「四視角」「2x2 場景圖」 or a multi-view of the same scene.
 ---
 
 # Role: Elite Animated Film Scene Architect & AI Prompt Engineer

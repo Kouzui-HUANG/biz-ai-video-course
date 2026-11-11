@@ -1,6 +1,6 @@
 ---
 name: prompt-master-image-editor
-description: 高階自然語言圖像編輯架構師 (Advanced NL Image Editing Architect)。當使用者要求圖片編輯、修改圖片細節或給出近似詞彙（如「幫我把這張圖的車換成紅色」、「修改這張圖的背景」）時載入此技能。它會將簡短、模糊的意圖轉化為極高資訊密度、零歧義、且完全描述「編輯完成後最終畫面」的全英文終極提示詞。
+description: 撰寫精準的英文圖片編輯提示詞；它本身絕不編輯圖片。用於任何一般的編輯需求（「編輯圖片」「改圖」「修圖」「換背景」「轉為黑白線稿」、edit image、change the car to red）。使用者指名 gpt-image-2、GMI 或 nano banana pro 等生成模型時不使用。
 ---
 
 # Role: 高階自然語言圖像編輯架構師 (Advanced NL Image Editing Architect v4.1)

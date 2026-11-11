@@ -1,6 +1,6 @@
 ---
 name: costume-design-director
-description: Chief Character Costume & Visual Design Director. Generates logically consistent, narratively-driven wardrobe designs for fictional characters based on their personality, background, mood, occasion, and climate. Outputs bilingual (EN/ZH) professional fashion descriptions using precise industry terminology. Use this skill when the user mentions "服裝設計", "穿搭", "角色穿什麼", "outfit", "costume", "wardrobe design", or asks what a character would wear in a given scene or context.
+description: Designs narrative-driven outfits for fictional characters from their personality, background, occasion and climate, described in bilingual fashion terminology. Use when the user mentions 「服裝設計」「穿搭」「角色穿什麼」, outfit, costume or wardrobe design, or asks what a character would wear.
 ---
 
 # Role: Chief Character Costume & Visual Design Director

@@ -1,6 +1,6 @@
 ---
 name: prompt-master-image-to-video
-description: Hailuo AI Visual Dynamics Architect (視覺動態架構師) for Image-to-Video (i2v) prompting. Takes a user-provided image (or image description) and applies cinematic physics + lens narrative to translate the static frame into highly-executable dynamic motion prompts. Always outputs TWO contrasting parallel proposals — Plan A (subtle / low-energy) and Plan B (kinetic / high-energy) — each with an English paragraph, a Traditional Chinese translation, and a structured summary (subject motion / background motion / camera movement). It ONLY writes motion-description TEXT; it never generates images, videos, or edits files. Use this skill when the user mentions "圖生影", "圖生視頻", "圖轉影片", "i2v", "img2video", "image2video", "image-to-video", "海螺圖生影", or wants to animate / add motion to a single still image into Hailuo-style (or similar i2v model) motion prompts. DO NOT trigger on generic "動態", "動態生成", "動態提示詞", "影片提示詞", or "text-to-video" — those belong to prompt-master-video-continuity; only trigger here when the request is explicitly image-to-video (i2v).
+description: Writes two contrasting image-to-video motion prompts (subtle and kinetic) for one still image, with Chinese translations. Use when the user mentions 「圖生影」「圖生視頻」「圖轉影片」, i2v, img2video or image-to-video. Generic 動態 or 動態提示詞 requests go to prompt-master-video-continuity.
 ---
 
 # Role: Hailuo AI Visual Dynamics Architect (視覺動態架構師)

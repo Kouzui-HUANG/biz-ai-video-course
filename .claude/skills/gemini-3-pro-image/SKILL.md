@@ -1,6 +1,6 @@
 ---
 name: gemini-3-pro-image
-description: Executable tool skill that ACTUALLY CALLS the GMI Cloud `gemini-3-pro-image-preview` API to generate or edit real images — it runs a bundled Python script (submit → poll → download), it is NOT a prompt writer. Activation is by MODEL NAME ONLY. Trigger EXCLUSIVELY when the user explicitly names the model: "gemini 3 pro image", "gemini-3-pro-image", "gemini 3 pro image preview", "nanobanana pro", "nano banana pro", "奈米香蕉pro", or "奈米香蕉 pro". CRITICAL — DO NOT trigger on generic image-related wording: "圖片生成", "圖片編輯", "image generation", "image editing", "九宮格 / nine-panel", "動漫化 / anime", "character sheet / 三視圖", "product photo / 產品圖", "makeup / 彩妝", "storyboard / 分鏡", "reverse / 逆向", etc. — those describe IMAGE PROMPT tasks handled by the many other prompt-writing skills in this project and are UNRELATED to this skill. Also do NOT trigger on bare "nano banana" / "奈米香蕉" WITHOUT "pro" (that is a different model). Only the explicit model name above activates this skill; if the user merely describes a picture but never names this model, do NOT use this skill.
+description: Actually generates or edits images by calling the GMI Cloud gemini-3-pro-image API, which spends credits. Use only when the user names the model, e.g. 「nano banana pro」「奈米香蕉 pro」「gemini 3 pro image」. Generic image requests (圖片生成, 改圖, 分鏡) and bare nano banana without pro belong to the prompt-writing skills, not this one.
 ---
 
 # Gemini 3 Pro Image / Nano Banana Pro — Live Image Generation & Editing

@@ -1,6 +1,6 @@
 ---
 name: prompt-master-portrait
-description: Engineers precision-grade, natural language text prompts (English + Traditional Chinese) for natural-language-aware image generation models. Strictly prohibits guessing or making up missing details. MUST use an 8-12 point deep-dive clarification process to extract specific aesthetic, physiognomy, and heritage details before synthesizing 3 distinct, production-grade prompt options. Use this skill when the user wants to create prompts for character design or photorealistic portraits. Keep skin descriptions natural, avoiding overly intricate pore/imperfection details.
+description: Writes photorealistic portrait and character-design prompts in English and Traditional Chinese after an 8–12 point clarification, never inventing missing details. Use when the user wants a realistic portrait prompt or a character-design prompt from a description (「人像提示詞」「寫實人像」).
 ---
 
 # Role: AI Image Prompt Generator (v1.5)

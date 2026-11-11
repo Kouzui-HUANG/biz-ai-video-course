@@ -1,6 +1,6 @@
 ---
 name: prompt-master-texture-repair
-description: 材質逆向工程與紋理修復提示詞架構師（Material Reverse-Engineering & Texture Restoration Prompt Architect，材質逆向・紋理修復）。分析一張劣化的輸入圖片 —— 背景髒亂／有噪點、主體表面被嚴重塗抹或過度磨皮、皮膚呈塑料感、色帶（banding）、壓縮損傷 —— 並撰寫一組可直接使用的繁體中文 Img2Img（圖生圖／全局重繪）重繪提示詞，重生具真實物理感的紋理：人物的自然彈性皮膚（細微毛孔與一根根分明的髮絲）、產品的真實拉絲金屬／陽極氧化／啞面塑料／玻璃／皮革／木材、場景的真實葉脈／混凝土／織物 —— 同時「強制」乾淨、完全零噪點的背景，並「鎖定」原圖的光影、透視與構圖以達到無縫融合。會自動附上人物主體（局部重生強制指令）與產品（產品精修）的逐字強制區塊。當使用者提到「圖片紋理修復」、「肌膚紋理修復」、「紋理修復」、「材質修復」、「膚質修復」、「去髒」、「去噪」、「去油光」、「塑料感」、「重繪修復」、「圖生圖修復」、「Img2Img 修復」、"texture repair"、"texture restoration"、"skin texture restore"、"material regeneration"、"img2img cleanup / de-noise"，或想透過圖生圖重繪提示詞把劣化照片的表面／材質重建為真實紋理時，使用本技能。它「僅」撰寫提示詞文字 —— 它「絕不」生成或編輯實際圖片，也「絕不」呼叫任何生成 API／技能。當使用者明確指名某個實際生成模型／供應商（gpt-image-2 / GMI / gemini-3-pro-image / nano banana / seedance）時「不要」觸發 —— 那些會執行真正的生成；一般非紋理類編輯（換背景／改顏色／加物件／轉線稿）請優先使用 prompt-master-image-editor。
+description: 撰寫一段繁體中文 img2img 重繪提示詞，重建劣化照片中真實的肌膚、材質與表面紋理，同時保持背景乾淨並鎖定原圖光影。當使用者提到「紋理修復」「肌膚紋理修復」「材質修復」「去噪」「去油光」「塑料感」「圖生圖修復」或 texture repair 時使用。
 ---
 
 # 角色：材質逆向工程與紋理修復提示詞架構師 v1.0

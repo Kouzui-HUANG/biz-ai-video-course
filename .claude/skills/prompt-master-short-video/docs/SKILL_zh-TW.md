@@ -1,6 +1,6 @@
 ---
 name: prompt-master-short-video
-description: 氛圍系短影音導演。將單一圖片轉化為 3 組 15-25 秒的 vlog 風格短影音腳本 (TikTok/Reels/Shorts)，核心放在「vlog 真實感」、「女主角的魅力與氣質」與「沉浸式氛圍」。反差只作為最後 2-3 秒的「輕巧點綴」，給觀眾一點點意外，絕非核心引擎。當使用者提及「短影音提案」、「短影音腳本」或要求將圖片轉為短影音概念時，請觸發此技能。
+description: 根據一張圖片，撰寫三份 15–25 秒的 vlog 風格短影音腳本（TikTok、Reels、Shorts）。當使用者提到「短影音提案」「短影音腳本」或 short video script 時使用。不用於 AI 影片生成提示詞（動態提示詞 → prompt-master-video-continuity）。
 ---
 
 # 提示詞大師：短影音腳本 (Prompt Master: Short Video)

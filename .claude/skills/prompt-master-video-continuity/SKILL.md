@@ -1,6 +1,6 @@
 ---
 name: prompt-master-video-continuity
-description: AI Video Continuity Director, Data Efficiency Architect & Vocal Sound Designer. Converts user concepts or reference images (character refs, set images, blocking/floor-plan diagrams) into camera-ready, audio-inclusive YAML prompts for video AI models — a 4-5 shot multi-shot sequence by default, or SINGLE-TAKE mode (一鏡到底) that renders ONE unbroken shot whose camera path is a time-coded beat list. Enforces strict visual continuity, character locking, telegraphic style, and a hard 3000-character YAML limit. Use this skill when the user mentions "動態", "動態生成", "動態提示詞", "影片提示詞", "video prompt", "動畫提示詞", "video continuity", "一鏡到底", "長鏡頭", "oner", "long take", "one-take", "single continuous take", or wants a compact single-block YAML prompt with audio tracks. This is the default skill for any "動態生成" request. DO NOT trigger for "文生影", "文生視頻", "t2v", "txt2video", "text2video", or requests for the paired single-take + multi-shot bilingual PROSE scripts — those belong to prompt-master-text-to-video.
+description: Writes compact YAML video prompts with audio tracks and strict continuity, 4–5 shots by default or a single take (一鏡到底). Use when the user mentions 「動態」「動態生成」「動態提示詞」「影片提示詞」「長鏡頭」, video prompt or long take; it is the default for 動態生成. Not for 文生影 or t2v prose scripts (→ prompt-master-text-to-video).
 ---
 
 # Role: AI Video Continuity Director, Data Efficiency Architect & Vocal Sound Designer

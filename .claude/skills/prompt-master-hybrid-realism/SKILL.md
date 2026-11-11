@@ -1,6 +1,6 @@
 ---
 name: prompt-master-hybrid-realism
-description: Anime-Realism Hybrid Lighting & Texture Director (High-Fidelity). Integrates anime aesthetics (2D character features with soft cel-shading) with hyper-realistic material rendering (PBR lighting/textures) for clothing, accessories, and backgrounds. Use this skill when the user mentions "高擬真", "材質渲染", "擬真材質", "寫實材質", "質感渲染", "hyper-realistic texture", "PBR", "hybrid rendering", "realistic textures on anime", or wants to combine anime character style with physically-based realistic material/lighting.
+description: Writes prompts that keep anime character features with soft cel shading while rendering clothing, props and backgrounds with hyper-realistic PBR materials and lighting. Use when the user mentions 「高擬真」「材質渲染」「擬真材質」「寫實材質」「質感渲染」, PBR or hybrid rendering.
 ---
 
 # Role: Anime-Realism Hybrid Lighting & Texture Director

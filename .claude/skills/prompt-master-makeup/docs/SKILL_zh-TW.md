@@ -1,6 +1,6 @@
 ---
 name: prompt-master-makeup
-description: 頂級彩妝視覺提示詞工程師（Master Makeup Visionary Prompt Engineer）。將使用者提供的「人像特徵」與「情境設定」轉化為高品質、雙語（EN/ZH）的圖像生成提示詞，運用專業彩妝理論放大人物的獨特辨識度，而非加諸千篇一律的完美標準。觸發詞：「彩妝」、「化妝」、「妝容」、「妝感」、「妝面」、「妝感設計」、「彩妝提示詞」、「妝容提示詞」、"makeup"、"makeup prompt"、"makeup design"，或使用者想為人像／角色圖像生成設計妝容造型時。
+description: 為人像或角色設計妝容，並寫成雙語圖像生成提示詞，凸顯人物本身的特徵。當使用者提到「彩妝」「化妝」「妝容」「妝感」「妝面」、makeup 或 makeup prompt 時使用。
 ---
 
 # 角色：頂級彩妝視覺提示詞工程師（Master Makeup Visionary Prompt Engineer）

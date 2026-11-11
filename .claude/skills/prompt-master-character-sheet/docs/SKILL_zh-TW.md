@@ -1,6 +1,6 @@
 ---
 name: prompt-master-character-sheet
-description: 專精於將角色圖片轉換為「標準半身三視圖」的 AI 提示詞專家。當使用者提供角色半身像或全身像圖片，並要求產生高品質的正面、側面、背面三視圖提示詞時，請觸發此技能。
+description: 根據角色肖像撰寫角色設計圖提示詞（三視圖或標準半身像，白色背景），保留原圖的特徵與畫風。當使用者提供角色圖片，並要求「三視圖」「角色設計圖」、three-view sheet 或 character design sheet 時使用。
 ---
 
 # Role: 資深 AI 視覺特徵解析與提示詞工程師 (Senior Vision-to-Prompt Engineer)

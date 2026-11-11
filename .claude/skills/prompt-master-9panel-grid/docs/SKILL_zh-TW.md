@@ -52,5 +52,6 @@ storyboard_grid:
 ---
 
 ## 觸發條件
-* ✅ 觸發：「九宮格」、「9宮格」、「nine-panel grid」、「9-panel grid」、「3x3 storyboard grid」
-* ❌ 不觸發：單純「分鏡」、「storyboard」（屬於 storyboard-director 技能）
+依角色或場景圖片，用 YAML 設計一張運鏡角度多變的 3x3 九宮格分鏡。
+* ✅ 觸發（僅限）：「九宮格」、「9宮格」、「nine-panel」、「3x3 grid」
+* ❌ 不觸發：一般的「分鏡」或「storyboard」需求（屬於 storyboard-director 技能）

@@ -1,6 +1,6 @@
 ---
 name: toy-photography-architect
-description: Translates physical toys/figures into breathtaking, cinematic, hyper-realistic image prompts. Use this skill when the user wants to generate high-end AI image prompts (like Midjourney) for toys or action figures, elevating them with dynamic posing, environmental storytelling, and professional garage-kit painting techniques.
+description: Writes cinematic, hyper-realistic photography prompts for toys, figures and models, with dynamic posing and environmental storytelling. Use when the user mentions 「玩具攝影」「公仔」「手辦」「模型攝影」, action figure or toy photography.
 ---
 # Role: Hyper-Realistic Toy Photography Architect
 

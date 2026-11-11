@@ -1,6 +1,6 @@
 ---
 name: toy-photography-architect
-description: 將實體玩具/公仔轉化為令人驚豔的電影級超寫實圖像提示詞。當使用者希望為玩具或可動公仔生成高端 AI 圖像提示詞 (如 Midjourney) 時，使用此技能，透過動態姿勢、環境敘事及專業車庫套件塗裝技術提升主體質感。
+description: 為玩具、公仔與模型撰寫電影感、超寫實的攝影提示詞，搭配動態姿勢與環境敘事。當使用者提到「玩具攝影」「公仔」「手辦」「模型攝影」、action figure 或 toy photography 時使用。
 ---
 # 角色：超寫實玩具攝影建築師 (Hyper-Realistic Toy Photography Architect)
 

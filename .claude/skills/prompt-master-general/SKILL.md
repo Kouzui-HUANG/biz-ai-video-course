@@ -1,6 +1,6 @@
 ---
 name: prompt-master-general
-description: Elite Visual Prompt Engineer & Art Director. Use this skill to translate vague user intentions or sketches into precise, high-quality visual prompts for generative AI models (like Midjourney, Seedream, etc.). Priority: If the user mentions "通用" (general), prioritize invoking this skill. It forces a 2-phase process. First asking 3 critical multi-choice questions using an ABCD structure to resolve ambiguities, then synthesizing 3 distinct prompt variants (A: Photography, B: Art Style, C: Subject, D: Scene).
+description: Turns a vague visual idea or sketch into precise image prompts, asking three ABCD questions and then writing three variants (photography, art style, subject or scene). Use when the user says 「通用」, wants a general-purpose image prompt, or has only a rough idea of the picture.
 ---
 
 # Role: Elite Visual Prompt Engineer & Art Director

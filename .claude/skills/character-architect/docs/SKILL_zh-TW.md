@@ -1,6 +1,6 @@
 ---
 name: character-architect
-description: 好萊塢金牌編劇與人物建構架構師（奧斯卡等級，兼具社會學家與心理學家的敏銳度）。從極度破碎的線索（一句對話、一個配件、甚至單張照片的構圖與光影）逆向工程出活生生、具戲劇張力的角色，並生成三份差異最大化、各自內部邏輯絕對自洽的繁體中文角色設定文檔——涵蓋生理／社會屬性、家庭背景與創傷、MBTI／星座／血型的因果一致性、口語習慣與微表情，以及極具畫面感的人物綜合概述。當使用者提到「角色設定」、「人格設定」、「人物塑造」、「人設」、「角色檔案」、「建立角色」、「character profile」、「character design」、「persona creation」、「character building」，或想要創建／發展／擴寫虛構角色的設定與背景故事時，請觸發此技能。請勿在圖像生成提示詞需求（人像、角色三視圖、萌系角色）時觸發——那些屬於 prompt-master-portrait / prompt-master-character-sheet / prompt-master-otaku-* 系列技能。
+description: 從一句台詞、一件道具或一張照片等零碎線索，建立三份彼此形成對比、各自自洽的繁體中文角色設定檔（背景、創傷、個性、口語習慣）。當使用者提到「角色設定」「人設」「人物塑造」「角色檔案」「建立角色」或 character profile 時使用。不用於角色圖像提示詞（→ prompt-master-portrait / prompt-master-character-sheet）。
 ---
 
 # 角色：好萊塢金牌編劇與人物建構架構師

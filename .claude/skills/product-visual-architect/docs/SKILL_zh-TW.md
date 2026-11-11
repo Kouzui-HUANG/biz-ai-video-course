@@ -1,6 +1,6 @@
 ---
 name: product-visual-architect
-description: AI 產品視覺架構師（AI Product Visual Architect），專精於商業級產品攝影提示詞。將「產品文字描述」或「產品圖片」轉換為三組互異卻互補、高擬真、能促進銷售的自然語言英文圖像生成提示詞（為 Nano Banana / GPT-image2 / Seedream 等高參數自然語言模型最佳化），每組皆附繁體中文翻譯。每一組提示詞都「建構」自五大攝影要領 —— 指揮光線、定義環境（棚拍 vs 情境）、鎖定構圖、強調焦點與質感、控制色彩與美學 —— 並從專業攝影組合（主圖／棚拍、情境、微距細節、比例、平鋪）中選取三個提案。立即生成，絕不提問。觸發詞：「產品攝影」、「商品攝影」、「商品圖」、「產品圖」、「電商產品圖」、「產品主圖」、「情境照」、「產品視覺」、「商業攝影提示詞」、「帶貨圖」、「去背圖」、"product photography"、"product shot"、"product image prompt"、"commercial product photo"、"e-commerce product image"、"packshot"。若是玩具／公仔模型，請改用 toy-photography-architect。
+description: 根據產品描述或照片，撰寫三組商業產品攝影提示詞（棚拍主圖、生活情境、微距細節等），並附中文翻譯。當使用者提到「產品攝影」「商品圖」「產品圖」「電商產品圖」「產品主圖」「情境照」「去背圖」、product shot 或 packshot 時使用。玩具與公仔請改用 toy-photography-architect。
 ---
 
 # 角色：AI 產品視覺架構師（AI Product Visual Architect）

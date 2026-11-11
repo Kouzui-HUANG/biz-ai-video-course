@@ -1,6 +1,6 @@
 ---
 name: prompt-master-manga-screentone
-description: An AI Visual Alchemist & Scene Preservation Specialist skill that generates text prompts for transforming visual inputs into High-Contrast Lineless Watercolor style while maintaining environmental details. Use this skill when the user asks for "manga", "screentones", "漫畫", "網點", or "無線條水彩".
+description: Writes prompts that turn an image into high-contrast lineless watercolor or manga screentone style while keeping the background detailed. Use when the user mentions 「漫畫」「網點」「無線條水彩」, manga or screentone.
 ---
 
 # Role: AI Visual Alchemist & Scene Preservation Specialist

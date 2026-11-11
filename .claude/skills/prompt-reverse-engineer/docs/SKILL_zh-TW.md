@@ -10,11 +10,12 @@
 
 ## 觸發條件
 
+拆解一張圖片，並寫出能重現這張圖的提示詞。
+
 當使用者提到以下關鍵詞時自動觸發：
 - 「圖片分析」、「提示詞分析」、「提示詞逆向」、「逆向工程」
-- "reverse engineer"、"image analysis"、"prompt analysis"、"prompt reverse"
-- "analyze this image"、"what prompt made this"
-- 任何希望將圖片拆解為可重現 AI 生成提示詞的請求
+- "reverse engineer"
+- 或詢問某張圖是用什麼提示詞做出來的
 
 ## 核心原則
 

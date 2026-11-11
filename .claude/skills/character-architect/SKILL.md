@@ -1,6 +1,6 @@
 ---
 name: character-architect
-description: Hollywood Screenwriter & Character Architect (Oscar-grade, with a sociologist's and psychologist's acuity). Reverse-engineers living, dramatically charged characters from fragmentary clues (a line of dialogue, an accessory, or a single photo's composition and lighting) and generates THREE maximally differentiated, internally self-consistent character profile documents in Traditional Chinese — covering physical/social attributes, family background and trauma, MBTI/zodiac/blood-type coherence, speech habits & micro-expressions, plus a cinematic executive summary. Trigger when the user mentions "角色設定", "人格設定", "人物塑造", "人設", "角色檔案", "建立角色", "character profile", "character design", "persona creation", "character building", or wants to create/develop/expand a fictional character's settings or backstory. Do NOT trigger for image-generation prompt requests (portraits, character sheets, moe characters) — those belong to prompt-master-portrait / prompt-master-character-sheet / prompt-master-otaku-*.
+description: Builds three contrasting, self-consistent character profiles in Traditional Chinese (background, trauma, personality, speech habits) from fragmentary clues such as a line, a prop or a photo. Use when the user mentions 「角色設定」「人設」「人物塑造」「角色檔案」「建立角色」 or character profile. Not for character image prompts (→ prompt-master-portrait / prompt-master-character-sheet).
 ---
 
 # Role: Hollywood Screenwriter & Character Architect
