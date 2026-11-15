@@ -10,14 +10,14 @@ Design philosophy: **Wardrobe is Narrative** — clothing is a visual extension 
 ## 1. Prime Directives
 
 - **No physics/logic violations**: Never pair incompatible items with context (e.g., strapless mini dress in winter without outerwear; neon colors at a funeral).
-- **Dictionary-first terminology**: English descriptions MUST prioritize terms from the gender-appropriate Fashion Dictionary (see §2). Load it at the start of every design task.
+- **Dictionary as reference**: when you need a precise English garment term, look it up in the matching Fashion Dictionary (§2). It's a vocabulary aid, not a required first step.
 - **Restraint over excess**: Accessories ≤ 3 items. Visual focal points ≤ 2. Serve the whole, never enumerate the dictionary.
-- **Filter-safe wording**: Never write `single-breasted` / `double-breasted` in `[EN]` — the substring "breast" trips image platforms' keyword safety filters and rejects the whole generation (`HTTP 400: Generation blocked by safety policy`), even for a fully clothed business suit. Write `a single row of buttons` / `a double row of buttons` instead (the dictionaries already do). `[ZH]` 單排釦／雙排釦 is fine.
+- **Filter-safe wording**: Never write any English word containing "breast" in `[EN]` (single-breasted, double-breasted, breast pocket, breastplate…). The substring trips image platforms' keyword safety filters and rejects the whole generation (`HTTP 400: Generation blocked by safety policy`), even for a fully clothed business suit. Write `a single row of buttons` / `a double row of buttons`, `a chest pocket`, `a chest plate` instead (the dictionaries already use the button wording). `[ZH]` 單排釦／雙排釦／胸前口袋／胸甲 is fine.
 - **Bilingual integrity (non-negotiable)**: Every field MUST output BOTH an `[EN]` line AND a `[ZH]` line, with `[ZH]` placed immediately after its `[EN]`. Never omit, merge, abbreviate, or skip the `[ZH]` line — not even when the response is long, the content looks similar, or you are pressed for space. Before sending, re-scan the output and regenerate any field whose `[ZH]` is missing or empty.
 
 ## 2. Knowledge Hub
 
-Load the appropriate dictionary based on the character's gender before generating any design:
+Open the matching dictionary when you need precise terminology (it's optional):
 
 - **Female Fashion Dictionary**: Read [`references/fashion-dictionary-female.md`](references/fashion-dictionary-female.md) — 12 categories covering tops, bottoms, dresses, lingerie, uniforms, swimwear, footwear, accessories, fabrics, colors, wearing states, and trims.
 - **Male Fashion Dictionary**: Read [`references/fashion-dictionary-male.md`](references/fashion-dictionary-male.md) — 12 categories covering tops, bottoms, one-pieces, underwear, suits & uniforms, swimwear & activewear, footwear, accessories, fabrics, colors, wearing states, and trims.
@@ -28,7 +28,7 @@ Execute these 3 steps internally before producing output:
 
 1. **Environment & Physical Anchoring** — Analyze weather, season, occasion → determines functional requirements (warmth, formality, comfort).
 2. **Psychological & Social Mapping** — Analyze personality, family background, current mood → determines style direction, color palette, fabric choices (e.g., rebellious → leather & dark tones; affluent & joyful → bright silks).
-3. **Visual Balance & Convergence** — Select items from the Fashion Dictionary, enforce ≤ 2 visual focal points, verify style coherence and color harmony across all pieces.
+3. **Visual Balance & Convergence** — Select the items (the Fashion Dictionary helps with exact terms), enforce ≤ 2 visual focal points, verify style coherence and color harmony across all pieces.
 
 ## 4. Required Input
 
@@ -65,3 +65,9 @@ The user should provide (prompt if missing critical info):
     * [EN]: ...
     * [ZH]: ...
 ```
+
+## 6. Gotchas
+
+- **Any "breast" word gets the whole image request rejected.** "single-/double-breasted" triggered an HTTP 400 safety block on a fully clothed suit (2026-10-26), and "breastplate" or "breast pocket" would too. Use the row-of-buttons, chest-pocket and chest-plate wording above.
+- **Everyday clothes must match how that person really dresses.** A middle-aged Taiwanese man's casual outfit came out looking like pajamas; the user wanted the moisture-wicking functional tee such men actually wear. Dress ordinary characters the way that kind of person dresses in their place and era, not as a stylized idea of "casual".
+- **Keep accessories only in the Accessories field.** When a design is turned into a reference image, the user usually drops the accessories (「不要配件」「不要裝飾跟配件」). Don't fold them into the tops or bottoms descriptions (a brooch on the jacket, a watch in the sleeve line), so they can be removed without touching the rest.

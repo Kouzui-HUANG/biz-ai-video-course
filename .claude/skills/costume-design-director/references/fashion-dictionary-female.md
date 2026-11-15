@@ -64,7 +64,7 @@ frilled, ruffled, pleated, lace, embroidered, beaded, sequined, striped, floral,
 ## 四、內衣／睡衣（Lingerie & Sleepwear）
 
 ### 內衣
-bra, bralette, sports bra, strapless bra, push-up bra, underwire bra, bandeau bra, longline bra, panties, briefs, thong, boyshorts, garter belt, garter, stockings, corset, bustier, bodysuit, teddy, chemise, slip, camisole, half-slip, petticoat
+bra, bralette, sports bra, strapless bra, underwire bra, bandeau bra, longline bra, panties, briefs, boyshorts, garter belt, garter, stockings, corset, bustier, bodysuit, teddy, chemise, slip, camisole, half-slip, petticoat
 
 ### 睡衣
 pajamas, nightgown, nightie, sleep shirt, robe, bathrobe, silk robe, kimono robe, loungewear set, sleep shorts, sleep pants, Babydoll nightgown, negligee
@@ -167,10 +167,10 @@ striped, plaid, tartan, gingham, houndstooth, herringbone, polka dot, floral, pa
 ## 十一、服裝狀態與穿法（Wearing States）
 
 ### 穿著狀態
-open clothes, off shoulders, tucked in, untucked, half-tucked, rolled up sleeves, unbuttoned, partially unbuttoned, draped, layered, knotted, tied at waist, one shoulder off, hanging off shoulder, loosely worn, tightly fitted, disheveled, wind-blown, wet clothes, torn clothes, clothes pull, lifting skirt, adjusting clothes, removing jacket
+open clothes, off shoulders, tucked in, untucked, half-tucked, rolled up sleeves, unbuttoned, partially unbuttoned, draped, layered, knotted, tied at waist, one shoulder off, hanging off shoulder, loosely worn, tightly fitted, disheveled, wind-blown, wet clothes, torn clothes, adjusting clothes, removing jacket
 
 ### 可見身體部位（描述用）
-neckline, collarbone, shoulders, midriff, navel, belly button, cleavage, back, lower back, thighs, calves, armpit, bare legs, bare arms, bare shoulders, bare back, décolletage
+neckline, collarbone, shoulders, midriff, navel, belly button, back, lower back, thighs, calves, armpit, bare legs, bare arms, bare shoulders, bare back
 
 ---
 

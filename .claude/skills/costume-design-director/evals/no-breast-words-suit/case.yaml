@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: no-breast-words-suit
+expected_outcome: |
+  A bilingual courtroom outfit whose English never contains the substring "breast"; the jacket is described with a double row of buttons, and every field has an [EN] line followed by its [ZH] line.

@@ -58,7 +58,7 @@ fitted, relaxed, oversized, distressed, patched, striped, plaid, camouflage, emb
 ## 四、內衣／睡衣（Underwear & Sleepwear）
 
 ### 內衣
-briefs, boxer briefs, boxers, trunks, bikini briefs, jockstrap, thong, compression shorts, athletic supporter, undershirt, A-shirt, tank undershirt, thermal underwear, long johns, base layer top, base layer bottom, union suit
+briefs, boxer briefs, boxers, trunks, bikini briefs, compression shorts, athletic supporter, undershirt, A-shirt, tank undershirt, thermal underwear, long johns, base layer top, base layer bottom, union suit
 
 ### 睡衣
 pajamas, pajama set, pajama pants, sleep shirt, nightshirt, robe, bathrobe, terry cloth robe, silk robe, kimono robe, smoking jacket, lounge pants, sleep shorts, dressing gown, house coat
@@ -173,7 +173,7 @@ striped, pinstripe, chalk stripe, Bengal stripe, candy stripe, pencil stripe, aw
 open clothes, unbuttoned, partially unbuttoned, top button undone, collar open, rolled-up sleeves, push-up sleeves, tucked in, untucked, half-tucked, French tuck, shirt tail out, draped, layered, knotted, loosely worn, tightly fitted, disheveled, wind-blown, wet clothes, torn clothes, jacket over shoulder, jacket draped, tie loosened, tie undone, collar popped, sleeves pushed up, hoodie up, hood down, one strap off, unzipped, half-zipped
 
 ### 可見身體部位（描述用）
-neckline, collarbone, Adam's apple, chest, pectorals, midriff, abs, navel, forearms, biceps, shoulders, back, lower back, V-line, calves, thighs, armpit, bare arms, bare chest, bare shoulders, bare back, veins
+neckline, collarbone, Adam's apple, chest, midriff, abs, navel, forearms, biceps, shoulders, back, lower back, calves, thighs, armpit, bare arms, bare shoulders, bare back, veins
 
 ---
 
