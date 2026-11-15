@@ -68,3 +68,8 @@ Delivery shape:
 <the entire English prompt — one continuous paragraph>
 ```
 ````
+
+## Gotchas
+
+- **Say which way a held object faces and which way the hand moves.** A man holding a tablet came out with the screen turned toward the camera instead of toward him, and a raised hand came out curled back toward the body. Write the facing and the direction explicitly: "the screen faces the man, its back toward the camera"; "arm raised outward, palm facing away, not curled back toward himself".
+- **Give sizes against the body, not as adjectives.** "Longer" or "bigger" produced a knife that was still too short, then too big after the next correction. Anchor every size to a body part: "the blade reaches down to mid-shin"; "the glasses frames are as wide as her face".

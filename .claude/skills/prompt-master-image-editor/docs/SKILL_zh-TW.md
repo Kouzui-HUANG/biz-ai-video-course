@@ -81,3 +81,8 @@ chroma noise, color noise, luminance noise, grain, film grain, sensor noise, spe
 
 **雜訊來源提醒**：若顆粒其實來自**原圖**而非模型生成，要直說——先把原圖降噪再送進編輯，遠比繼續堆形容詞有效。
 
+
+## 7. Gotchas（踩雷紀錄）
+
+- **寫清楚手上物件朝向哪裡、手往哪個方向動。** 男子拿平板時，螢幕曾被畫成朝向鏡頭而不是朝向他；舉起的手曾被畫成往身體回握。朝向和方向要明寫：「the screen faces the man, its back toward the camera」（螢幕面對男子，背面朝鏡頭）；「arm raised outward, palm facing away, not curled back toward himself」（手臂往外舉、掌心朝外，不是往自己回握）。
+- **尺寸用身體部位當基準，不要只用形容詞。** 只寫「再長一點」「再大一點」時，刀先是還太短，下一次修正又變得太大。每個尺寸都對照身體部位：「the blade reaches down to mid-shin」（刀刃長到小腿中段）；「the glasses frames are as wide as her face」（鏡框和她的臉一樣寬）。
