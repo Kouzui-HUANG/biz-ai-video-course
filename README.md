@@ -48,7 +48,7 @@ AI 画像生成モデル（Midjourney、Seedream、Nano Banana、SD）向けに�
 | Skill 名 | 用途 |
 |---|---|
 | [prompt-master-portrait](.claude/skills/prompt-master-portrait/SKILL.md) | 写真品質のポートレート／キャラクター設計プロンプトエンジニア。8〜12 項目の深掘りヒアリングを必ず行い、バイリンガル（EN/ZH）の精密なプロンプトを 3 つ生成します。細部を勝手に推測・**捏造することはいっさいありません**。 |
-| [prompt-master-character-sheet](.claude/skills/prompt-master-character-sheet/SKILL.md) | キャラクター設計の三面図（front/side/back）を作るプロンプト専門家。キャラクター画像を受け取ると、元の画風を保ったまま、純白背景の標準的なバストアップ三面図 prompt を生成します。 |
+| [prompt-master-character-sheet](.claude/skills/prompt-master-character-sheet/SKILL.md) | キャラクター設計の三面図（front/side/back）を作るプロンプト専門家。キャラクター画像を受け取ると、元の画風を保ったまま、純白背景の標準的なバストアップ三面図 prompt を、自然言語版と Stable Diffusion の重み付け版の 2 種類で生成します。 |
 | [prompt-master-general](.claude/skills/prompt-master-general/SKILL.md) | **汎用型** のビジュアルプロンプト主任エンジニア。ABCD の選択式で必ず 3 つの質問をしたうえで、3 つのバリエーション（撮影／アートスタイル／被写体／シーン）を生成します。ユーザーが「通用」と入力した場合に優先的にトリガーされます。 |
 | [prompt-master-anime](.claude/skills/prompt-master-anime/SKILL.md) | アニメ風ビジュアルアーキテクト。どんな入力画像でも元のスタイルを取り払い、2D アニメのタッチ（厚塗り、セルシェーディングなど）で描き直して、NanoBanana／SeeDream 級の英語 prompt を出力します。 |
 | [prompt-master-otaku-sd](.claude/skills/prompt-master-otaku-sd/SKILL.md) | 究極のオタク AI ＋ Stable Diffusion 神絵師。萌え系・二次元キャラクター（ツンデレ、絶対領域、猫耳、メカ娘など）に特化し、シチュエーション違いの SD 英語 prompt を 3 つ自動生成します。 |
@@ -240,7 +240,7 @@ biz-ai-video-course/
 | Skill 名稱 | 用途 |
 |---|---|
 | [prompt-master-portrait](.claude/skills/prompt-master-portrait/SKILL.md) | 寫真級肖像/角色設計提示詞工程師。強制執行 8–12 點深度釐清流程，產出 3 個雙語（EN/ZH）的精準提示詞，**禁止憑空捏造**任何細節。 |
-| [prompt-master-character-sheet](.claude/skills/prompt-master-character-sheet/SKILL.md) | 角色設計三視圖（front/side/back）提示詞專家。接收角色圖後保留原畫風，生成純白背景的標準半身三視圖 prompt。 |
+| [prompt-master-character-sheet](.claude/skills/prompt-master-character-sheet/SKILL.md) | 角色設計三視圖（front/side/back）提示詞專家。接收角色圖後保留原畫風，生成純白背景的標準半身三視圖 prompt，同時提供自然語言版與 Stable Diffusion 權重版。 |
 | [prompt-master-general](.claude/skills/prompt-master-general/SKILL.md) | **通用型**視覺提示詞首席工程師。以 ABCD 多選結構強制提問 3 題後，產出 3 個變體（攝影 / 藝術風格 / 主體 / 場景）。當使用者提到「通用」優先觸發。 |
 | [prompt-master-anime](.claude/skills/prompt-master-anime/SKILL.md) | 動漫風格視覺架構師。將任何輸入圖剝除原始風格、用 2D 動漫鏡頭重新渲染（厚塗、賽璐璐等），輸出 NanoBanana/SeeDream 級的英文 prompt。 |
 | [prompt-master-otaku-sd](.claude/skills/prompt-master-otaku-sd/SKILL.md) | 究極阿宅 AI + Stable Diffusion 神繪師。專攻萌系/二次元角色（傲嬌、絕對領域、貓耳、機娘等），自動產出 3 個不同情境的 SD 英文 prompt。 |
