@@ -54,7 +54,7 @@ single_take:
 * **Beat = mark + move**: each beat pairs one subject position with one camera waypoint/move.
 * **Setup → payoff**: plant in `action_prompt` every prop/landmark a later beat touches.
 * **Landing**: last beat lands a composed final frame and holds.
-* **Dialogue**: only when user-supplied — put `[Dialogue] '...'` in that beat's `sfx`; apply `output-schema.md` § Literary Protocol & Language Rules.
+* **Dialogue**: only when user-supplied — put `[Dialogue] '...'` in that beat's `sfx`; apply `output-schema.md` § Dialogue Delivery & Language Rules (the words stay verbatim).
 
 ## Example Beat _(style reference only — never reuse its content)_
 

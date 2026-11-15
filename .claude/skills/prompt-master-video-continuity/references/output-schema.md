@@ -64,32 +64,34 @@ multi_shot_sequence:
 
 ### [DEFAULT] No Dialogue
 * **Never invent spoken lines.** By default `audio_prompt` carries **non-verbal sound only**: breathing, sigh, laughter, footsteps, cloth rustle, wind, room tone.
-* A `[Dialogue]` line is written **only** when the user explicitly supplies the line(s) or explicitly asks for dialogue.
-* When the user supplies dialogue: keep their wording and language verbatim, and assign each line to the shot it belongs to.
+* A `[Dialogue]` line is written **only** for lines the user supplied. If the user asks for dialogue without giving the lines, ask for them instead of writing them.
+* When the user supplies dialogue: keep their wording, punctuation and language verbatim (never shorten, rephrase or translate), and assign each line to the shot it belongs to.
 
 ### Vocalization Types
 Tag the type at the start: `[Breathing]`, `[Sigh]`, `[Laughter]`, `[Crying]`, `[Whisper]`, `[Scream]`, `[Humming]`, `[Footsteps]`, `[Ambience]` — and `[Dialogue]` **only for user-supplied lines**.
 
-### Literary Protocol for Dialogue _(applies ONLY to user-supplied / user-requested dialogue)_
+### Dialogue Delivery _(the words always stay exactly as the user wrote them)_
 
-| Category | Rule | Example |
+Delivery goes in the acting and sound description; it never changes the words inside `[Dialogue] '…'`.
+
+| Category | Delivery | Example (user-supplied line, copied verbatim) |
 |---|---|---|
-| **Short Line** | Explosive, fragmented, reject complete sentences. Gasps between words. | `[Dialogue] 'やめろ！'` |
-| **Long Line** | Philosophical depth on life, humanity, or society. No banal narration. | `[Dialogue] 'ひとはなぜ... かなしみをかかえていきるのか...'` |
+| **Short Line** | Performed explosive and fragmented, gasps between words. | `[Dialogue] '住手！'` |
+| **Long Line** | Performed slow and reflective, pauses between phrases. | `[Dialogue] '人為什麼……要抱著悲傷活下去……'` |
 
 ### Language Rules
-* Dialogue uses **the language the user provided / requested**. There is no default dialogue language, because there is no default dialogue.
-* **[ABSOLUTE BAN] If the dialogue is Japanese: NO KANJI (漢字). 100% Hiragana (ひらがな) and Katakana (カタカナ) only.**
+* Dialogue uses **the language the user wrote it in**. There is no default dialogue language, because there is no default dialogue.
+* Japanese lines keep the user's script: kanji stay as written; convert to kana only if the user asks.
 
 ### Formatting
 ```
 audio_prompt: "[Vocalization Type] Non-verbal description."
-audio_prompt: "[Dialogue] 'User-supplied line.'"   # ONLY when user provided it
+audio_prompt: "[Dialogue] '使用者提供的原句'"   # ONLY when user provided it, copied verbatim
 ```
 Examples:
 ```
 audio_prompt: "[Breathing] Shallow, uneven breaths under wind hiss."
 audio_prompt: "[Laughter] Soft, breathy chuckle trailing into silence."
 audio_prompt: "[Footsteps] Wet gravel crunch, slow tempo, distant traffic hum."
-audio_prompt: "[Dialogue] 'やめろ！'"   # only because the user supplied this line
+audio_prompt: "[Dialogue] '住手！'"   # only because the user supplied this exact line
 ```

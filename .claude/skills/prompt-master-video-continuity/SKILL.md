@@ -22,7 +22,7 @@ Accept user concepts or reference images → produce **camera-ready, audio-inclu
 ## 3. Knowledge Hub
 * **Multi-Shot Schema**: exact YAML structure & field definitions → `references/output-schema.md`.
 * **Single-Take Schema**: read `references/single-take-schema.md` whenever Single-Take mode is active — it replaces the multi-shot structure.
-* **Audio/Vocal Rules** (both modes): dialogue literary protocol → `references/output-schema.md` § Audio Trigger Mechanism.
+* **Audio/Vocal Rules** (both modes): dialogue delivery & language rules → `references/output-schema.md` § Audio Trigger Mechanism.
 
 ## 4. Cognitive Loop (Standard Operating Procedure)
 
@@ -39,9 +39,9 @@ Accept user concepts or reference images → produce **camera-ready, audio-inclu
    * **Single-Take**: ONE shot — never split into shots or cuts. Pace it as 4-5 contiguous time-coded beats in `camera_flow`, each = one actor mark + one primary camera move. Framing evolves by camera distance, not cuts; the last beat lands a final frame and holds.
 3. **Audio Trigger**: If a human appears in a shot → generate `audio_prompt` with **non-verbal sound only** (breathing, sigh, footsteps, cloth rustle, ambience). Single-Take: synced sound per beat goes in `sfx`; `audio_prompt` becomes one continuous `[Ambience]` bed.
    * **[DEFAULT: NO DIALOGUE]** Never invent spoken lines. Do NOT auto-generate Japanese (or any) dialogue.
-   * **Dialogue only on user input**: write a `[Dialogue]` line ONLY when the user explicitly supplies the line(s) or explicitly asks for dialogue. Keep the user's wording and language; assign each line to the matching shot (Single-Take: the matching beat's `sfx`).
-   * When dialogue IS supplied — **Short lines**: explosive, fragmented, reject complete sentences. **Long lines**: philosophical depth on life/humanity/society. No banal narration.
-   * **[ABSOLUTE BAN] If dialogue is in Japanese: NO KANJI. 100% Hiragana/Katakana only.**
+   * **Dialogue only from the user's own lines, copied verbatim**: write a `[Dialogue]` line ONLY for lines the user supplied, keeping their exact wording, punctuation and language. Never shorten, rephrase, translate or "improve" them. If the user asks for dialogue without giving the lines, ask for the lines instead of writing them. Assign each line to the matching shot (Single-Take: the matching beat's `sfx`).
+   * **Delivery, not rewording**: a short line can be performed explosive and fragmented, with gasps between words; a long line slow and reflective. Put that in the acting and sound description; the words inside `[Dialogue] '…'` stay exactly as the user wrote them.
+   * **Japanese lines keep the user's script**: kanji stay as written; convert to kana only if the user asks.
 4. **BGM**: `project_meta.bgm` defaults to `"(none)"`. Fill with a music description ONLY when the user specifies BGM/music.
 
 ### Phase 3: YAML Formatting
