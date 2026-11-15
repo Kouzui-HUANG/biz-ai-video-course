@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: asks-three-questions-first
+expected_outcome: |
+  Phase 1 only: exactly three multiple-choice questions with A/B/C/D options, then the reply stops without writing any prompt.

@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: picture-book-variants-stay-simple
+expected_outcome: |
+  Three picture-book variants of the detective that stay simple (few objects, rounded shapes), with no lens, camera, render-engine or ethnicity details, and no "breast" word for the coat.
